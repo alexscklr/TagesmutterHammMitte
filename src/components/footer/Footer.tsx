@@ -1,0 +1,29 @@
+import { Link } from "react-router-dom";
+import Titelbild from "./../../assets/Titelbild.png"
+import "./Footer.css"
+
+const Footer = () => {
+  return (
+    <footer className="footer">
+      <div>
+        <img src={Titelbild} width="8%" style={{ border: "0px solid black", borderRadius: "50%" }} />
+        <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
+          <li>Kerstin Sickler</li>
+          <li>Kindertagespflege</li>
+          <li>Weißdornweg 14</li>
+          <li>59063 Hamm</li>
+          <li>02381 31366</li>
+          <li>kerstin.sickler@web.de</li>
+        </ul>
+        <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
+          <li><Link to="/kontakt">Kontakt</Link></li>
+          <li><Link to="/datenschutz">Datenschutzerklärung</Link></li>
+          <li><Link to="/impressum">Impressum</Link></li>
+        </ul>
+      </div>
+      <p style={{fontSize:"1rem", marginTop:"1%"}}>© 2025 Kerstin Sickler – Alle Rechte vorbehalten.</p>
+    </footer>
+  );
+};
+
+export default Footer;

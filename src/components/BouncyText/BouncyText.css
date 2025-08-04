@@ -1,0 +1,28 @@
+.bouncy-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 50px; /* gibt Platz nach oben für Animation */
+  font-size: 2.5rem;
+  font-family: sans-serif;
+  height: 150px; /* wichtig, sonst siehst du den Sprung nicht */
+  overflow: visible;
+  position: relative;
+}
+
+.bouncy-char {
+  display: inline-block;
+  margin: 0 2px;
+  animation-name: bounce;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-25px); }
+  60%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}

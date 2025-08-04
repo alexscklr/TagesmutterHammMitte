@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="12cm" height="3.6cm" viewBox="0 0 500 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path id="circleTop" d="M 250,250 m -200,0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0" />
+
+    </defs>
+    <desc>Curved Text</desc>
+
+    <use xlink:href="#circleTop" fill="none" stroke="transparent" />
+    <text font-family="Lato" font-size="42.5" fill="black">
+        <textPath xlink:href="#circleTop" startOffset="25%" text-anchor="middle">
+            Kindertagespflege
+        </textPath>
+    </text>
+
+</svg>

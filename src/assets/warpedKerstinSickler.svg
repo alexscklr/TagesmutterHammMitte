@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="12cm" height="3.6cm" viewBox="0 400 500 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- untere Halbkreishälfte rückwärts gezeichnet -->
+    <path id="circleBot" d="M 450,250 A 200,200 0 0,0 50,250" />
+  </defs>
+
+  <use href="#circleBot" fill="none" stroke="transparent" />
+
+  <g transform="rotate(180, 250, 250)">
+    <text font-family="Lato" font-size="36" fill="black">
+      <textPath href="#circleBot" startOffset="50%" text-anchor="middle">
+        Kerstin Sickler
+      </textPath>
+    </text>
+  </g>
+
+</svg>

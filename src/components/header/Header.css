@@ -1,0 +1,97 @@
+/* src/components/Header.css */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+/* Logo */
+.logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007e67;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  position: relative;
+}
+
+.main-nav a:hover {
+  color: #007e67;
+}
+
+.main-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav li {
+  display: flex;
+  align-items: center;
+}
+
+select {
+  appearance: none; /* Standard-Dropdown-Pfeil verstecken */
+  background-color: white;
+  color: #333;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  padding: 0.5rem 0rem 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  position: relative;
+  background-image: url("data:image/svg+xml,%3Csvg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 1rem;
+  cursor: pointer;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:hover {
+  border-color: #007e67;
+}
+
+select:focus {
+  outline: none;
+  border-color: #007e67;
+  box-shadow: 0 0 0 2px rgba(0, 126, 103, 0.3);
+}
+
+
+/* Mobile (optional, einfaches Breakpoint) */
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem; /* 👈 Abstand zwischen Logo & Navigation */
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .main-nav li {
+    width: 100%;
+  }
+
+  .main-nav li a,
+  .main-nav li select {
+    width: 100%;
+  }
+}

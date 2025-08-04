@@ -1,0 +1,143 @@
+/* Google Fonts importieren */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Nunito:wght@300;400;700&display=swap');
+
+/* RESET (Basis für alle Elemente) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root-Variablen für Farben & Größen */
+:root {
+  --font-primary: 'Nunito', sans-serif;
+  --font-heading: 'Quicksand', sans-serif;
+
+  --color-bg: #fdf6ec;
+  --color-text: #333;
+  --color-text-medium: #555;
+  --color-accent: #007e67;
+  --color-accent2: #da4a0d;
+
+  --max-width: 1200px;
+  --line-height: 1.6;
+
+  scroll-behavior: smooth;
+}
+
+/* Grundlegendes Layout */
+header {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: var(--line-height);
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: var(--line-height);
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  max-width: var(--max-width);
+  min-height: 80vh;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--color-bg);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: rgba(255,255,255,0.8);
+  border: 0px solid black;
+  border-radius: 20px;
+  padding: 5% 5% 5% 5%;
+}
+
+/* Überschriften */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+
+h1 {
+  font-size: 3.8rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2.2rem;
+}
+
+h4 {
+  font-size: 2;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Links */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Bilder */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #005f4e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  main {
+    padding: 1rem;
+  }
+}
