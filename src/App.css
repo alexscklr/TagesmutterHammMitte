@@ -14,15 +14,18 @@
   --font-heading: 'Quicksand', sans-serif;
 
   --color-bg: #fdf6ec;
+  --color-bg-colored: #dbc0a0;
   --color-text: #333;
   --color-text-medium: #555;
   --color-accent: #007e67;
   --color-accent2: #da4a0d;
 
+  --gradient-bg: radial-gradient(var(--color-bg-colored), var(--color-bg));
+
   --max-width: 1200px;
   --line-height: 1.6;
 
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Grundlegendes Layout */
@@ -40,7 +43,7 @@ body {
   font-family: var(--font-primary);
   font-size: 16px;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background: var(--gradient-bg);
   line-height: var(--line-height);
   padding: 0;
   margin: 0;
@@ -49,9 +52,11 @@ body {
 main {
   max-width: var(--max-width);
   min-height: 80vh;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 2rem;
-  background-color: var(--color-bg);
+  background: rgba(255, 255, 255, 0.6);
+  border: 0px solid black;
+  border-radius: 20px;
 }
 
 .page {
@@ -59,14 +64,15 @@ main {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background: rgba(255,255,255,0.8);
-  border: 0px solid black;
-  border-radius: 20px;
+  
   padding: 5% 5% 5% 5%;
 }
 
 /* Überschriften */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-heading);
   color: var(--color-accent);
   margin-bottom: 1rem;
@@ -134,9 +140,11 @@ button:hover {
   h1 {
     font-size: 2rem;
   }
+
   h2 {
     font-size: 1.5rem;
   }
+
   main {
     padding: 1rem;
   }

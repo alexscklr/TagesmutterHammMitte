@@ -3,15 +3,17 @@
     background-color: var(--color-accent);
 
     color: var(--color-bg);
-
-    padding: 2% 5% 2% 5%;
+    margin: 0;
 }
 
 .footer>div {
+    width: fit-content;
     display: flex;
     justify-content: left;
     gap: 5%;
     align-items: start;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
 }
 
 .footer>div>ul {

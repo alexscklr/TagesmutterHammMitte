@@ -1,4 +1,4 @@
-import KidsRunning from "./../assets/kidsRunning.jpeg"
+import KidsRunning from "./../assets/images/kids/kidsRunning.jpeg"
 
 const Eingewoehnung = () => {
   return (

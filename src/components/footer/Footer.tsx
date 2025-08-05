@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div>
-        <img src={Titelbild} width="8%" style={{ border: "0px solid black", borderRadius: "50%" }} />
+        <img src={Titelbild} width="16%" style={{ border: "0px solid black", borderRadius: "50%" }} />
         <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
           <li>Kerstin Sickler</li>
           <li>Kindertagespflege</li>
@@ -21,7 +21,7 @@ const Footer = () => {
           <li><Link to="/impressum">Impressum</Link></li>
         </ul>
       </div>
-      <p style={{fontSize:"1rem", marginTop:"1%"}}>© 2025 Kerstin Sickler – Alle Rechte vorbehalten.</p>
+      <p style={{width:"100%", fontSize:"1rem", padding:"0% 0% 1% 2%", margin:"0"}}>© 2025 Kerstin Sickler – Alle Rechte vorbehalten.</p>
     </footer>
   );
 };

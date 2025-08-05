@@ -1,17 +1,18 @@
 // src/components/Header.tsx
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+//import React from 'react';
+import { Link/*, useNavigate */ } from 'react-router-dom';
 import './Header.css';
 import HeaderSelect from '../HeaderSelect/HeaderSelect';
 
 const Header = () => {
+  /*
   const navigate = useNavigate();
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const path = e.target.value;
-    if (path) navigate(path);
-  };
-
+ 
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const path = e.target.value;
+      if (path) navigate(path);
+    };
+  */
   return (
     <header className="site-header">
       <div className="logo">

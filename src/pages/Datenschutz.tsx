@@ -144,6 +144,14 @@ const Datenschutz = () => {
           <br />
           Die erhobenen Kundendaten werden nach Abschluss des Auftrags oder Beendigung der Geschäftsbeziehung gelöscht. Gesetzliche Aufbewahrungsfristen bleiben unberührt.
         </p>
+        <h4 style={{ width: "90%", textAlign: "left" }}>Datenverarbeitung über Firebase</h4>
+        <p style={{ width: "80%", textAlign: "left", fontSize: "1.2rem" }}>
+          Zur technischen Umsetzung unserer Dienste nutzen wir Firebase, ein Angebot der Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland). Firebase kann dabei personenbezogene Daten wie Name, E-Mail-Adresse oder Nutzungsdaten verarbeiten und speichern, sofern Sie uns diese im Rahmen der Nutzung unserer Angebote bereitstellen. Dies geschieht insbesondere bei der Nutzung von Formularen oder interaktiven Funktionen. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) oder Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).<br />
+          <br />
+          Firebase speichert die Daten auf Servern innerhalb der EU oder in den USA. Mit Google wurde ein Vertrag zur Auftragsverarbeitung abgeschlossen. Die Datenübermittlung in die USA stützt sich auf die EU-Standardvertragsklauseln sowie den Angemessenheitsbeschluss der EU-Kommission im Rahmen des Trans-Atlantic Data Privacy Framework (TPDF), sofern zutreffend.<br />
+          <br />
+          Weitere Informationen zur Datenverarbeitung durch Firebase finden Sie unter: <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">https://firebase.google.com/support/privacy</a>
+        </p>
       </section>
       <section className="page">
         <h2 style={{ width: "100%", textAlign: "left" }}>4. Plugins und Tools</h2>
@@ -153,6 +161,20 @@ const Datenschutz = () => {
           <br />
           Die Datenverarbeitung erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Weitere Informationen zur Datenverarbeitung durch Formspree finden Sie unter:<br />
           <a href="https://formspree.io/privacy" target="_blank" rel="noopener noreferrer">https://formspree.io/privacy</a>.
+        </p>
+        <h3 style={{ width: "90%", textAlign: "left" }}>Firebase</h3>
+        <p style={{ width: "80%", textAlign: "left", fontSize: "1.2rem" }}>
+          Auf unserer Website nutzen wir Dienste des Anbieters Firebase. Firebase ist ein Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
+          <br />
+          Firebase bietet verschiedene Funktionen, die wir zur Verbesserung der Nutzererfahrung und der Sicherheit einsetzen – z. B. Hosting, Datenbankdienste (Firestore), Authentifizierung, Cloud Functions oder Analysen. Dabei können personenbezogene Daten wie IP-Adresse, Geräteinformationen oder Standortdaten verarbeitet und auf Server in den USA übertragen werden.<br />
+          <br />
+          Die Nutzung von Firebase erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an einer zuverlässigen und sicheren Bereitstellung der Website sowie an der Optimierung des Angebots. Sofern eine entsprechende Einwilligung abgefragt wurde, erfolgt die Verarbeitung ausschließlich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.<br />
+          <br />
+          Weitere Informationen zur Datennutzung durch Google/Firebase finden Sie in der Datenschutzerklärung von Google:<br />
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a><br />
+          <br />
+          und in den Firebase-Datenschutzinformationen:<br />
+          <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">https://firebase.google.com/support/privacy</a><br />
         </p>
       </section>
     </div>

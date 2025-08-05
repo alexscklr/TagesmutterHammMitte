@@ -3,9 +3,10 @@ import "./ImageSlider.css"
 
 type SliderProps = {
     items: any[];
+    speed: number;
 }
 
-const ImageSlider = ({items} : SliderProps) => {
+const ImageSlider = ({ items, speed }: SliderProps) => {
     const duplicatedItems = [...items, ...items];
     const containerRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -22,7 +23,6 @@ const ImageSlider = ({items} : SliderProps) => {
 
         let animationFrameId: number;
         let lastTimestamp: number | null = null;
-        const speed = 0.3; // px/ms
 
         const step = (timestamp: number) => {
             if (lastTimestamp === null) {
@@ -35,15 +35,10 @@ const ImageSlider = ({items} : SliderProps) => {
             lastTimestamp = timestamp;
 
             if (!isHovered) {
-                const scrollAmount = speed * delta;
-                container.scrollLeft += scrollAmount;
-
-                if (container.scrollLeft >= container.scrollWidth / 2) {
-                    container.scrollLeft -= container.scrollWidth / 2;
-                } else if (container.scrollLeft <= 0) {
-                    container.scrollLeft += container.scrollWidth / 2;
-                }
+                const halfScrollWidth = container.scrollWidth / 2;
+                container.scrollLeft = ((container.scrollLeft + speed * delta) % halfScrollWidth + halfScrollWidth) % halfScrollWidth;
             }
+
 
             animationFrameId = requestAnimationFrame(step);
         };
@@ -52,13 +47,9 @@ const ImageSlider = ({items} : SliderProps) => {
 
         const onWheel = (e: WheelEvent) => {
             e.preventDefault();
-            container.scrollLeft += e.deltaY;
+            const halfScrollWidth = container.scrollWidth / 2;
+            container.scrollLeft = ((container.scrollLeft + e.deltaY) % halfScrollWidth + halfScrollWidth) % halfScrollWidth;
 
-            if (container.scrollLeft >= container.scrollWidth / 2) {
-                container.scrollLeft -= container.scrollWidth / 2;
-            } else if (container.scrollLeft <= 0) {
-                container.scrollLeft += container.scrollWidth / 2;
-            }
         };
 
         container.addEventListener("wheel", onWheel, { passive: false });

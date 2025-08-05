@@ -1,13 +1,13 @@
-import House from "./../assets/house.jpg"
-import Library from "./../assets/library.jpg"
-import FireDepartment from "./../assets/fireDepartment.png"
-import Bed1 from "./../assets/bed1.jpg"
-import Bed2 from "./../assets/bed2.jpg"
-import KidsPuzzle from "./../assets/kidPuzzle1.jpg"
-import KidsCrafting from "./../assets/kidsCrafting.jpg"
-import KidsFingerPaint from "./../assets/kidsFingerPaint.jpg"
-import KidsPuddle from "./../assets/kidsPuddle.jpg"
-import KidsChalk from "./../assets/kidsChalk.jpg"
+import House from "./../assets/images/house/house.jpg"
+import Library from "./../assets/images/outside/library.jpg"
+import FireDepartment from "./../assets/images/outside/fireDepartment.png"
+import Bed1 from "./../assets/images/house/bed1.jpg"
+import Bed2 from "./../assets/images/house/bed2.jpg"
+import KidsPuzzle from "./../assets/images/kids/kidPuzzle1.jpg"
+import KidsCrafting from "./../assets/images/kids/kidsCrafting.jpg"
+import KidsFingerPaint from "./../assets/images/kids/kidsFingerPaint.jpg"
+import KidsPuddle from "./../assets/images/kids/kidsPuddle.jpg"
+import KidsChalk from "./../assets/images/kids/kidsChalk.jpg"
 
 const Tagesablauf = () => {
   return (

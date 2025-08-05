@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { HeaderSelectType } from "../../types/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./HeaderSelect.css";
 
 

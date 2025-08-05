@@ -4,6 +4,7 @@
     width: 90%;
     cursor: grab;
     scrollbar-width: none;
+    scroll-behavior: auto;
     padding: 3%;
 }
 

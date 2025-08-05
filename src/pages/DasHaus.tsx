@@ -1,9 +1,10 @@
-import House from "./../assets/house.jpg"
-import Ducks from "./../assets/ducks.jpg"
-import KidsOnBridge from "./../assets/kidsOnBridge.jpg"
-import Bed1 from "./../assets/bed1.jpg"
-import Bed2 from "./../assets/bed2.jpg"
-import Cockchafer from "./../assets/cockchafer.jpg"
+import House from "./../assets/images/house/house.jpg"
+import Ducks from "./../assets/images/outside/ducks.jpg"
+import KidsOnBridge from "./../assets/images/kids/kidsOnBridge.jpg"
+import Bed1 from "./../assets/images/house/bed1.jpg"
+import Bed2 from "./../assets/images/house/bed2.jpg"
+import Bed3 from "./../assets/images/house/bed3.jpg"
+import Cockchafer from "./../assets/images/outside/cockchafer.jpg"
 import { Link } from "react-router-dom"
 
 const DasHaus = () => {
@@ -33,6 +34,7 @@ const DasHaus = () => {
           <img src={Bed1} width="39%" style={{margin: "2%"}}/>
           <img src={Bed2} width="39%" style={{margin: "2%"}}/>
         </div>
+        <img src={Bed3} width="61%" style={{margin: "2%"}}/>
         <p>
           Das Freispiel zu erlernen ist wichtig für die Selbstständigkeit des Kindes. Bei uns gibt es <strong>jede Menge Spielsachen</strong> für jede Altersklasse. Außerdem haben wir <strong>Kinder- und Liederbücher sowie Musik-CDs</strong> für die entsprechenden Altersgruppen. Langeweile kann also gar nicht erst aufkommen. Unter dem Link <Link to="/music">musikalische "Früherziehung"</Link> lesen Sie noch mehr über schöne Angebote in unserem Tagesablauf. <br />
           Geben die Eltern dem Kind Wechselsachen mit, sind wir für jedes Wetter gerüstet. Auch der Garten mit Schaukel, Spielhaus, Wippe, Rutschen und Sandkasten und allerlei Fahrzeugen lädt zum Spielen ein. In unmittelbarer Nähe zum Haus gibt es mehrere Spielplätze.

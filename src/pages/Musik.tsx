@@ -1,8 +1,8 @@
-import KidsUkulele from "./../assets/kidsUkulele.jpg"
-import KidsXylophone from "./../assets/kidsXylophone.jpg"
-import KidsPiano from "./../assets/kidsPiano.jpg"
-import KidsMusic from "./../assets/kidsMusic.jpg"
-import Instruments from "./../assets/instruments.jpg"
+import KidsUkulele from "./../assets/images/music/kidsUkulele.jpg"
+import KidsXylophone from "./../assets/images/music/kidsXylophone.jpg"
+import KidsPiano from "./../assets/images/music/kidsPiano.jpg"
+import KidsMusic from "./../assets/images/music/kidsMusic.jpg"
+import Instruments from "./../assets/images/music/instruments.jpg"
 
 const Musik = () => {
   return (
