@@ -1,17 +1,25 @@
 .footer {
+    width: 100%;
     min-height: 20vh;
     background-color: var(--color-accent);
+    background-image: 
+    url('https://www.transparenttextures.com/patterns/redox-02.png');
 
     color: var(--color-bg);
     margin: 0;
+
+    box-shadow: 0px -3px 5px #555555;
+
+    border-radius: 3rem 3rem 0 0;
+    overflow: hidden;
 }
 
 .footer>div {
     width: fit-content;
     display: flex;
     justify-content: left;
-    gap: 5%;
     align-items: start;
+    gap: 5%;
     margin: auto;
     padding: 2% 5% 2% 5%;
 }
@@ -23,4 +31,11 @@
 .footer>div>ul>li>a {
     color: var(--color-bg);
     text-decoration: underline;
+}
+
+@media screen and (max-width: 560px) {
+    .footer>div {
+        flex-direction: column;
+        justify-content: center;
+    }
 }

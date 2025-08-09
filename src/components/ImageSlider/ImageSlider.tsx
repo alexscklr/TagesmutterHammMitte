@@ -36,7 +36,15 @@ const ImageSlider = ({ items, speed }: SliderProps) => {
 
             if (!isHovered) {
                 const halfScrollWidth = container.scrollWidth / 2;
-                container.scrollLeft = ((container.scrollLeft + speed * delta) % halfScrollWidth + halfScrollWidth) % halfScrollWidth;
+                const nextScrollLeft = container.scrollLeft + speed * delta;
+
+                if (nextScrollLeft >= halfScrollWidth) {
+                    // sanft zurücksetzen, aber mit kleinem Offset
+                    container.scrollLeft = nextScrollLeft - halfScrollWidth + 30;
+                } else {
+                    container.scrollLeft = nextScrollLeft;
+                }
+
             }
 
 

@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 50px; /* gibt Platz nach oben für Animation */
-  font-size: 2.5rem;
+  padding: 50px;
+  font-size: clamp(1rem, 5vw, 3rem);
   font-family: sans-serif;
-  height: 150px; /* wichtig, sonst siehst du den Sprung nicht */
-  overflow: visible;
+  height: fit-content;
   position: relative;
+  max-width: 50%;
 }
 
 .bouncy-char {

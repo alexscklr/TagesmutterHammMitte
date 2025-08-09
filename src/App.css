@@ -14,13 +14,13 @@
   --font-heading: 'Quicksand', sans-serif;
 
   --color-bg: #fdf6ec;
-  --color-bg-colored: #dbc0a0;
+  --color-bg-colored: #ffebd0;
   --color-text: #333;
   --color-text-medium: #555;
   --color-accent: #007e67;
   --color-accent2: #da4a0d;
 
-  --gradient-bg: radial-gradient(var(--color-bg-colored), var(--color-bg));
+  --gradient-bg: radial-gradient(var(--color-bg), var(--color-bg-colored));
 
   --max-width: 1200px;
   --line-height: 1.6;
@@ -43,7 +43,9 @@ body {
   font-family: var(--font-primary);
   font-size: 16px;
   color: var(--color-text);
-  background: var(--gradient-bg);
+  background-color: var(--color-bg-colored);
+  background-image: 
+    url('https://www.transparenttextures.com/patterns/purty-wood.png');
   line-height: var(--line-height);
   padding: 0;
   margin: 0;
@@ -52,11 +54,12 @@ body {
 main {
   max-width: var(--max-width);
   min-height: 80vh;
-  margin: 2rem auto;
+  margin: 10rem auto;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.6);
+  background: white;
   border: 0px solid black;
   border-radius: 20px;
+  overflow: hidden;
 }
 
 .page {
@@ -81,15 +84,15 @@ h4 {
 
 
 h1 {
-  font-size: 3.8rem;
+  font-size: clamp(3rem, 8vw, 5rem);
 }
 
 h2 {
-  font-size: 3rem;
+  font-size: clamp(2.3rem, 6.5vw, 3rem);
 }
 
 h3 {
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 5vw, 2.3rem);
 }
 
 h4 {
@@ -98,7 +101,7 @@ h4 {
 
 p {
   margin-bottom: 1rem;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 3vw, 1.6rem);
 }
 
 /* Links */
@@ -137,15 +140,16 @@ button:hover {
 
 /* Responsive */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
 
   h2 {
     font-size: 1.5rem;
   }
 
   main {
-    padding: 1rem;
+    width: 100%;
+    padding: 0.2rem;
+  }
+  page {
+    width: 100%;
   }
 }

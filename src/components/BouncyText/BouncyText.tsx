@@ -55,8 +55,7 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
         alignItems: "flex-end",
         fontSize: "3rem",
         fontFamily: "Nunito",
-        height: "150px",
-        padding: "50px",
+        padding: "2%",
         ...style
       }}
     >

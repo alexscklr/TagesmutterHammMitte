@@ -3,7 +3,7 @@
 }
 
 .header-select-btn {
-    background-color: white;
+    background: none;
     color: var(--color-text);
 
     transition: background-color 1s ease-in-out;

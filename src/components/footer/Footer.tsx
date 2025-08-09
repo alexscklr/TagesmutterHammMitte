@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div>
-        <img src={Titelbild} width="16%" style={{ border: "0px solid black", borderRadius: "50%" }} />
+        <img src={Titelbild} width="17%" style={{ border: "0px solid black", borderRadius: "50%", margin:"auto" }} />
         <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
           <li>Kerstin Sickler</li>
           <li>Kindertagespflege</li>
