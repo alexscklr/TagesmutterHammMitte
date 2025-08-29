@@ -23,7 +23,9 @@
     transform-origin: center center;
 }
 
-.slider-item:hover {
+.slider-item:hover,
+.slider-item:focus,
+.slider-item:focus-visible {
     transform: scale(1.15);
     border: 0px solid white;
     border-radius: 20px;

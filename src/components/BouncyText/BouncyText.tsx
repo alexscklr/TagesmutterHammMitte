@@ -48,7 +48,7 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
   
 
   return (
-    <div
+    <span
       style={{
         display: "flex",
         justifyContent: "center",
@@ -91,6 +91,6 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
           </span>
         );
       })}
-    </div>
+    </span>
   );
 };

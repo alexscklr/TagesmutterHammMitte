@@ -9,7 +9,7 @@ const Startseite = () => {
 
 
   return (
-    <div className="page startseite">
+    <div className="page homepage">
       <h1><BouncyText
         text="HERZLICH WILLKOMMEN"
         amplitude={10}
@@ -37,7 +37,7 @@ const Startseite = () => {
         buttonLabel="Google Maps laden"
       />
       <h2 style={{ color: "var(--color-accent2)", display: "flex", alignItems: "center", justifyContent:"center" }} >
-        <Link to="/musik"><span style={{ color: "var(--color-text-medium)" }}>♫♪</span></Link>
+        <Link to="/musik"><span style={{ color: "var(--color-neutral-400)" }}>♫♪</span></Link>
         <BouncyText
           text="- Hier spielt die Musik -"
           amplitude={8}
@@ -47,7 +47,7 @@ const Startseite = () => {
           frequency={1}
           style={{ fontSize: "clamp(1rem, 5vw, 3rem)" }}
         />
-        <Link to="/musik"><span style={{ color: "var(--color-text-medium)" }}>♪♫♪</span></Link>
+        <Link to="/musik"><span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span></Link>
       </h2>
     </div>
   );

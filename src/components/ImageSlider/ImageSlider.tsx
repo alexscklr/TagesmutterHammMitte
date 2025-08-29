@@ -9,7 +9,7 @@ type SliderProps = {
 const ImageSlider = ({ items, speed }: SliderProps) => {
     const duplicatedItems = [...items, ...items];
     const containerRef = useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
+    const [isFocussed, setIsFocussed] = useState(false);
 
     useEffect(() => {
         if (containerRef.current) {
@@ -34,7 +34,7 @@ const ImageSlider = ({ items, speed }: SliderProps) => {
             const delta = timestamp - lastTimestamp;
             lastTimestamp = timestamp;
 
-            if (!isHovered) {
+            if (!isFocussed) {
                 const halfScrollWidth = container.scrollWidth / 2;
                 const nextScrollLeft = container.scrollLeft + speed * delta;
 
@@ -66,15 +66,16 @@ const ImageSlider = ({ items, speed }: SliderProps) => {
             cancelAnimationFrame(animationFrameId);
             container.removeEventListener("wheel", onWheel);
         };
-    }, [isHovered]);
+    }, [isFocussed]);
 
 
     return (
         <div
             ref={containerRef}
             className="slider-container"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => setIsFocussed(true)}
+            onFocus={() => setIsFocussed(true)}
+            onMouseLeave={() => setIsFocussed(false)}
         >
             {duplicatedItems.map((src, i) => (
                 <img

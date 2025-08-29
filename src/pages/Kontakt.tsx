@@ -2,12 +2,12 @@ import { useForm, ValidationError } from '@formspree/react';
 import { BouncyText } from '../components/BouncyText/BouncyText';
 
 function ContactForm() {
-  const [state, handleSubmit] = useForm("xqaldlwk");
+  const [state, handleSubmit] = useForm(import.meta.env.VITE_FORMSPREE_CODE);
   if (state.succeeded) {
     return <p>Danke für deine Nachricht!</p>;
   }
   return (
-    <form onSubmit={handleSubmit} style={{ width:"max(61vw, 61%)", display: "flex", flexDirection: "column", border: "1px solid var(--color-text-medium)", borderRadius: "15px", padding: "2%", marginTop: "1%", backgroundColor: "white" }}>
+    <form onSubmit={handleSubmit} style={{ width:"61%", display: "flex", flexDirection: "column", border: "1px solid var(--color-text-medium)", borderRadius: "15px", padding: "2%", marginTop: "1%", backgroundColor: "white" }}>
       <label htmlFor="email">
         E-Mailadresse
       </label>

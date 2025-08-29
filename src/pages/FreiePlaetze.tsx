@@ -6,7 +6,7 @@ const FreiePlaetze = () => {
     <div className="page freieplaetze">
       <h1>Freie Plätze</h1>
       <section className="page">
-        <p>
+        <div>
           Zurzeit kann ich keinen freien Betreuungsplatz anbieten.<br />
           Falls Sie demnächst eine Kinderbetreuung benötigen, können Sie mich natürlich anrufen (<span style={{ fontSize: "1rem" }}><BouncyText
             text="0163-6965106"
@@ -25,7 +25,7 @@ const FreiePlaetze = () => {
             frequency={1}
             style={{ fontSize: "1.5rem", display: "inline", padding: "0" }}
           /></span>).
-        </p>
+        </div>
       </section>
     </div>
   );

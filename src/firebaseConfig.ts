@@ -1,19 +1,19 @@
 // firebaseConfig.ts
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
-//import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCOaKa_94NJ6VaC-n21jm32LFKvxFNC24U",
-  authDomain: "tagesmutter-hamm-mitte.firebaseapp.com",
-  projectId: "tagesmutter-hamm-mitte",
-  storageBucket: "tagesmutter-hamm-mitte.appspot.com",
-  messagingSenderId: "109517787812",
-  appId: "1:109517787812:web:cf577d65485b77843e8c31",
-  measurementId: "G-C5RL7ZN99P"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
 
-export const storage = getStorage(app);
+const auth = getAuth(app);
+
+export { auth };

@@ -2,8 +2,8 @@
     width: 100%;
     min-height: 20vh;
     background-color: var(--color-accent);
-    background-image: 
-    url('https://www.transparenttextures.com/patterns/redox-02.png');
+    background-image:
+        url('https://www.transparenttextures.com/patterns/redox-02.png');
 
     color: var(--color-bg);
     margin: 0;
@@ -19,6 +19,7 @@
     display: flex;
     justify-content: left;
     align-items: start;
+    flex-wrap: wrap;
     gap: 5%;
     margin: auto;
     padding: 2% 5% 2% 5%;
@@ -33,9 +34,27 @@
     text-decoration: underline;
 }
 
-@media screen and (max-width: 560px) {
-    .footer>div {
-        flex-direction: column;
-        justify-content: center;
-    }
+@media (min-width: 600px) and (max-width: 800px) {
+  .footer > div > *:first-child {
+    flex-basis: auto;
+    width: 31%;
+    display: block;
+    margin-right: 100%;
+  }
+
+  /* Rest normale Flex-Anordnung */
+  .footer > div > *:not(:first-child) {
+    flex: 1 1 auto;
+  }
 }
+
+    @media (max-width: 600px) {
+        .footer>div {
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .footer>div>*:first-child {
+            width: 31%;
+        }
+    }

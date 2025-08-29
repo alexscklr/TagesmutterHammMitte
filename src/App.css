@@ -1,37 +1,48 @@
-/* Google Fonts importieren */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Nunito:wght@300;400;700&display=swap');
 
-/* RESET (Basis für alle Elemente) */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Root-Variablen für Farben & Größen */
 :root {
+  --maxWidthMobile: 768px;
+  --maxWidthTablet: 1024px;
+
   --font-primary: 'Nunito', sans-serif;
   --font-heading: 'Quicksand', sans-serif;
 
-  --color-bg: #fdf6ec;
-  --color-bg-colored: #ffebd0;
-  --color-text: #333;
-  --color-text-medium: #555;
+
+  --color-neutral-300: #333;
+  --color-neutral-400: #555;
+  --color-neutral-500: #888;
+  --color-neutral-800: #fdf6ec;
+  --color-neutral-900: #ffebd0;
+
   --color-accent: #007e67;
+  --color-accent-primary-light: #3ba137;
   --color-accent2: #da4a0d;
+
+
+  --color-bg: var(--color-neutral-800);
+  --color-bg-colored: var(--color-neutral-900);
+
+  --color-text: var(--color-neutral-300);
+
+  --color-text-medium: var(--color-neutral-500);
 
   --gradient-bg: radial-gradient(var(--color-bg), var(--color-bg-colored));
 
-  --max-width: 1200px;
+  --max-width: 1400px;
   --line-height: 1.6;
 
   scroll-behavior: auto;
 }
 
-/* Grundlegendes Layout */
 header {
   font-family: var(--font-primary);
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--color-text);
   background-color: var(--color-bg);
   line-height: var(--line-height);
@@ -41,11 +52,12 @@ header {
 
 body {
   font-family: var(--font-primary);
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--color-text);
   background-color: var(--color-bg-colored);
-  background-image: 
+  background-image:
     url('https://www.transparenttextures.com/patterns/purty-wood.png');
+  background-blend-mode: multiply;
   line-height: var(--line-height);
   padding: 0;
   margin: 0;
@@ -56,10 +68,13 @@ main {
   min-height: 80vh;
   margin: 10rem auto;
   padding: 2rem;
-  background: white;
-  border: 0px solid black;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  border: 0rem solid black;
+  border-radius: 1.2rem;
   overflow: hidden;
+  box-shadow: 0.1rem 0.25rem 0.55rem var(--color-neutral-500);
 }
 
 .page {
@@ -67,11 +82,29 @@ main {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  
+
   padding: 5% 5% 5% 5%;
 }
 
-/* Überschriften */
+body:has(main > .homepage) {
+  background-color: var(--color-bg-colored);
+  background-image:
+    url('https://www.transparenttextures.com/patterns/purty-wood.png');
+}
+
+body:has(main > .house) {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('assets/images/house/house.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+body:has(main > .tagesablauf) {
+  background:
+    linear-gradient(0deg, #FAF4DC, #B4BEDC),
+    url("https://www.transparenttextures.com/patterns/foggy-birds.png");
+}
+
 h1,
 h2,
 h3,
@@ -100,8 +133,11 @@ h4 {
 }
 
 p {
+  width: 100%;
+  text-align: left;
   margin-bottom: 1rem;
   font-size: clamp(1rem, 3vw, 1.6rem);
+  white-space: pre-line;
 }
 
 /* Links */
@@ -114,7 +150,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Bilder */
 img {
   max-width: 100%;
   height: auto;
@@ -128,7 +163,7 @@ button {
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
@@ -149,7 +184,8 @@ button:hover {
     width: 100%;
     padding: 0.2rem;
   }
-  page {
+
+  .page {
     width: 100%;
   }
 }
