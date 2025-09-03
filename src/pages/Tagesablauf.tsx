@@ -1,5 +1,5 @@
-import { Timeline } from "../components/Timeline/Timeline"
-import { fetchDailyRoutine, type TimelineEntry } from "../lib/dailyroutine"
+import { Timeline } from "@/components/Timeline/Timeline"
+import { fetchDailyRoutine, type TimelineEntry } from "@/lib/dailyroutine"
 import { useEffect, useState } from "react"
 
 const title: string = "Tagesablauf";
@@ -18,8 +18,8 @@ const timelineData = [
     description: (
       <>
         <p>Die ersten zwei von fünf Tageskinder kommen zurzeit gegen <strong>7.00 Uhr</strong>. </p>
-        <div style={{ display: "flex" }}>
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/house.jpg" width="61%" style={{ margin: "2%" }} />
+        <div className="single-image-container">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/house.jpg" />
         </div>
       </>
     )
@@ -41,9 +41,9 @@ const timelineData = [
     description: (
       <>
 
-        <div style={{ display: "flex" }}>
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/library.jpg" width="39%" style={{ margin: "2%" }} />
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/fireDepartment.png" width="39%" style={{ margin: "2%" }} />
+        <div className="double-image-container">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/library.jpg" />
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/fireDepartment.png" />
         </div>
       </>
     )
@@ -58,9 +58,9 @@ const timelineData = [
           Das Mittagessen bereite ich oft schon am Vortag vor. Je nach Fähigkeiten des Kindes können sie manchmal auch gern helfen. Auch bei den Mahlzeiten bin ich flexibel. Jüngere Kinder nehmen manchmal ihr Mittagessen schon früher oder später ein.  <br />
           Sodann findet die Mittagsruhe statt, in der die Kinder die Möglichkeit haben, in drei Zimmern aufgeteilt zu schlafen. Auf die mittäglichen Schlafgewohnheiten des einzelnen Kindes nehme ich natürlich Rücksicht.
         </p>
-        <div style={{ display: "flex" }}>
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/bed1.jpg" width="39%" style={{ margin: "2%" }} />
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/bed2.jpg" width="39%" style={{ margin: "2%" }} />
+        <div className="double-image-container">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/bed1.jpg" />
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/bed2.jpg" />
         </div>
       </>
     )
@@ -74,9 +74,9 @@ const timelineData = [
         <p>
           Auch die Nachmittage werden je nach Belieben gefüllt. Wir sind im Garten oder spielen, malen, besuchen Spielplätze oder kochen und backen.
         </p>
-        <div style={{ display: "flex" }}>
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/kidsFingerPaint.jpg" width="39%" style={{ margin: "2%" }} />
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/kidsPuddle.jpg" width="39%" style={{ margin: "2%" }} />
+        <div className="double-image-container">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/kidsFingerPaint.jpg" />
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/kidsPuddle.jpg" />
         </div>
       </>
     )
@@ -87,8 +87,8 @@ const timelineData = [
     title: "Abholung",
     description: (
       <>
-        <div style={{ display: "flex" }}>
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/dailyroutine_images/kidsChalk.jpg" style={{ margin: "2%" }} />
+        <div className="single-image-container">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/kidsChalk.jpg" />
         </div>
       </>
     )

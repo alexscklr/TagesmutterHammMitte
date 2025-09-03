@@ -1,26 +1,26 @@
-import ImageSlider from "../components/ImageSlider/ImageSlider";
+import ImageSlider from "@/components/ImageSlider/ImageSlider";
 
-import House from "./../assets/images/house/house.jpg"
-import Bed1 from "./../assets/images/house/bed1.jpg"
-import Bed2 from "./../assets/images/house/bed2.jpg"
-import Bed3 from "./../assets/images/house/bed3.jpg"
+import House from "@/assets/images/house/house.jpg"
+import Bed1 from "@/assets/images/house/bed1.jpg"
+import Bed2 from "@/assets/images/house/bed2.jpg"
+import Bed3 from "@/assets/images/house/bed3.jpg"
 
-import KidPuzzle1 from "./../assets/images/kids/kidPuzzle1.jpg"
-import KidsChalk from "./../assets/images/kids/kidsChalk.jpg"
-import KidsCrafting from "./../assets/images/kids/kidsCrafting.jpg"
-import KidsFingerPaint from "./../assets/images/kids/kidsFingerPaint.jpg"
-import KidsPuddle from "./../assets/images/kids/kidsPuddle.jpg"
+import KidPuzzle1 from "@/assets/images/kids/kidPuzzle1.jpg"
+import KidsChalk from "@/assets/images/kids/kidsChalk.jpg"
+import KidsCrafting from "@/assets/images/kids/kidsCrafting.jpg"
+import KidsFingerPaint from "@/assets/images/kids/kidsFingerPaint.jpg"
+import KidsPuddle from "@/assets/images/kids/kidsPuddle.jpg"
 
-import Instruments from "./../assets/images/music/instruments.jpg"
-import KidsMusic from "./../assets/images/music/kidsMusic.jpg"
-import KidsPiano from "./../assets/images/music/kidsPiano.jpg"
-import KidsXylophone from "./../assets/images/music/kidsXylophone.jpg"
-import KidsUkulele from "./../assets/images/music/kidsUkulele.jpg"
+import Instruments from "@/assets/images/music/instruments.jpg"
+import KidsMusic from "@/assets/images/music/kidsMusic.jpg"
+import KidsPiano from "@/assets/images/music/kidsPiano.jpg"
+import KidsXylophone from "@/assets/images/music/kidsXylophone.jpg"
+import KidsUkulele from "@/assets/images/music/kidsUkulele.jpg"
 
-import Cockchafer from "./../assets/images/outside/cockchafer.jpg"
-import Ducks from "./../assets/images/outside/ducks.jpg"
-import FireDep from "./../assets/images/outside/fireDepartment.png"
-import Library from "./../assets/images/outside/library.jpg"
+import Cockchafer from "@/assets/images/outside/cockchafer.jpg"
+import Ducks from "@/assets/images/outside/ducks.jpg"
+import FireDep from "@/assets/images/outside/fireDepartment.png"
+import Library from "@/assets/images/outside/library.jpg"
 
 
 

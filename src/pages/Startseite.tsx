@@ -1,9 +1,9 @@
-import HomePng from "./../assets/Titelbild.png"
-import curvedName1SVG from "./../assets/warpedKindertagespflege.svg"
-import curvedName2SVG from "./../assets/warpedKerstinSickler.svg"
+import HomePng from "@/assets/Titelbild.png"
+import curvedName1SVG from "@/assets/warpedKindertagespflege.svg"
+import curvedName2SVG from "@/assets/warpedKerstinSickler.svg"
 import { BouncyText } from "../components/BouncyText/BouncyText";
 import { Link } from "react-router-dom";
-import TwoClickEmbed from "../components/TwoClickEmbed/TwoClickEmbed";
+import TwoClickEmbed from "@/components/TwoClickEmbed/TwoClickEmbed";
 
 const Startseite = () => {
 

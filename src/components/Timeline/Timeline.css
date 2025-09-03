@@ -43,7 +43,7 @@
   padding: 1rem;
   border-radius: 0.5rem;
   position: relative;
-  max-width: 100%;
+  width: fit-content;
 }
 
 .timeline-line {

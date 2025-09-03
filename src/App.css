@@ -77,12 +77,12 @@ main {
   box-shadow: 0.1rem 0.25rem 0.55rem var(--color-neutral-500);
 }
 
-.page {
+section, .page {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-
+  margin: auto;
   padding: 5% 5% 5% 5%;
 }
 
@@ -133,14 +133,30 @@ h4 {
 }
 
 p {
-  width: 100%;
+  width: 80%;
   text-align: left;
-  margin-bottom: 1rem;
+  margin: 1rem 2rem 1rem 2rem;
   font-size: clamp(1rem, 3vw, 1.6rem);
   white-space: pre-line;
 }
 
-/* Links */
+.single-image-container,
+.double-image-container {
+  width: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  margin: 2rem
+}
+.single-image-container > img {
+  width: 61%;
+  margin: auto;
+}
+.double-image-container > img {
+  width: 31%;
+  margin: 2%;
+}
+
 a {
   color: var(--color-accent);
   text-decoration: none;
@@ -156,7 +172,6 @@ img {
   border-radius: 0.5rem;
 }
 
-/* Buttons */
 button {
   font-family: inherit;
   background-color: var(--color-accent);

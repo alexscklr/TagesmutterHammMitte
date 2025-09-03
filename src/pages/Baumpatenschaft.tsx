@@ -1,5 +1,5 @@
-import BaumpatenschaftArtikel1 from "./../assets/BaumpatenschaftArtikel.png"
-import BaumpatenschaftArtikel2 from "./../assets/BaumpatenschaftArtikel2.png"
+import BaumpatenschaftArtikel1 from "@/assets/BaumpatenschaftArtikel.png"
+import BaumpatenschaftArtikel2 from "@/assets/BaumpatenschaftArtikel2.png"
 
 const Baumpatenschaft = () => {
   return (
