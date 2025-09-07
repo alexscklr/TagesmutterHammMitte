@@ -1,15 +1,13 @@
-import { Link } from "react-router-dom";
-import type { HeaderSelectType } from "../../types/types";
-import { useState } from "react";
-import "./HeaderSelect.css";
+import { useState, type JSX } from "react";
+import "./CustomDropdown.css";
 
 
-interface HeaderSelectProps {
+interface DropdownProps {
     title: string,
-    options: HeaderSelectType[]
+    options: JSX.Element[]
 }
 
-const HeaderSelect = ({ title, options }: HeaderSelectProps) => {
+const CustomDropdown = ({ title, options }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const switchSelect = () => {
@@ -21,7 +19,7 @@ const HeaderSelect = ({ title, options }: HeaderSelectProps) => {
             <button className="header-select-btn" onClick={switchSelect}>{title} {isOpen ? ("▲") : ("▼")}</button>
             <ul className={`${isOpen ? "active" : "inactive"}`}>
                 {options.map((el, index) => (
-                    <li key={index}><Link to={el.path} onClick={switchSelect}>{el.name}</Link></li>
+                    <li key={index} onClick={switchSelect}>{el}</li>
                 ))}
             </ul>
 
@@ -30,4 +28,4 @@ const HeaderSelect = ({ title, options }: HeaderSelectProps) => {
     );
 }
 
-export default HeaderSelect;
+export default CustomDropdown;

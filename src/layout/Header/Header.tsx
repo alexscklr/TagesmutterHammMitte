@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import './Header.css';
-import HeaderSelect from '../HeaderSelect/HeaderSelect';
+import CustomDropdown from '@/shared/components/Dropdown/CustomDropdown';
 import { useEffect, useState } from 'react';
-import { useScrollDirection } from '../../hooks/scrollHooks';
+import { useScrollDirection } from '@/shared/hooks/scrollHooks';
 
 
 
@@ -61,23 +61,25 @@ const Header = () => {
             <li><Link to="/das-haus" onClick={toggleHamburgerOnMobile}>Das Haus</Link></li>
             <li><Link to="/tagesablauf" onClick={toggleHamburgerOnMobile}>Tagesablauf</Link></li>
 
-            <HeaderSelect
-              title="Kind & Familie"
+            <CustomDropdown 
+              title='Kind & Familie'
               options={[
-                { name: 'Beziehung zu den Eltern', path: '/beziehung-zu-den-eltern' },
-                { name: 'Eingewöhnung', path: '/eingewoehnung' },
-                { name: 'Ernährung', path: '/ernaehrung' }
+                <Link to="/beziehung-zu-den-eltern">Beziehung zu den Eltern</Link>,
+                <Link to="/eingewoehnung">Eingewöhnung</Link>,
+                <Link to="/ernaehrung">Ernährung</Link>
               ]}
             />
 
             <li><Link to="/was-mir-wichtig-ist" onClick={toggleHamburgerOnMobile}>Was mir wichtig ist</Link></li>
 
-            <HeaderSelect title="Qualifizierungen"
+            <CustomDropdown 
+              title='Qualifizierungen'
               options={[
-                { name: 'Fort-/Weiterbildungen', path: '/fortbildungen' },
-                { name: 'Baumpatenschaft', path: '/baumpatenschaft' },
-                { name: 'Hier spielt die Musik!', path: '/musik' }
-              ]} />
+                <Link to="/fortbildungen">Fort-/Weiterbildungen</Link>,
+                <Link to="/baumpatenschaft">Baumpatenschaft</Link>,
+                <Link to="/musik">Hier spielt die Musik!</Link>
+              ]}
+            />
 
             <li><Link to="/bildergalerie" onClick={toggleHamburgerOnMobile}>Bildergalerie</Link></li>
             <li><Link to="/freie-plaetze" onClick={toggleHamburgerOnMobile}>Freie Plätze</Link></li>

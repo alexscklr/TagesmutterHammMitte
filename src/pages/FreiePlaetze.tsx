@@ -1,4 +1,4 @@
-import { BouncyText } from "@/components/BouncyText/BouncyText";
+import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
 
 
 const FreiePlaetze = () => {

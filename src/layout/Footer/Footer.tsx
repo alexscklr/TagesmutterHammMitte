@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import Titelbild from "./../../assets/Titelbild.png"
 import "./Footer.css"
 import { useState, useContext } from "react";
-import { LoginPopup } from "../LoginPopup/LoginPopup";
-import { AuthContext } from "./../../contexts/AuthContext";
+import { LoginPopup } from "@/features/auth/components/LoginPopup/LoginPopup";
+import { AuthContext } from "../../features/auth/context/AuthContext";
 
 const Footer = () => {
   const [loginOpen, setLoginOpen] = useState(false);

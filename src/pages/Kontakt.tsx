@@ -1,5 +1,5 @@
 import { useForm, ValidationError } from '@formspree/react';
-import { BouncyText } from '@/components/BouncyText/BouncyText';
+import { BouncyText } from '@/shared/components/BouncyText/BouncyText';
 
 function ContactForm() {
   const [state, handleSubmit] = useForm(import.meta.env.VITE_FORMSPREE_CODE);

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import "./LoginPopup.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./../../firebaseConfig";
-import { AuthContext } from "./../../contexts/AuthContext";
+import { auth } from "@/firebaseConfig";
+import { AuthContext } from "@/features/auth/context/AuthContext";
 
 interface LoginPopupProps {
   onClose: () => void;

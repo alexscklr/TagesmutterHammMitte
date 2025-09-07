@@ -1,5 +1,5 @@
 import { supabase } from "@/supabaseClient";
-import { type PageBlock } from "@/types/pageBlocks";
+import { type PageBlock } from "@/features/pageBlocks/types";
 
 // Hole Page ID per Slug
 export async function getPageIdBySlug(slug: string): Promise<string | null> {

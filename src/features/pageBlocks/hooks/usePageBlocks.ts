@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getPageIdBySlug, getPageBlocks } from "@/lib/pageBlocks";
-import { type PageBlock } from "@/types/pageBlocks";
-import { deserializePageBlocks } from "@/utilities/pageBlocksUtils";
+import { getPageIdBySlug, getPageBlocks } from "@/features/pageBlocks/lib/queries";
+import { type PageBlock } from "@/features/pageBlocks/types";
+import { deserializePageBlocks } from "../utils/serializing";
 
 export function usePageBlocks(slug: string) {
   const [blocks, setBlocks] = useState<PageBlock[]>([]);
@@ -27,7 +27,7 @@ export function usePageBlocks(slug: string) {
       const blocksData = await getPageBlocks(pageId);
       const deserialized = deserializePageBlocks(blocksData);
 
-      deserialized.forEach((block, idx) => {
+      deserialized.forEach((block : any, idx : number) => {
         const t = setTimeout(() => {
           if (!cancelled) {
             setBlocks((prev) => [...prev, block]);

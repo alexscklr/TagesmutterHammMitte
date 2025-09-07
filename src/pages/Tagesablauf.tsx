@@ -1,18 +1,32 @@
-import { Timeline } from "@/components/Timeline/Timeline"
-import { fetchDailyRoutine, type TimelineEntry } from "@/lib/dailyroutine"
-import { useEffect, useState } from "react"
+import { usePageBlocks } from "@/features/pageBlocks/hooks/usePageBlocks";
+import { PageSlugs } from "@/constants/slugs";
+import { renderPageBlock } from "@/features/pageBlocks/components/PageBlockRenderer";
 
-const title: string = "Tagesablauf";
-
-const description: any = (
-  <p>
-    Gegen ca. <strong>9.30 Uhr</strong> gehen wir meistens raus. Zum Spazierengehen, in den Wald, auf den Spielplatz oder was uns sonst so einfällt. Manche Ausflüge bleiben den Kindern noch lange in Erinnerung, z.B. die Bücherei, der Bahnhof, der Maxipark oder natürlich der Tierpark. Die Marktstandbetreuer der Innenstadt kennen uns schon, und auch manche Eltern ermöglichen es uns, sie bei der Arbeit zu besuchen (Feuerwehr, Kindergarten).
-  </p>
-)
 
 const timelineData = [
   {
-    time: "ab 07:00",
+    label: "TEST",
+    timeSpan: ["00:00", "06:00"] as [string, string],
+    title: "Ankunft",
+    description: [
+      {
+        "text": "Die ersten zwei von fünf Tageskinder kommen zurzeit gegen "
+      },
+      {
+        "text": "7.00 Uhr",
+        "bold": true
+      },
+      {
+        "text": "."
+      }
+    ],
+    image_urls: [
+      "https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/house.jpg",
+      ""
+    ]
+  },
+  {
+    label: "ab 07:00",
     timeSpan: ["07:00", "09:00"] as [string, string],
     title: "Ankunft",
     description: (
@@ -25,7 +39,7 @@ const timelineData = [
     )
   },
   {
-    time: "09:00",
+    label: "09:00",
     timeSpan: ["09:00", "9:30"] as [string, string],
     title: "Frühstückspause",
     description: (
@@ -35,7 +49,7 @@ const timelineData = [
     )
   },
   {
-    time: "09:30",
+    label: "09:30",
     timeSpan: ["09:30", "12:00"] as [string, string],
     title: "Spaziergang",
     description: (
@@ -49,7 +63,7 @@ const timelineData = [
     )
   },
   {
-    time: "12:00",
+    label: "12:00",
     timeSpan: ["12:00", "14:00"] as [string, string],
     title: "Mittagessen & Mittagsruhe",
     description: (
@@ -66,7 +80,7 @@ const timelineData = [
     )
   },
   {
-    time: "ab 14:00",
+    label: "ab 14:00",
     timeSpan: ["14:00", "17:00"] as [string, string],
     title: "Spielen & Spazieren",
     description: (
@@ -82,7 +96,7 @@ const timelineData = [
     )
   },
   {
-    time: "Nachmittag",
+    label: "Nachmittag",
     timeSpan: ["14:00", "17:00"] as [string, string],
     title: "Abholung",
     description: (
@@ -98,24 +112,21 @@ const timelineData = [
 
 const Tagesablauf = () => {
 
-  const [entries, setEntries] = useState<TimelineEntry[]>();
+  const { blocks, loading } = usePageBlocks(PageSlugs.DailyRoutine);
 
-  useEffect(() => {
-    const loadDatilyRoutine = async () => {
-      const data = await fetchDailyRoutine()
-      setEntries(data)
-    }
+  if (blocks.length == 0 && loading) {
+    return <p>LOADING ...</p>
+  }
 
-    loadDatilyRoutine();
-  }, [])
-  
 
   return (
-    <div className="page tagesablauf">
-      <h1>{title}</h1>
-      <section className="page"> {description} </section>
-      <Timeline data={entries || timelineData} />
-    </div>
+    <section className="page tagesablauf">
+      {blocks.map((block, index) => (
+        <div key={index}>{renderPageBlock(block)}</div>
+      ))}
+
+    </section>
+
   );
 };
 

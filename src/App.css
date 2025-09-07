@@ -136,7 +136,7 @@ p {
   width: 80%;
   text-align: left;
   margin: 1rem 2rem 1rem 2rem;
-  font-size: clamp(1rem, 3vw, 1.6rem);
+  font-size: clamp(1rem, 12px + 5vw, 2rem);
   white-space: pre-line;
 }
 

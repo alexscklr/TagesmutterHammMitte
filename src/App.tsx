@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '@/App.css';
 
-import Header from '@/components/header/Header';
-import Footer from '@/components/footer/Footer';
+import Header from '@/layout/Header/Header';
+import Footer from '@/layout/Footer/Footer';
 
 import { PageSlugs } from '@/constants/slugs';
 

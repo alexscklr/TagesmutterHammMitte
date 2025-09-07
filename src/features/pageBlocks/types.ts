@@ -1,9 +1,12 @@
+import type { JSX } from "react";
+
 export const PageBlocks = {
     Title: 'title',
     Paragraph: 'paragraph',
     Imagery: 'imagery',
     List: 'list',
-    Quote: 'quote'
+    Quote: 'quote',
+    Timeline: 'timeline'
 } as const;
 
 export type PageBlockType = typeof PageBlocks[keyof typeof PageBlocks];
@@ -31,12 +34,21 @@ export interface RichTextSpan {
     link?: string;
 }
 
+export interface TimelineEntry {
+    label: string;
+    timeSpan: [string, string];
+    title: string;
+    description: RichTextSpan[];
+    image_urls?: string[];
+}
+
 export interface PageBlockPayloads {
     [PageBlocks.Title]: { title: string };
     [PageBlocks.Paragraph]: { paragraph: RichTextSpan[] };
     [PageBlocks.Imagery]: { image_urls: string[], alts: string[] };
     [PageBlocks.List]: { list_elements: string[] };
     [PageBlocks.Quote]: { text: string, author?: string };
+    [PageBlocks.Timeline]: { entries: TimelineEntry[] }
 }
 
 export type PageBlock<T extends PageBlockType = PageBlockType> = {

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./TwoClickEmbed.css"
 
 interface TwoClickEmbedProps {
-    storageKey: string; // z. B. "googleMapsConsent"
-    iframe: React.ReactNode; // Der einzubettende iframe (z. B. Google Maps)
-    message?: string; // Optional eigene Nachricht
-    buttonLabel?: string; // Optional eigener Button-Text
-    className?: string; // Optionales Wrapper-Styling
+    storageKey: string;
+    iframe: React.ReactNode;
+    message?: string;
+    buttonLabel?: string;
+    className?: string;
 }
 
 const TwoClickEmbed: React.FC<TwoClickEmbedProps> = ({

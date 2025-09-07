@@ -1,4 +1,4 @@
-import ImageSlider from "@/components/ImageSlider/ImageSlider";
+import ImageSlider from "@/shared/components/ImageSlider/ImageSlider";
 
 import House from "@/assets/images/house/house.jpg"
 import Bed1 from "@/assets/images/house/bed1.jpg"
