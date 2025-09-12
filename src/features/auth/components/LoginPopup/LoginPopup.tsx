@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, type JSX } from "react";
 import "./LoginPopup.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import { AuthContext } from "@/features/auth/context/AuthContext";
 
 interface LoginPopupProps {
-  onClose: () => void;
+  closeBtn: JSX.Element
 }
 
-export const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
+export const LoginPopup: React.FC<LoginPopupProps> = ({ closeBtn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,6 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      onClose();
     } catch (err: any) {
       setError(err.message || "Login fehlgeschlagen");
     }
@@ -32,9 +31,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ onClose }) => {
   return (
     <div className="login-popup-backdrop">
       <div className="login-popup" role="dialog" aria-modal="true" aria-labelledby="login-title">
-        <button className="close-btn" onClick={onClose} aria-label="Schließen">
-          &times;
-        </button>
+        {closeBtn}
         <h2 id="login-title">Login</h2>
         {!user ? (
           <form onSubmit={handleLogin}>

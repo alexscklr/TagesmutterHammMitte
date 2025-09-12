@@ -1,5 +1,3 @@
-import type { JSX } from "react";
-
 export const PageBlocks = {
     Title: 'title',
     Paragraph: 'paragraph',
@@ -34,18 +32,23 @@ export interface RichTextSpan {
     link?: string;
 }
 
+export interface Image {
+    url: string;
+    alt: string;
+}
+
 export interface TimelineEntry {
     label: string;
     timeSpan: [string, string];
     title: string;
     description: RichTextSpan[];
-    image_urls?: string[];
+    images?: Image[];
 }
 
 export interface PageBlockPayloads {
     [PageBlocks.Title]: { title: string };
     [PageBlocks.Paragraph]: { paragraph: RichTextSpan[] };
-    [PageBlocks.Imagery]: { image_urls: string[], alts: string[] };
+    [PageBlocks.Imagery]: { images: Image[] };
     [PageBlocks.List]: { list_elements: string[] };
     [PageBlocks.Quote]: { text: string, author?: string };
     [PageBlocks.Timeline]: { entries: TimelineEntry[] }

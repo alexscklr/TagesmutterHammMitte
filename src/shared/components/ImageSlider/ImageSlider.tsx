@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./ImageSlider.css"
 
 type SliderProps = {
-    items: any[];
+    items: string[];
     speed: number;
 }
 

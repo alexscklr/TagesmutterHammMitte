@@ -77,13 +77,15 @@ main {
   box-shadow: 0.1rem 0.25rem 0.55rem var(--color-neutral-500);
 }
 
-section, .page {
+section,
+.page {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin: auto;
   padding: 5% 5% 5% 5%;
+  gap: 2rem;
 }
 
 body:has(main > .homepage) {
@@ -113,6 +115,8 @@ h4 {
   color: var(--color-accent);
   margin-bottom: 1rem;
   line-height: 1.2;
+  width: fit-content;
+  text-align: center;
 }
 
 
@@ -121,39 +125,39 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(2.3rem, 6.5vw, 3rem);
+  font-size: clamp(2.3rem, 6.5vw, 4rem);
 }
 
 h3 {
-  font-size: clamp(1.5rem, 5vw, 2.3rem);
+  font-size: clamp(1.5rem, 4.5vw, 3rem);
 }
 
 h4 {
-  font-size: 2;
+  font-size: clamp(1.2rem, 3vw, 2rem);
 }
 
 p {
   width: 80%;
   text-align: left;
-  margin: 1rem 2rem 1rem 2rem;
-  font-size: clamp(1rem, 12px + 5vw, 2rem);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
   white-space: pre-line;
 }
 
 .single-image-container,
 .double-image-container {
-  width: 100%;
+  width: auto;
   display: flex;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
-  margin: 2rem
 }
-.single-image-container > img {
+
+.single-image-container>img {
   width: 61%;
   margin: auto;
 }
-.double-image-container > img {
-  width: 31%;
+
+.double-image-container>img {
+  width: 40%;
   margin: 2%;
 }
 
@@ -202,5 +206,16 @@ button:hover {
 
   .page {
     width: 100%;
+    padding: 1rem 0rem 1rem 0rem;
+  }
+
+  .double-image-container {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .double-image-container>img {
+    width: 70%;
+    margin: 2%;
   }
 }

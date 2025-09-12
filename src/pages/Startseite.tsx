@@ -1,4 +1,3 @@
-import HomePng from "@/assets/Titelbild.png"
 import curvedName1SVG from "@/assets/warpedKindertagespflege.svg"
 import curvedName2SVG from "@/assets/warpedKerstinSickler.svg"
 import { BouncyText } from "../shared/components/BouncyText/BouncyText";
@@ -21,7 +20,7 @@ const Startseite = () => {
       /></h1>
 
       <img src={curvedName1SVG} alt="Kindertagespflege" width="100%" />
-      <img src={HomePng} width="60%" style={{ border: "0px solid black", borderRadius: "50%" }} />
+      <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/Portrait.png" width="60%" style={{ border: "0px solid black", borderRadius: "50%" }} />
       <img src={curvedName2SVG} alt="Kerstin Sickler" width="100%" />
       <h3 style={{ lineHeight: "161%" }}>
         Weißdornweg 14<br />

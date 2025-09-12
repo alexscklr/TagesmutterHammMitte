@@ -5,7 +5,7 @@ import type { RichTextSpan } from "../types";
 /**
  * Render PageBlock in JSX
  */
-export function renderRichText(spans: RichTextSpan[] | string | null | undefined) {
+export function renderRichText(spans: RichTextSpan[]) {
   if (!spans) return null;
 
   // Falls ein JSON-String kommt → parsen
@@ -18,7 +18,7 @@ export function renderRichText(spans: RichTextSpan[] | string | null | undefined
   }
 
   if (!Array.isArray(spans)) {
-    return <>{String(spans)}</>; // Fallback: einfach als Text rendern
+    return <>{String(spans)}</>;
   }
 
   return spans.map((span, idx) => {

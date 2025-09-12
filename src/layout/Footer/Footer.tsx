@@ -1,25 +1,21 @@
 import { Link } from "react-router-dom";
-import Titelbild from "./../../assets/Titelbild.png"
 import "./Footer.css"
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { LoginPopup } from "@/features/auth/components/LoginPopup/LoginPopup";
 import { AuthContext } from "../../features/auth/context/AuthContext";
 
 const Footer = () => {
-  const [loginOpen, setLoginOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
 
-  const openLogin = () => setLoginOpen(true);
   const handleLogout = async () => {
     await logout();
   };
 
   return (
     <>
-      {loginOpen && (<LoginPopup onClose={() => setLoginOpen(false)} />)}
       <footer className="footer">
-        <div>
-          <img src={Titelbild} width="17%" style={{ border: "0px solid black", borderRadius: "50%", margin: "auto" }} />
+        <div className="main-content">
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/Portrait.png"width="17%" style={{ border: "0px solid black", borderRadius: "50%", margin: "auto" }} />
           <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
             <li>Kerstin Sickler</li>
             <li>Kindertagespflege</li>
@@ -36,12 +32,16 @@ const Footer = () => {
               {user ? (
                 <button onClick={handleLogout}>Log Out</button>
               ) : (
-                <button onClick={openLogin}>Moderator-Login</button>
+                <button popoverTarget="login-popover" popoverTargetAction="show">Moderator-Login</button>
               )}
             </li>
           </ul>
         </div>
         <p style={{ width: "100%", fontSize: "1rem", padding: "0% 0% 1% 2%", margin: "0" }}>© 2025 Kerstin Sickler – Alle Rechte vorbehalten.</p>
+
+        <div popover="auto" id="login-popover" >
+          <LoginPopup closeBtn={<button popoverTarget="login-popover" popoverTargetAction="hide">X</button>}/>
+        </div>
       </footer>
     </>
   );

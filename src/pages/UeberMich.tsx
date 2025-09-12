@@ -14,7 +14,7 @@ const UeberMich = () => {
   return (
     <section className="page about-me">
       {blocks.map((block, index) => (
-        <div key={index}>{renderPageBlock(block)}</div>
+        <>{renderPageBlock(block, index)}</>
       ))}
 
     </section>

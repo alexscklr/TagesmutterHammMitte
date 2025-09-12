@@ -18,6 +18,9 @@
 
 .site-header.inactive {
   opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateY(-61%);
 }
 
 .logo a {
