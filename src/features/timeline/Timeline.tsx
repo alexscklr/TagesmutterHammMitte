@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./Timeline.css";
-import type { TimelineEntry } from "@/features/pageBlocks/types";
-import { renderRichText } from "../pageBlocks/utils/renderRichText";
+import type { TimelineEntry } from "@/features/pages/types/types";
+import { renderRichText } from "../pages/utils/renderRichText";
 
 export interface TimelineProps {
   data: TimelineEntry[];

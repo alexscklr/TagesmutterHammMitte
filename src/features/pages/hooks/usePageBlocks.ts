@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPageIdBySlug, getPageBlocks } from "@/features/pageBlocks/lib/queries";
-import { type PageBlock } from "@/features/pageBlocks/types";
+import { getPageIdBySlug, getPageBlocks } from "../lib/queries";
+import { type PageBlock } from "@/features/pages/types/page";
 import { deserializePageBlocks } from "../utils/serializing";
 
 export function usePageBlocks(slug: string) {

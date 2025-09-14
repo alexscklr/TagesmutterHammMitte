@@ -78,7 +78,6 @@ const Kontakt = () => {
           pauseDuration={2500}
           characterDelay={50}
           frequency={1}
-          style={{fontSize:"clamp(1.5rem, 5vw, 4rem)"}}
         />
         </h3>
         <ContactForm />

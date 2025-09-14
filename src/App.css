@@ -50,61 +50,57 @@ header {
   margin: 0;
 }
 
+/* Body: globale Styles */
 body {
   font-family: var(--font-primary);
   font-size: 1rem;
   color: var(--color-text);
   background-color: var(--color-bg-colored);
-  background-image:
-    url('https://www.transparenttextures.com/patterns/purty-wood.png');
-  background-blend-mode: multiply;
   line-height: var(--line-height);
   padding: 0;
   margin: 0;
 }
 
+/* Main: ganze Seite, Hintergrundbild */
 main {
-  max-width: var(--max-width);
-  min-height: 80vh;
-  margin: 10rem auto;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/purty-wood.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(0.25rem);
-  -webkit-backdrop-filter: blur(0.25rem);
-  border: 0rem solid black;
-  border-radius: 1.2rem;
-  overflow: hidden;
-  box-shadow: 0.1rem 0.25rem 0.55rem var(--color-neutral-500);
+  box-sizing: border-box;
 }
 
-section,
 .page {
+  width: 100%;
+  max-width: var(--max-width);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1.2rem;
+  padding: 5rem 2rem 5rem 2rem;
+  box-shadow: 0.1rem 0.25rem 0.55rem var(--color-neutral-500);
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 3rem;
+
+  margin: 10rem auto 1rem auto; 
+  box-sizing: border-box;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin: auto;
-  padding: 5% 5% 5% 5%;
+  max-width: 1200px;
+  margin: 0 auto;
   gap: 2rem;
-}
-
-body:has(main > .homepage) {
-  background-color: var(--color-bg-colored);
-  background-image:
-    url('https://www.transparenttextures.com/patterns/purty-wood.png');
-}
-
-body:has(main > .house) {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('assets/images/house/house.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-body:has(main > .tagesablauf) {
-  background:
-    linear-gradient(0deg, #FAF4DC, #B4BEDC),
-    url("https://www.transparenttextures.com/patterns/foggy-birds.png");
+  box-sizing: border-box;
 }
 
 h1,
@@ -149,11 +145,24 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 16px;
 }
 
+.image-wrapper {
+  flex: 1;
+}
+
+.image-wrapper img {
+  height: auto;
+  display: block;
+}
 .single-image-container>img {
   width: 61%;
   margin: auto;
+}
+
+.double-image-container .image-wrapper {
+  flex: 1; 
 }
 
 .double-image-container>img {

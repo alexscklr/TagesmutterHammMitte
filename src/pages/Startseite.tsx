@@ -16,7 +16,6 @@ const Startseite = () => {
         pauseDuration={2000}
         characterDelay={100}
         frequency={1}
-        style={{ fontSize: "clamp(1rem, 5vw, 3rem)" }}
       /></h1>
 
       <img src={curvedName1SVG} alt="Kindertagespflege" width="100%" />
@@ -44,7 +43,6 @@ const Startseite = () => {
           pauseDuration={2000}
           characterDelay={50}
           frequency={1}
-          style={{ fontSize: "clamp(1rem, 5vw, 3rem)" }}
         />
         <Link to="/musik"><span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span></Link>
       </h2>

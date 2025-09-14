@@ -164,7 +164,7 @@ const Datenschutz = () => {
         <p>
           Auf unserer Website nutzen wir Dienste des Anbieters Firebase. Firebase ist ein Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
           <br />
-          Firebase bietet verschiedene Funktionen, die wir zur Verbesserung der Nutzererfahrung und der Sicherheit einsetzen – z. B. Hosting, Datenbankdienste (Firestore), Authentifizierung, Cloud Functions oder Analysen. Dabei können personenbezogene Daten wie IP-Adresse, Geräteinformationen oder Standortdaten verarbeitet und auf Server in den USA übertragen werden.<br />
+          Firebase bietet verschiedene Funktionen, die wir zur Verbesserung der Nutzererfahrung und der Sicherheit einsetzen - z.B. Hosting, Datenbankdienste (Firestore), Authentifizierung, Cloud Functions oder Analysen. Dabei können personenbezogene Daten wie IP-Adresse, Geräteinformationen oder Standortdaten verarbeitet und auf Server in den USA übertragen werden.<br />
           <br />
           Die Nutzung von Firebase erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an einer zuverlässigen und sicheren Bereitstellung der Website sowie an der Optimierung des Angebots. Sofern eine entsprechende Einwilligung abgefragt wurde, erfolgt die Verarbeitung ausschließlich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.<br />
           <br />
@@ -186,6 +186,19 @@ const Datenschutz = () => {
           <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a>
         </p>
       </section>
+      <section className="page">
+        <h2 style={{ width: "100%", textAlign: "left" }}>5. Nutzung von Supabase</h2>
+        <p>
+          Wir speichern die Inhalte unserer Website (Texte, Bilder) auf den Servern von Supabase, Inc. (https://supabase.com/), einem Dienstleister, der uns beim Hosting und der Verwaltung unserer Daten unterstützt.
+          <br /><br />
+          Supabase verarbeitet diese Daten ausschließlich in unserem Auftrag und nach unseren Weisungen. Eine eigenständige Nutzung Ihrer Daten durch Supabase erfolgt nicht.
+          <br /><br />
+          Die Rechtsgrundlage für die Speicherung und Verarbeitung ist Art. 6 Abs. 1 lit. f DSGVO, da die Datenverarbeitung für die Bereitstellung unserer Website erforderlich ist.
+          <br /><br />
+          Supabase kann Server in den USA nutzen. Es bestehen entsprechende vertragliche Regelungen (EU-Standardvertragsklauseln), um ein angemessenes Datenschutzniveau sicherzustellen.
+        </p>
+      </section>
+
     </div>
   );
 };

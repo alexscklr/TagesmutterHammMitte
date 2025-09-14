@@ -56,7 +56,7 @@ const Header = () => {
         </button>
         <nav className={`main-nav ${active ? "visible" : ""}`}>
           <ul>
-            <li><Link to="/" onClick={toggleHamburgerOnMobile}>Startseite</Link></li>
+            <li><Link to="/start" onClick={toggleHamburgerOnMobile}>Startseite</Link></li>
             <li><Link to="/ueber-mich" onClick={toggleHamburgerOnMobile}>Über mich</Link></li>
             <li><Link to="/das-haus" onClick={toggleHamburgerOnMobile}>Das Haus</Link></li>
             <li><Link to="/tagesablauf" onClick={toggleHamburgerOnMobile}>Tagesablauf</Link></li>
