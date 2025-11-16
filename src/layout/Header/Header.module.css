@@ -116,6 +116,7 @@
     max-width: 100svw;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 1rem;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(0.1rem);
@@ -124,9 +125,9 @@
 
   .siteHeader .logo {
     display: flex;
-    justify-content: start;
     align-self: flex-start;
     text-align: end;
+    height: stretch;
   }
 
   .headerContent {
