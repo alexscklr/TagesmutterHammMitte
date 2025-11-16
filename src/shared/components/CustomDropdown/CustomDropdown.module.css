@@ -5,6 +5,7 @@
 .selectBtn {
     background: none;
     color: var(--color-text);
+    white-space: nowrap;
 }
 
 .selectBtn:hover, .selectBtn:focus {

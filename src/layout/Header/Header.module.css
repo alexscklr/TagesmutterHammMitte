@@ -9,6 +9,7 @@
   gap: 5rem;
   padding: 1rem 2rem;
   background-color: #fff;
+  box-sizing: border-box;
   border-bottom: 1px solid #eee;
   box-shadow: 0px 0px 10px var(--color-neutral-500);
   opacity: 1;
@@ -112,12 +113,14 @@
 @media (max-width: 768px) {
   .siteHeader {
     max-height: 100svh;
+    max-width: 100svw;
     display: flex;
     flex-direction: row;
     gap: 1rem;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(0.1rem);
   }
+  .siteHeader { overflow-x: clip; }
 
   .siteHeader .logo {
     display: flex;
@@ -132,7 +135,10 @@
     align-items: end;
     justify-content: start;
     align-self: flex-end;
-    width: 400px;
+    /* width: 400px;  entfernen */
+    width: 100%;
+    max-width: 400px;
+    min-width: 0; /* erlaubt Shrink im Flex-Container */
   }
 
   .hamburgerBtn {

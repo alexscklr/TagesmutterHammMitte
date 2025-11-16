@@ -6,7 +6,7 @@ import { Header, Main, Footer } from '@/layout/index';
 // Site-Components
 
 import { PageRenderer } from './features/pages/index';
-import Startseite from './staticpages/Startseite';
+import Startseite from './pages/Startseite';
 import RichTextEditor from './shared/components/RichTextEditor/RichTextEditor';
 import type { RichTextSpan } from './shared/types';
 import { useState } from 'react';
