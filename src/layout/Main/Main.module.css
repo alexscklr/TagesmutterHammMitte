@@ -1,0 +1,17 @@
+.main {
+    width: 100%;
+    min-height: 100vh;
+    background-size: auto;
+    background-position: center;
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+    padding: 7rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 786px) {
+    .main {
+        width: 100%;
+        padding: 0.2rem;
+    }
+}

@@ -1,0 +1,116 @@
+.timelineContainer {
+  position: relative;
+  width: 90%;
+  padding: 5rem 3.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.timelineItem {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.timelineItem .timeBox {
+  min-width: 80px;
+  padding: 0.4rem 0.7rem;
+  background-color: var(--color-accent-primary-light);
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  position: absolute;
+  left: -2%;
+  top: 0;
+  z-index: 100;
+  white-space: nowrap;
+  text-align: center;
+  transform: translateX(-100%);
+}
+
+.timelineItem .timeBox.current {
+  background-color: var(--color-accent2);
+}
+
+.timelineItem .content {
+  background-color: #f4f4f4;
+  border-radius: 0.5rem;
+  position: relative;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+.timelineEntryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.timelineEntryContent p {
+  margin: 0;
+}
+
+.timelineLine {
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  width: 0.2rem;
+  height: 100%;
+  background-image: repeating-linear-gradient(to bottom,
+      var(--color-accent-primary-light),
+      var(--color-accent-primary-light) 0.5rem,
+      transparent 0.5rem, 
+      transparent 1rem);
+  z-index: -1;
+}
+
+/* Zustand Styling */
+.timelineItem.inactive {
+  opacity: 0.2;
+  transform: scale(0.95);
+}
+
+.timelineItem.adjacent {
+  opacity: 0.5;
+}
+
+.timelineItem.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+.timelineItem.active .content {
+  box-shadow: 0.1rem 0.2rem 0.8rem #888;
+  background-color: white;
+}
+
+
+@media screen and (max-width: 768px) {
+  .timelineContainer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    gap: 5rem;
+  }
+
+  .timelineItem {
+    width: stretch
+  }
+
+  .timelineItem .content {
+    margin-left: 1rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .timelineItem .timeBox {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    left: 15vw;
+    top: -3rem;
+  }
+}

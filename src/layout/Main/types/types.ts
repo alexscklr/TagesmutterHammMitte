@@ -17,6 +17,7 @@ export interface PageMeta {
   id: string;
   slug: string;
   title: string;
+  sitetitle: string;
   created_at: string;
   background: BackgroundStyle;
 }

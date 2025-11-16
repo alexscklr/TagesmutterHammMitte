@@ -1,15 +1,17 @@
-import { Link } from 'react-router-dom';
-import './Header.css';
-import CustomDropdown from '@/shared/components/Dropdown/CustomDropdown';
 import { useEffect, useState } from 'react';
 import { useScrollDirection } from '@/shared/hooks/scrollHooks';
-
-
+import styles from './Header.module.css';
+import { getHeaderBlocks } from './lib/getHeaderBlocks';
+import { LogoBlock } from './components/blocks/LogoBlock';
+import { LinkBlock } from './components/blocks/LinkBlock';
+import { DropdownBlock } from './components/blocks/DropdownBlock';
+import type { HeaderBlock } from './types';
 
 const Header = () => {
   const scrollDir = useScrollDirection();
-
   const [active, setActive] = useState<boolean>(true);
+  const [headerBlocks, setHeaderBlocks] = useState<HeaderBlock[]>([]);
+
 
   const onResize = () => {
     if (window.innerWidth > 768) {
@@ -18,19 +20,14 @@ const Header = () => {
   };
 
   const toggleHamburger = () => { setActive(prev => !prev); }
-  const toggleHamburgerOnMobile = () => {
-    if (window.innerWidth < 768) {
-      toggleHamburger();
-    }
-  }
-
-  useEffect(() => { }, [active]);
 
   useEffect(() => {
+    getHeaderBlocks().then(setHeaderBlocks);
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("resize", onResize);
     onResize();
-
     return () => {
       window.removeEventListener("resize", onResize);
     };
@@ -41,49 +38,45 @@ const Header = () => {
       setActive(false);
       onResize();
     }
-  }, [scrollDir])
+  }, [scrollDir]);
 
+  
+
+  
   return (
-    <header className={`site-header ${scrollDir === 'up' ? '' : 'inactive'}`}>
-      <div className="logo">
-        <Link to="/">🌿 Kerstin<br /> Sickler</Link>
+    <header className={`${styles.siteHeader} ${scrollDir === 'up' ? '' : styles.inactive}`}>
+      <div className={styles.logo}>
+        {headerBlocks
+          .filter(b => b.type === "logo")
+          .map(b => <LogoBlock key={b.id} block={b} />)}
       </div>
-      <div className="header-content">
-        <button className={`hamburger-btn ${active ? "active" : ""}`} onClick={toggleHamburger}>
+      <div className={styles.headerContent}>
+        <button className={`${styles.hamburgerBtn} ${active ? styles.active : ''}`} onClick={toggleHamburger}>
           <hr />
           <hr />
           <hr />
         </button>
-        <nav className={`main-nav ${active ? "visible" : ""}`}>
+        <nav className={`${styles.mainNav} ${active ? styles.visible : ''}`}>
           <ul>
-            <li><Link to="/start" onClick={toggleHamburgerOnMobile}>Startseite</Link></li>
-            <li><Link to="/ueber-mich" onClick={toggleHamburgerOnMobile}>Über mich</Link></li>
-            <li><Link to="/das-haus" onClick={toggleHamburgerOnMobile}>Das Haus</Link></li>
-            <li><Link to="/tagesablauf" onClick={toggleHamburgerOnMobile}>Tagesablauf</Link></li>
-
-            <CustomDropdown 
-              title='Kind & Familie'
-              options={[
-                <Link to="/beziehung-zu-den-eltern">Beziehung zu den Eltern</Link>,
-                <Link to="/eingewoehnung">Eingewöhnung</Link>,
-                <Link to="/ernaehrung">Ernährung</Link>
-              ]}
-            />
-
-            <li><Link to="/was-mir-wichtig-ist" onClick={toggleHamburgerOnMobile}>Was mir wichtig ist</Link></li>
-
-            <CustomDropdown 
-              title='Qualifizierungen'
-              options={[
-                <Link to="/fortbildungen">Fort-/Weiterbildungen</Link>,
-                <Link to="/baumpatenschaft">Baumpatenschaft</Link>,
-                <Link to="/musik">Hier spielt die Musik!</Link>
-              ]}
-            />
-
-            <li><Link to="/bildergalerie" onClick={toggleHamburgerOnMobile}>Bildergalerie</Link></li>
-            <li><Link to="/freie-plaetze" onClick={toggleHamburgerOnMobile}>Freie Plätze</Link></li>
-            <li><Link to="/kontakt" onClick={toggleHamburgerOnMobile}>Kontakt</Link></li>
+            {headerBlocks
+              .filter(b => b.parent_block_id === null && b.type !== "logo")
+              .map(b => {
+                if (b.type === "link") {
+                  return (
+                    <li key={b.id} className={styles.navLink}>
+                      <LinkBlock block={b} />
+                    </li>
+                  );
+                }
+                if (b.type === "dropdown") {
+                  return (
+                    <li key={b.id} className={styles.navDropdown}>
+                      <DropdownBlock block={b} />
+                    </li>
+                  );
+                }
+                return null;
+              })}
           </ul>
         </nav>
       </div>

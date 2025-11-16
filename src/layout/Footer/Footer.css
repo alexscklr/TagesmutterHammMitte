@@ -1,65 +1,100 @@
+/* ...existing code... */
 .footer {
-    width: 100%;
-    min-height: 20vh;
-    background-color: var(--color-accent);
-    background-image:
-        url('https://www.transparenttextures.com/patterns/redox-02.png');
-
-    color: var(--color-bg);
-    margin: 0;
-
-    box-shadow: 0px -3px 5px #555555;
-
-    border-radius: 3rem 3rem 0 0;
-    overflow: hidden;
+  width: 100%;
+  min-height: 20vh;
+  background-color: var(--color-accent);
+  background-image: url('https://www.transparenttextures.com/patterns/redox-02.png');
+  color: var(--color-bg);
+  margin: 0;
+  box-shadow: 0px -3px 5px #555555;
+  border-radius: 3rem 3rem 0 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr;
+  row-gap: 0.5rem;
 }
 
-.footer>.main-content {
-    width: fit-content;
-    display: flex;
-    justify-content: left;
-    align-items: start;
-    flex-wrap: wrap;
-    gap: 5%;
-    margin: auto;
-    padding: 2% 5% 2% 5%;
+.footer > .main-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+  align-items: stretch;
+  justify-items: stretch;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 2% 5%;
 }
 
-.footer>.main-content>ul {
-    font-size: 1.2rem;
+.footerBlock {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 1rem;              /* einheitlicher Innenabstand */
 }
 
-.footer>.main-content>ul>li>a {
-    color: var(--color-bg);
-    text-decoration: underline;
+/* erste/letzte Kind-Margins neutralisieren */
+.footerBlock > :first-child { margin-top: 0; }
+.footerBlock > :last-child  { margin-bottom: 0; }
+
+/* Listen-Defaults zurücksetzen */
+.footerBlock ul,
+.footerBlock ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-#login-popover::backdrop {
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
+/* optionale einheitliche Item-Abstände (horizontal nicht relevant, aber konsistent) */
+.footerBlock li + li {
+  margin-top: 0.25rem;
 }
 
-@media (min-width: 600px) and (max-width: 800px) {
-  .footer > .main-content > *:first-child {
-    flex-basis: auto;
-    width: 31%;
-    display: block;
-    margin-right: 100%;
+.footerBlock--portrait .imageWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.footerBlock--portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.footer .footerBlock ul {
+  font-size: 1.2rem;
+}
+
+.footer .footerBlock ul li a {
+  color: var(--color-bg);
+  text-decoration: underline;
+  padding: 0;
+}
+
+.footer .copyright-notice {
+  grid-row: 2;
+  grid-column: 1;
+  justify-self: start;
+  width: 100%;
+  padding: 0 0 1rem 2%;
+}
+
+.footer .copyright-notice p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .footer > .main-content {
+    grid-template-columns: 1fr;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    padding: 6% 5%;
   }
-
-  /* Rest normale Flex-Anordnung */
-  .footer > .main-content > *:not(:first-child) {
-    flex: 1 1 auto;
-  }
 }
-
-    @media (max-width: 600px) {
-        .footer>.main-content {
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .footer>.main-content>*:first-child {
-            width: 31%;
-        }
-    }

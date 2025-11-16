@@ -1,111 +1,77 @@
 // render/renderPageBlock.tsx
 import type { JSX, ReactNode } from "react";
-import { PageBlocks, type PageBlock } from "../types/page";
-import { renderRichText } from "../utils/renderRichText";
-import { Timeline } from "@/features/timeline/Timeline";
-import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
+import { PageBlocks, type PageBlock } from "../types/index";
+import {
+  TitleBlock,
+  HeadingBlock,
+  ImageryBlock,
+  ListBlock,
+  ParagraphBlock,
+  QuoteBlock,
+  SectionBlock,
+  TimelineBlock,
+  InfiniteSliderBlock,
+  BouncyTextBlock,
+  TimelineEntryBlock,
+  GoogleLocationBlock,
+  ContactFormBlock
+} from "./blocks/index";
 import React from "react";
-import type { Image } from "../types/blocks";
+
+import {
+  type TitleBlock as TitleBlockType,
+  type ImageryBlock as ImageryBlockType,
+  type HeadingBlock as HeadingBlockType,
+  type ListBlock as ListBlockType,
+  type ParagraphBlock as ParagraphBlockType,
+  type QuoteBlock as QuoteBlockType,
+  type SectionBlock as SectionBlockType,
+  type TimelineBlock as TimelineBlockType,
+  type InfiniteSliderBlock as InfiniteSliderBlockType,
+  type BouncyTextBlock as BouncyTextBlockType,
+  type TimelineEntryBlock as TimelineEntryBlockType,
+  type GoogleLocationBlock as GoogleLocationBlockType,
+  type ContactFormBlock as ContactFormBlockType
+} from "../types/blocks";
+
+
+
+
+type BlockComponentMap = {
+  [PageBlocks.Title]: (block: TitleBlockType) => JSX.Element;
+  [PageBlocks.Heading]: (block: HeadingBlockType) => JSX.Element;
+  [PageBlocks.Paragraph]: (block: ParagraphBlockType) => JSX.Element;
+  [PageBlocks.List]: (block: ListBlockType) => JSX.Element;
+  [PageBlocks.BouncyText]: (block: BouncyTextBlockType) => JSX.Element;
+  [PageBlocks.Imagery]: (block: ImageryBlockType) => JSX.Element;
+  [PageBlocks.Quote]: (block: QuoteBlockType) => JSX.Element;
+  [PageBlocks.Timeline]: (block: TimelineBlockType) => JSX.Element;
+  [PageBlocks.TimelineEntry]: (block: TimelineEntryBlockType) => JSX.Element;
+  [PageBlocks.Section]: (block: SectionBlockType) => JSX.Element;
+  [PageBlocks.InfiniteSlider]: (block: InfiniteSliderBlockType) => JSX.Element;
+  [PageBlocks.GoogleLocation]: (block: GoogleLocationBlockType) => JSX.Element;
+  [PageBlocks.ContactForm]: (block: ContactFormBlockType) => JSX.Element;
+};
+
+
+const blockMap: BlockComponentMap = {
+  [PageBlocks.Title]: (block) => <TitleBlock block={block} />,
+  [PageBlocks.Heading]: (block) => <HeadingBlock block={block} />,
+  [PageBlocks.Paragraph]: (block) => <ParagraphBlock block={block} />,
+  [PageBlocks.List]: (block) => <ListBlock block={block} />,
+  [PageBlocks.BouncyText]: (block) => <BouncyTextBlock block={block} />,
+  [PageBlocks.Imagery]: (block) => <ImageryBlock block={block} />,
+  [PageBlocks.Quote]: (block) => <QuoteBlock block={block} />,
+  [PageBlocks.Timeline]: (block) => <TimelineBlock block={block} />,
+  [PageBlocks.TimelineEntry]: (block) => <TimelineEntryBlock block={block} />,
+  [PageBlocks.Section]: (block) => <SectionBlock block={block} />,
+  [PageBlocks.InfiniteSlider]: (block) => <InfiniteSliderBlock block={block} />,
+  [PageBlocks.GoogleLocation]: (block) => <GoogleLocationBlock block={block} />,
+  [PageBlocks.ContactForm]: (block) => <ContactFormBlock block={block} />
+}
+
 
 export function renderPageBlock(block: PageBlock): ReactNode {
-  switch (block.type) {
-    case PageBlocks.Title:
-      return <h1 key={block.id}>{block.content.title}</h1>;
-
-    case PageBlocks.Heading: {
-      const Tag = `h${block.content.level}` as keyof JSX.IntrinsicElements;
-      return <Tag key={block.id}>{block.content.text}</Tag>;
-    }
-
-    case PageBlocks.Paragraph:
-      return <p key={block.id}>{renderRichText(block.content.paragraph)}</p>;
-
-    case PageBlocks.List:
-      return (
-        <ul key={block.id}>
-          {block.content.list_elements.map((item, idx) => (
-            <li key={idx}>{item}</li>
-          ))}
-        </ul>
-      );
-
-    case PageBlocks.BouncyText:
-      return (
-        <BouncyText
-          key={block.id}
-          text={block.content.text}
-          amplitude={block.content.amplitude}
-          frequency={block.content.frequency}
-          characterDelay={block.content.characterDelay}
-          duration={block.content.duration}
-          pauseDuration={block.content.pauseDuration}
-        />
-      );
-
-    case PageBlocks.Imagery:
-      if (block.content.images.length < 1) return null;
-
-      const renderImage = (image: Image, idx: number) => (
-        <div key={idx} className="image-wrapper">
-          <img src={image.url} alt={image.alt} loading="lazy" />
-          {image.source && (
-            <small className="image-source">
-              Bild:{" "}
-              {image.sourceUrl ? (
-                <a href={image.sourceUrl} target="_blank" rel="noopener noreferrer">
-                  {image.source}
-                </a>
-              ) : (
-                image.source
-              )}
-              {image.license && ` (${image.license})`}
-            </small>
-          )}
-        </div>
-      );
-
-      if (block.content.images.length === 1) {
-        return (
-          <div key={block.id} className="single-image-container">
-            {renderImage(block.content.images[0], 0)}
-          </div>
-        );
-      }
-
-      return (
-        <div key={block.id} className="double-image-container">
-          {block.content.images.slice(0, 2).map((img, idx) => renderImage(img, idx))}
-        </div>
-      );
-
-    case PageBlocks.Quote:
-      return (
-        <blockquote key={block.id}>
-          {renderRichText(block.content.text)}
-          {block.content.author && <footer>{block.content.author}</footer>}
-        </blockquote>
-      );
-
-    case PageBlocks.Timeline:
-      return <Timeline key={block.id} data={block.content.entries} />;
-
-    case PageBlocks.Section:
-      return (
-        <section
-          key={block.id}
-          aria-labelledby={`section-title-${block.id}`}
-        >
-          {block.content.title &&
-            React.createElement(
-              `h${block.content.title.level}`,
-              { id: `section-title-${block.id}` },
-              block.content.title.text
-            )}
-          {block.content.content.map(renderPageBlock)}
-        </section>
-      );
-
-    default:
-      return null;
-  }
+  const render = blockMap[block.type] as ((block: PageBlock) => JSX.Element | null) | undefined;
+  return <React.Fragment key={block.id}>{render ? render(block) : null}</React.Fragment>
 }

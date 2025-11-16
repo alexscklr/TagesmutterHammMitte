@@ -1,0 +1,70 @@
+.select {
+    position: relative;
+}
+
+.selectBtn {
+    background: none;
+    color: var(--color-text);
+}
+
+.selectBtn:hover, .selectBtn:focus {
+    color: white;
+}
+
+.select > ul {
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transform: translateY(-20px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.select > ul.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.select > ul.inactive {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scaleY(0);
+}
+
+@keyframes arrowBounceDown {
+  0% {
+    transform: rotate(0deg) translateY(0) scale(1);
+  }
+  30% {
+    transform: rotate(0deg) translateY(-10px) scale(1.2);
+  }
+  60% {
+    transform: rotate(180deg) translateY(-5px) scale(1.1);
+  }
+  100% {
+    transform: rotate(180deg) translateY(0) scale(1);
+  }
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 250ms ease;
+}
+
+.arrow.active {
+  animation: arrowBounceDown 1000ms cubic-bezier(.68,-0.55,.27,1.55);
+  transform: rotate(180deg);
+}
+
+.arrow.inactive {
+  transform: rotate(0deg);
+}
+

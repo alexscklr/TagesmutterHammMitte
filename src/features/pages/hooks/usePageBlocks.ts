@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPageIdBySlug, getPageBlocks } from "../lib/queries";
-import { type PageBlock } from "@/features/pages/types/page";
-import { deserializePageBlocks } from "../utils/serializing";
+import { getPageIdBySlug, getPageBlocks } from "../lib";
+import type { PageBlock } from "@/features/pages/types/page";
 
 export function usePageBlocks(slug: string) {
   const [blocks, setBlocks] = useState<PageBlock[]>([]);
@@ -9,12 +8,10 @@ export function usePageBlocks(slug: string) {
 
   useEffect(() => {
     let cancelled = false;
-    let timers: NodeJS.Timeout[] = [];
 
     const fetchBlocks = async () => {
       setLoading(true);
       setBlocks([]); // reset
-
       const pageId = await getPageIdBySlug(slug);
       if (!pageId) {
         if (!cancelled) {
@@ -25,18 +22,9 @@ export function usePageBlocks(slug: string) {
       }
 
       const blocksData = await getPageBlocks(pageId);
-      const deserialized = deserializePageBlocks(blocksData);
-
-      deserialized.forEach((block : any, idx : number) => {
-        const t = setTimeout(() => {
-          if (!cancelled) {
-            setBlocks((prev) => [...prev, block]);
-          }
-        }, idx * 100);
-        timers.push(t);
-      });
 
       if (!cancelled) {
+        setBlocks(blocksData);
         setLoading(false);
       }
     };
@@ -45,7 +33,6 @@ export function usePageBlocks(slug: string) {
 
     return () => {
       cancelled = true;
-      timers.forEach(clearTimeout);
     };
   }, [slug]);
 

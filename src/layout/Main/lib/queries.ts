@@ -18,6 +18,7 @@ export async function fetchPageMeta(slug: string): Promise<PageMeta | null> {
         id: data.id,
         slug: data.slug,
         title: data.title,
+        sitetitle: data.sitetitle,
         created_at: data.created_at,
         background: data.background
     };

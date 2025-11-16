@@ -1,0 +1,37 @@
+
+
+.contactForm {
+    width: 61%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-text-medium);
+    border-radius: 15px;
+    padding: 2%;
+    margin-top: 1%;
+    background-color: white;
+}
+
+.emailInput {
+    margin: 2%;
+    padding: 2%;
+    width: 50%;
+    max-height: 2.5rem;
+}
+
+.messageInput {
+    margin: 2%;
+    padding: 2%;
+}
+
+.submitButton {
+    width: 50%;
+    margin: 1rem auto;
+    background-color: var(--color-accent);
+    color: white;
+}
+
+.privacyNotice {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    width: 90%;
+    margin: auto;
+}

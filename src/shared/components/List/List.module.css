@@ -1,0 +1,12 @@
+.ul, .ol {
+  width: 70%;
+  text-align: left;
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  white-space: pre-line;
+}
+
+li > p {
+  width: 100%;
+  margin: 0;
+  
+}

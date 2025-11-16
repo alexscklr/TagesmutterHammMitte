@@ -1,4 +1,1 @@
-import PageContent from "./components/PageContent";
-
-
-export default PageContent;
+export {default as PageRenderer } from "./components/PageRenderer"

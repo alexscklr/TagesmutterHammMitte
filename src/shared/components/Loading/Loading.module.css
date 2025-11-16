@@ -1,0 +1,28 @@
+.loadingWrapper {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border-top: 5px solid var(--color-accent2);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.text {
+  font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+  font-size: 1.2rem;
+  color: var(--color-accent2);
+  letter-spacing: 0.05em;
+}

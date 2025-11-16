@@ -1,0 +1,28 @@
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  width: fit-content;
+  text-align: center;
+}
+
+
+h1 {
+  font-size: clamp(3rem, 7vw, 4.6rem);
+}
+
+h2 {
+  font-size: clamp(2.3rem, 5.6vw, 3.2rem);
+}
+
+h3 {
+  font-size: clamp(1.3rem, 4vw, 2.4rem);
+}
+
+h4 {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+}

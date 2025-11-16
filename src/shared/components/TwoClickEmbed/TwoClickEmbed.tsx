@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./TwoClickEmbed.css"
+import styles from "./TwoClickEmbed.module.css"
 
 interface TwoClickEmbedProps {
     storageKey: string;
-    iframe: React.ReactNode;
+    children: React.ReactNode;
     message?: string;
     buttonLabel?: string;
     className?: string;
@@ -11,7 +11,7 @@ interface TwoClickEmbedProps {
 
 const TwoClickEmbed: React.FC<TwoClickEmbedProps> = ({
     storageKey,
-    iframe,
+    children,
     message = "Zum Anzeigen dieses Inhalts bitte auf den Button klicken. Mit dem Laden akzeptieren Sie die Datenschutzerklärung des Drittanbieters.",
     buttonLabel = "Inhalt laden",
     className = "",
@@ -35,20 +35,19 @@ const TwoClickEmbed: React.FC<TwoClickEmbedProps> = ({
         setIsVisible(false);
     };
 
-
     return (
-        <div className={`two-click-embed-wrapper ${className}`}>
+        <div className={`${styles.twoClickEmbedWrapper} ${className}`}>
             {isVisible ? (
-                <div className="iframe-container">
-                    {iframe}
-                    <button className="revoke-button" onClick={handleRevoke}>
+                <div className={styles.contentContainer}>
+                    {children}
+                    <button className={styles.revokeButton} onClick={handleRevoke}>
                         Zustimmung widerrufen
                     </button>
                 </div>
             ) : (
-                <div className="consent-box">
-                    <p className="consent-message">{message}</p>
-                    <button className="consent-button" onClick={handleClick}>
+                <div className={styles.consentBox}>
+                    <p className={styles.consentMessage}>{message}</p>
+                    <button className={styles.consentButton} onClick={handleClick}>
                         {buttonLabel}
                     </button>
                 </div>

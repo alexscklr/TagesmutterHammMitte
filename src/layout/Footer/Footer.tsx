@@ -1,21 +1,38 @@
 import { Link } from "react-router-dom";
-import "./Footer.css"
-import { useContext } from "react";
-import { LoginPopup } from "@/features/auth/components/LoginPopup/LoginPopup";
-import { AuthContext } from "../../features/auth/context/AuthContext";
+import "./Footer.css";
+import LoginOut from "@/features/auth/components/LoginOut/LoginOut";
+import { useEffect, useState } from "react";
+import { getFooterBlocks } from "../Footer/lib";
+import { FooterBlocks, type FooterBlock } from "./types";
+import { renderFooterBlock } from "./components/FooterBlockRenderer";
 
 const Footer = () => {
-  const { user, logout } = useContext(AuthContext);
 
-  const handleLogout = async () => {
-    await logout();
-  };
+  const [footerBlocks, setFooterBlocks] = useState<FooterBlock[]>([]);
+
+  useEffect(() => {
+    getFooterBlocks().then(setFooterBlocks);
+  }, []);
+
+  const topBlocks = footerBlocks.filter(b => b.type !== FooterBlocks.CopyrightNotice);
+  const copyright = footerBlocks.find(b => b.type === FooterBlocks.CopyrightNotice);
+
+  return (
+    <footer className="footer">
+      <div className="main-content">
+        {topBlocks.map(renderFooterBlock)}
+      </div>
+
+      {/* Copyright muss direktes Kind von .footer sein */}
+      {copyright && renderFooterBlock(copyright)}
+    </footer>
+  );
 
   return (
     <>
       <footer className="footer">
         <div className="main-content">
-          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/Portrait.png"width="17%" style={{ border: "0px solid black", borderRadius: "50%", margin: "auto" }} />
+          <img src="https://iblpmuiruuragdkvurcr.supabase.co/storage/v1/object/public/public_images/Portrait.png" width="17%" style={{ border: "0px solid black", borderRadius: "50%", margin: "auto" }} />
           <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
             <li>Kerstin Sickler</li>
             <li>Kindertagespflege</li>
@@ -29,19 +46,11 @@ const Footer = () => {
             <li><Link to="/datenschutz">Datenschutzerklärung</Link></li>
             <li><Link to="/impressum">Impressum</Link></li>
             <li>
-              {user ? (
-                <button onClick={handleLogout}>Log Out</button>
-              ) : (
-                <button popoverTarget="login-popover" popoverTargetAction="show">Moderator-Login</button>
-              )}
+              <LoginOut popoverTarget="login-popup" />
             </li>
           </ul>
         </div>
         <p style={{ width: "100%", fontSize: "1rem", padding: "0% 0% 1% 2%", margin: "0" }}>© 2025 Kerstin Sickler – Alle Rechte vorbehalten.</p>
-
-        <div popover="auto" id="login-popover" >
-          <LoginPopup closeBtn={<button popoverTarget="login-popover" popoverTargetAction="hide">X</button>}/>
-        </div>
       </footer>
     </>
   );

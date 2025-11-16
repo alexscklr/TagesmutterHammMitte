@@ -39,7 +39,7 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
     return () => {
       if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
     };
-  }, []);
+  });
 
   return (
     <span>

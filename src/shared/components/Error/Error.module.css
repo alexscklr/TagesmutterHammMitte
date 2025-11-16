@@ -1,0 +1,35 @@
+.errorWrapper {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 232, 232, 0.7);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(255, 152, 0, 0.08);
+  padding: 2rem;
+  margin: auto;
+  max-width: 500px;
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.message {
+  font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+  font-size: 1.3rem;
+  color: #d32f2f;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.details {
+  font-size: 1rem;
+  color: #b71c1c;
+  text-align: center;
+  margin-top: 0.5rem;
+  word-break: break-word;
+}

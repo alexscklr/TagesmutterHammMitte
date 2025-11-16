@@ -1,0 +1,64 @@
+.editor {
+  border: 1px solid #eee;
+  border-radius: 1em;
+  padding: 1em;
+  max-width: 500px;
+  background: #fff;
+}
+.toolbar {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+.toolbar button {
+  background: #f7f7f7;
+  border: none;
+  border-radius: 0.4em;
+  padding: 0.3em 0.6em;
+  cursor: pointer;
+  font-size: 1em;
+}
+.toolbar .active {
+  background: black;
+  color: #fff;
+}
+.input {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 0.4em;
+  border: 1px solid #ddd;
+}
+.addBtn {
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 0.4em;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  margin-bottom: 1em;
+}
+.preview {
+  margin-top: 1em;
+  min-height: 2em;
+  background: #f9f9f9;
+  border-radius: 0.4em;
+  padding: 0.5em;
+  font-size: 1.1em;
+  word-break: break-word;
+}
+
+.previewLine {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.3em;
+}
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: #d32f2f;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-left: 0.5em;
+}
