@@ -1,5 +1,6 @@
 import React from "react";
 import type { GoogleLocation } from "@/features/pages/types/blocks";
+import { SaveBlockButton } from "@/shared/components";
 
 export interface EditableGoogleLocationProps {
   value: GoogleLocation;

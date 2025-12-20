@@ -2,6 +2,39 @@ import { supabase } from "@/supabaseClient";
 import { PageBlocks, type PageBlock, type TimelineEntry } from "../types";
 
 
+export interface PageMeta {
+  id: string;
+  slug: string;
+  title: string;
+  sitetitle: string;
+  created_at: string;
+  background: any;
+}
+
+/**
+ * Hole alle Seiten für Sitemap
+ */
+export async function fetchAllPages(): Promise<PageMeta[]> {
+  const { data, error } = await supabase
+    .from("pages")
+    .select("id, slug, title, sitetitle, created_at, background")
+    .order("created_at", { ascending: true });
+
+  if (error || !data) {
+    console.error("Error fetching all pages:", error);
+    return [];
+  }
+
+  return data.map(page => ({
+    id: page.id,
+    slug: page.slug,
+    title: page.title,
+    sitetitle: page.sitetitle,
+    created_at: page.created_at,
+    background: page.background
+  }));
+}
+
 /**
  * Hole Page ID per Slug
  */
@@ -106,7 +139,7 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
 /**
  * Sanitize block content for persistence: strip nested children for container-like blocks.
  */
-function sanitizeContentForSave(block: PageBlock): PageBlock {
+function sanitizeContentForSave(block: PageBlock): unknown {
   switch (block.type) {
     case PageBlocks.Section: {
       const { heading, appearance } = block.content as any;

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Falls du eine Sitemap hast:
+Sitemap: https://tagesmutter-hamm-mitte.web.app/sitemap.xml

@@ -5,12 +5,22 @@ import App from './App.tsx'
 import { AuthProvider } from './features/auth/context/index'
 import { EditModeProvider } from './features/admin/context/EditModeProvider.tsx'
 
+const isDevelopment = import.meta.env.MODE === 'development';
+
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  isDevelopment ? (
+    <StrictMode>
+      <AuthProvider>
+        <EditModeProvider>
+          <App />
+        </EditModeProvider>
+      </AuthProvider>
+    </StrictMode>
+  ) : (
     <AuthProvider>
       <EditModeProvider>
         <App />
       </EditModeProvider>
     </AuthProvider>
-  </StrictMode >,
+  ),
 )

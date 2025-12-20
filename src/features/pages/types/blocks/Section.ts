@@ -1,11 +1,13 @@
-import type { PageBlock, PageBlocks } from "../index";
+import { type PageBlock, PageBlocks } from "../index";
 import { type Heading } from "./index"
 
 // Appearance options for Section blocks rendered at runtime
-export enum SectionAppearance {
-  Card = "card",
-  Flat = "flat",
-}
+export const SectionAppearance = {
+  Card: "card",
+  Flat: "flat",
+} as const;
+
+export type SectionAppearance = typeof SectionAppearance[keyof typeof SectionAppearance];
 
 export interface Section {
   heading: Heading;

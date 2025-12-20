@@ -9,7 +9,6 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { SelectionProvider } from "@/features/admin/context/SelectionContext";
 import { EditingProvider } from "@/features/admin/context/EditingContext";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
-import { useEditing } from "@/features/admin/context/hooks/useEditing";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 // save logic is now provided by EditingContext
 
@@ -76,27 +75,11 @@ const Main = ({ children }: { children: ReactNode }) => {
 
 const SidebarWithSave = () => {
   const { selectedBlock } = useSelection();
-  const [saving, setSaving] = useState(false);
-  const { save } = useEditing();
-
-  const handleSave = async () => {
-    if (saving) return;
-    try {
-      setSaving(true);
-      await save();
-    } catch (e) {
-      console.error("Speichern fehlgeschlagen", e);
-    } finally {
-      setSaving(false);
-    }
-  };
 
   return (
     <EditingSidebar
       open={true}
       selectedBlock={selectedBlock ?? undefined}
-      onSave={handleSave}
-      onCancel={() => { /* optional: reset edited value if tracked */ }}
     />
   );
 };

@@ -28,8 +28,8 @@ export function renderRichText(spans: RichTextSpan[]) {
     let el: JSX.Element | JSX.Element[] =
       span.text
         ? span.text.split("\n").reduce<JSX.Element[]>((acc, line, i, arr) => {
-          acc.push(<>{line}</>);
-          if (i < arr.length - 1) acc.push(<br key={i} />);
+          acc.push(<span key={`${idx}-line-${i}`}>{line}</span>);
+          if (i < arr.length - 1) acc.push(<br key={`${idx}-br-${i}`} />);
           return acc;
         }, [])
         : [];
