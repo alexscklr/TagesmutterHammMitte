@@ -42,7 +42,7 @@ const Startseite = () => {
 
   return (
     <section className={styles.page}>
-      <h1>Maxi - Kids</h1>
+      <h1>Maxi – Kids</h1>
       <p style={{ color: "var(--color-accent2)", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Motto" aria-description="Das Motto der Tagesmutter">
         <span style={{ color: "var(--color-neutral-400)" }}>♫♪</span>
         <span style={{ color: "var(--color-accent2)", margin: "0 8px" }}>
@@ -58,80 +58,81 @@ const Startseite = () => {
         <span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span>
       </p>
 
-      <section className={`${styles.portraitSection} ${styles.section}`} aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
-        {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
-        <div className={styles.portraitText}>
-          <h2>Kerstin Sickler</h2>
-          <List content={[<>Tagesmutter seit 2009</>, <>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</>, <>Mutter von drei Söhnen</>]} listStyle="none" ordered={false} />
-
+      <section className={styles.section} aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
+        <div className={styles.sectionContent}>
+          <div className={styles.portraitSection}>
+            {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
+            <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
+            <div className={styles.portraitText}>
+              <List content={[<>Tagesmutter seit 2009</>, <>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</>, <>Mutter von drei Söhnen</>]} listStyle="none" ordered={false} />
+            </div>
+          </div>
         </div>
-        <div className={styles.link}>
+        <div className={styles.sectionLinks}>
           <Link to="/ueber-mich" aria-label={"Mehr über mich"} aria-description="Link zur Unterseite mit weiteren Informationen über Kerstin Sickler">Mehr über mich</Link>
         </div>
       </section>
 
-
-
-      <section className={`${styles.locationSection} ${styles.section}`} aria-label={"Standort und Kontakt"} aria-description="Adresse und Kontaktinformationen der Tagesmutter">
-        <h2>Kontakt & Standort</h2>
-        <div className={styles.location}>
-          <List content={
-            [
+      <section className={styles.section} aria-label={"Standort und Kontakt"} aria-description="Adresse und Kontaktinformationen der Tagesmutter">
+        <div className={styles.sectionContent}>
+          <h2>Kontakt & Standort</h2>
+          <div className={styles.location}>
+            <List content={[
               <>Weißdornweg 14</>,
               <>59063 Hamm</>,
               <>Tel.: 02381/31366</>,
               <>E-Mail.: <a href="mailto:kerstin.sickler@web.de">kerstin.sickler@web.de</a></>
-            ]
-          } listStyle="none" ordered={false} />
-          <div className={styles.locationMap}></div>
-          <GoogleLocation
-            embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4948.220125308352!2d7.8418909775612855!3d51.676128398361975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab43473ea9%3A0x95c62314e737cebd!2sWei%C3%9Fdornweg%2014%2C%2059063%20Hamm!5e0!3m2!1sde!2sde!4v1754507115897!5m2!1sde!2sde"
-          />
+            ]} listStyle="none" ordered={false} />
+            <div className={styles.locationMap}></div>
+            <GoogleLocation
+              embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4948.220125308352!2d7.8418909775612855!3d51.676128398361975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab43473ea9%3A0x95c62314e737cebd!2sWei%C3%9Fdornweg%2014%2C%2059063%20Hamm!5e0!3m2!1sde!2sde!4v1754507115897!5m2!1sde!2sde"
+            />
+          </div>
         </div>
-        <div className={styles.link}>
+        <div className={styles.sectionLinks}>
           <Link to="/kontakt">Zur Kontaktseite</Link>
         </div>
       </section>
 
       {currentEntry ? (
-        <section className={`${styles.timelineEntrySection} ${styles.section}`} aria-label={"Aktueller Tagesablauf"} aria-description="Anzeige des aktuell aktiven Tagesabschnitts">
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <div className={styles.liveCircle}>
-              <div className={styles.liveCircleInner}></div>
-              <div className={styles.liveCircleOuter1}></div>
-              <div className={styles.liveCircleOuter2}></div>
+        <section className={styles.section} aria-label={"Aktueller Tagesablauf"} aria-description="Anzeige des aktuell aktiven Tagesabschnitts">
+          <div className={styles.sectionContent}>
+            <div className={styles.timelineEntrySection}>
+              <div className={styles.timelineHeader}>
+                <div className={styles.liveCircle}>
+                  <div className={styles.liveCircleInner}></div>
+                  <div className={styles.liveCircleOuter1}></div>
+                  <div className={styles.liveCircleOuter2}></div>
+                </div>
+                <h2>Was wir gerade machen</h2>
+              </div>
+              <div className={styles.currentTimelineEntry}>
+                <h3>{currentEntry.title}</h3>
+                {currentEntryChildren.map(block => (
+                  <div key={block.id}>{renderPageBlock(block)}</div>
+                ))}
+              </div>
             </div>
-            <h2>Was wir gerade machen</h2>
           </div>
-
-
-          <div className={styles.currentTimelineEntry}>
-            <h3>{currentEntry.title}</h3>
-            {currentEntryChildren.map(block => (
-              <div key={block.id}>{renderPageBlock(block)}</div>
-            ))}
-          </div>
-
-          <div className={styles.link}>
+          <div className={styles.sectionLinks}>
             <Link to="/tagesablauf">Zum Tagesablauf</Link>
           </div>
         </section>
       ) : <></>}
 
       <section className={styles.section} aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
-        <h2>Pädagogische Schwerpunkte</h2>
-        <List content={[
-          <>Musikalische Früherziehung</>,
-          <>Bewegungsförderung</>,
-          <>Gesundheitsförderung</>,
-          <>Individuelle Entwicklungsbegleitung</>,
-          <>Soziale Kompetenz und Gemeinschaftserfahrung</>]
-        } listStyle="disc" ordered={false} />
-
-        <div className={styles.link}>
-          <Link to="/musik">Mehr über "Hier spielt die Musik"</Link>
+        <div className={styles.sectionContent}>
+          <h2>Pädagogische Schwerpunkte</h2>
+          <List content={[
+            <>Musikalische Früherziehung</>,
+            <>Bewegungsförderung</>,
+            <>Gesundheitsförderung</>,
+            <>Individuelle Entwicklungsbegleitung</>,
+            <>Soziale Kompetenz und Gemeinschaftserfahrung</>]
+          } listStyle="disc" ordered={false} />
         </div>
-        <div className={styles.link}>
+        <div className={styles.sectionLinks}>
+          <Link to="/musik">Mehr über "Hier spielt die Musik"</Link>
           <Link to="/fortbildungen">Mehr über meine Qualifizierung</Link>
         </div>
       </section>

@@ -6,7 +6,6 @@
   backdrop-filter: blur(6px);
   border-radius: 1.2rem;
   padding: clamp(1.25rem, 2vw + 1rem, 5rem) clamp(1rem, 2vw, 2rem);
-  box-shadow: 0 8px 32px var(--color-neutral-500);
 
   display: flex;
   flex-direction: column;
@@ -17,6 +16,7 @@
   box-sizing: border-box;
 }
 
+/* Section container: lightweight, shared */
 .section {
   width: min(100%, 80%);
   padding: clamp(1rem, 2vw + 0.5rem, 2rem);
@@ -26,36 +26,59 @@
   box-shadow: 0 8px 2rem var(--color-neutral-600);
 }
 
-/* Portrait-Bereich: bricht automatisch von 3 -> 2 -> 1 Spalte */
-.portraitSection {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: clamp(1rem, 3vw, 5rem);
+/* New shared inner structure */
+.sectionContent {
+  display: block;
+  /* space inside content, links live below */
 }
 
+.sectionLinks {
+  margin-top: clamp(0.5rem, 1vw, 1rem);
+  display: flex;
+  justify-content: flex-end;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.sectionLinks a:not(:hover) {
+  color: var(--color-accent2);
+}
+
+/* Portrait-Bereich */
+.portraitSection {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) 2fr;
+  grid-auto-rows: auto;
+  column-gap: clamp(1rem, 3vw, 5rem);
+  row-gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+
 .portraitImg {
-  width: min(100%, 28rem);
+  grid-column: 1;
+  grid-row: 1 / span 2; /* desktop: image spans heading + text */
+  width: clamp(10rem, 22vw, 18rem);
   object-fit: cover;
   border-radius: 50%;
   display: block;
   margin-inline: auto;
 }
 
+.portraitHeading {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  text-align: left;
+}
+
 .portraitText {
+  grid-column: 2;
+  grid-row: 2;
   text-align: left;
 }
 
 .portraitText p {
   margin: 0;
   padding: 0;
-}
-
-.link {
-  place-self: end end; /* rechts unten in verfügbarer Zelle */
-}
-
-.link a:not(:hover) {
-  color: var(--color-accent2);
 }
 
 /* Live-Indicator */
@@ -170,5 +193,30 @@
   }
   .section {
     width: min(100%, 90%);
+  }
+  /* Optional: slightly smaller portrait on very small screens */
+  .portraitImg {
+    width: clamp(9rem, 40vw, 16rem);
+  }
+  /* Portrait: enforce single column and linear order */
+  .portraitSection {
+    grid-template-columns: 1fr; /* single column */
+    grid-template-rows: auto auto auto; /* h2, img, text */
+    row-gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  .portraitHeading {
+    grid-column: 1;
+    grid-row: 1; /* h2 first */
+    text-align: center;
+  }
+  .portraitImg {
+    grid-column: 1;
+    grid-row: 2; /* image second */
+    width: clamp(9rem, 40vw, 16rem);
+    margin-inline: auto;
+  }
+  .portraitText {
+    grid-column: 1;
+    grid-row: 3; /* text third */
   }
 }

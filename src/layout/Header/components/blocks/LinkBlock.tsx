@@ -23,7 +23,7 @@ export function LinkBlock({ block }: LinkBlockProps) {
     if (block.target_site_id && siteData) {
         const isActive = location.pathname === `/${siteData.slug}`;
         return (
-            <RouterLink to={`/${siteData.slug}`} tabIndex={0} className={`${styles.link} ${isActive ? styles.active : ''}`}>
+            <RouterLink to={`/${siteData.slug}`} className={`${styles.link} ${isActive ? styles.active : ''}`}>
                 {siteData.title}
             </RouterLink>
         );
@@ -32,7 +32,7 @@ export function LinkBlock({ block }: LinkBlockProps) {
     // Externer Link oder individueller Label
     if (block.content.url) {
         return (
-            <a href={block.content.url} target="_blank" rel="noopener noreferrer" tabIndex={0} className={styles.link}>
+            <a href={block.content.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
                 {block.content.label ? renderRichText(block.content.label) : block.content.url}
             </a>
         );

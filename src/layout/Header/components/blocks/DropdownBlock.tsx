@@ -11,6 +11,7 @@ export function DropdownBlock({ block }: DropdownBlockProps) {
     return (
         <CustomDropdown
             title={renderRichText(block.content.title)}
+            direction="left"
             options={
                 block.content.options.map((link, idx) => (
                     <LinkBlock

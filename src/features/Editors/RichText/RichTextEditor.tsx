@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./RichTextEditor.module.css";
 import type { RichTextSpan } from "@/shared/types/RichTextSpan";
 import { InlineFunctions, type InlineFunction, type InlineFunctionType } from "@/shared/types/InlineFunctions";
@@ -34,9 +34,16 @@ interface RichTextEditorProps {
 const initialSpan: RichTextSpan = { text: "" };
 
 export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
+    const [spans, setSpans] = useState<RichTextSpan[]>(value);
     const [current, setCurrent] = useState<RichTextSpan>(initialSpan);
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [showLinkInput, setShowLinkInput] = useState(false);
     const [showInlineFn, setShowInlineFn] = useState(false);
+
+    // Keep local spans in sync when parent value changes (e.g., refetch)
+    useEffect(() => {
+        setSpans(value);
+    }, [value]);
 
     const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCurrent((prev) => ({ ...prev, link: e.target.value || undefined }));
@@ -99,14 +106,24 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         }));
     };
 
-    const handleAdd = () => {
+    const commitSpan = () => {
         if (current.text.trim() === "") return;
-        onChange([...value, current]);
+        let next: RichTextSpan[];
+        if (editingIndex === null) {
+            next = [...spans, current];
+        } else {
+            next = [...spans];
+            next[editingIndex] = current;
+        }
+        setSpans(next);
+        onChange(next);
         setCurrent(initialSpan);
-        setShowLinkInput(false);
-        setShowInlineFn(false);
-        console.log("Added span:", current);
+        setEditingIndex(null);
+        setShowLinkInput(!!current.link);
+        setShowInlineFn(!!current.inlineFunction);
     };
+
+    // optional helper removed; explicit commits via button
 
 
 
@@ -239,23 +256,37 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                     )}
                 </div>
             )}
-            <button className={styles.addBtn} type="button" onClick={handleAdd}>
-                Hinzufügen
+            <button className={styles.addBtn} type="button" onClick={commitSpan}>
+                {editingIndex === null ? "Hinzufügen" : "Aktualisieren"}
             </button>
             <div className={styles.preview}>
-                {renderRichText(value)}
+                {renderRichText(spans)}
             </div>
             <div className={styles.preview}>
-                {value.map((span, i) => (
+                {spans.map((span, i) => (
                     <div key={i} className={styles.previewLine}>
                         {renderRichText([span])}
+                        <button
+                            className={styles.button}
+                            type="button"
+                            onClick={() => {
+                                setCurrent(span);
+                                setEditingIndex(i);
+                                setShowLinkInput(!!span.link);
+                                setShowInlineFn(!!span.inlineFunction);
+                            }}
+                            aria-label="Bearbeiten"
+                        >
+                            ✎
+                        </button>
                         <button
                             className={styles.removeBtn}
                             type="button"
                             onClick={() => {
-                                const newValue = [...value];
+                                const newValue = [...spans];
                                 newValue.splice(i, 1);
                                 onChange(newValue);
+                                setSpans(newValue);
                             }}
                             aria-label="Entfernen"
                         >

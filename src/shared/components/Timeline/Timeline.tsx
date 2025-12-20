@@ -54,22 +54,35 @@ export const Timeline = ({ data }: TimelineProps) => {
     };
   }, [data]);
 
-  const checkIfInCurrent = (timeSpan: [string, string] | undefined) => {
-    if (!timeSpan) return false;
-
+  const checkIfInCurrent = (entry: TimelineEntry) => {
     const now = new Date();
-    const [[hours1, minutes1], [hours2, minutes2]] = [
-      timeSpan[0].split(":").map(Number),
-      timeSpan[1].split(":").map(Number),
-    ];
+    // Clock time within today
+    if (entry.timeSpan) {
+      const [[hours1, minutes1], [hours2, minutes2]] = [
+        entry.timeSpan[0].split(":").map(Number),
+        entry.timeSpan[1].split(":").map(Number),
+      ];
 
-    const target1 = new Date();
-    target1.setHours(hours1, minutes1, 0, 0);
+      const start = new Date();
+      start.setHours(hours1, minutes1, 0, 0);
 
-    const target2 = new Date();
-    target2.setHours(hours2, minutes2, 0, 0);
+      const end = new Date();
+      end.setHours(hours2, minutes2, 0, 0);
 
-    return now >= target1 && now < target2;
+      return now >= start && now < end;
+    }
+
+    const currentYear = now.getFullYear();
+    // Exact year match
+    if (typeof entry.year === "number") {
+      return currentYear === entry.year;
+    }
+    // Year range match (inclusive)
+    if (entry.yearSpan && entry.yearSpan.length === 2) {
+      const [from, to] = entry.yearSpan;
+      return currentYear >= from && currentYear <= to;
+    }
+    return false;
   };
 
   return (
@@ -86,8 +99,7 @@ export const Timeline = ({ data }: TimelineProps) => {
         >
           <div className={styles.content}>
             <div
-              className={`${styles.timeBox} ${checkIfInCurrent(item.timeSpan) ? styles.current : ""
-                }`}
+              className={`${styles.timeBox} ${checkIfInCurrent(item) ? styles.current : ""}`}
             >
               {item.label}
             </div>

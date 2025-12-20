@@ -22,7 +22,8 @@ export async function signInWithPassword({ email, password }: LoginCredentials) 
  * Meldet den aktuellen User ab
  */
 export async function signOut() {
-  const { error } = await supabase.auth.signOut();
+  // Ensure refresh token is revoked across all sessions and local storage cleared
+  const { error } = await supabase.auth.signOut({ scope: 'global' });
   if (error) throw error;
 }
 

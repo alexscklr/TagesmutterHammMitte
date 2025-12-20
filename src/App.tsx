@@ -7,8 +7,9 @@ import { Header, Main, Footer } from '@/layout/index';
 
 import { PageRenderer } from './features/pages/index';
 import Startseite from './pages/Startseite';
-import RichTextEditor from './shared/components/RichTextEditor/RichTextEditor';
+import RichTextEditor from './features/Editors/RichText/RichTextEditor';
 import type { RichTextSpan } from './shared/types';
+import MediaAdmin from "@/pages/MediaAdmin";
 import { useState } from 'react';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/:slug" element={<Main><PageRenderer /></Main>} />
         <Route path="" element={<Main><Startseite /></Main>} />
         <Route path="test" element={<Main><RichTextEditor value={richText} onChange={setRichText} /></Main>} />
+        <Route path="admin/media" element={<Main><MediaAdmin /></Main>} />
       </Routes>
 
       <Footer />

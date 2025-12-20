@@ -9,6 +9,11 @@
     box-sizing: border-box;
 }
 
+/* Add left sidebar offset when visible */
+.withSidebar {
+    padding-left: 300px;
+}
+
 @media (max-width: 786px) {
     .main {
         width: 100%;

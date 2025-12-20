@@ -40,17 +40,17 @@
     filter: brightness(0.5);
 }
 
-.sliderItem>.singleImageContainer {
+.sliderItem .singleImageContainer {
     width: fit-content;
     padding: 0;
 }
 
-.sliderItem>.singleImageContainer>.imageWrapper {
+.sliderItem .singleImageContainer .imageWrapper {
     width: fit-content;
     margin: 0;
 }
 
-.sliderItem>.singleImageContainer>.imageWrapper>* {
+.sliderItem .singleImageContainer .imageWrapper > * {
     height: 30vh;
     /* oder max-height, damit nicht zu groß */
     object-fit: cover;

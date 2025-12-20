@@ -1,1 +1,1 @@
-export * from "./PageBlockRenderer"
+export * from "./renderPageBlock"

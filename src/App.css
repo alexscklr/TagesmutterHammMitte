@@ -64,6 +64,7 @@ body {
   justify-content: stretch;
   align-items: center;
   gap: 16px;
+  margin: auto;
 }
 
 .singleImageContainer > img {
@@ -111,6 +112,10 @@ body {
 }
 
 
+h1 {
+  margin: auto;
+}
+
 p {
   margin: 0 10% 0 10%;
   text-align: left;
@@ -140,7 +145,7 @@ button {
 
 a {
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--color-accent);
 }
 
 button::before,

@@ -6,11 +6,15 @@ import { LogoBlock } from './components/blocks/LogoBlock';
 import { LinkBlock } from './components/blocks/LinkBlock';
 import { DropdownBlock } from './components/blocks/DropdownBlock';
 import type { HeaderBlock } from './types';
+import { LoginPopup as AuthLoginPopup } from '@/features/auth/components/LoginPopup/LoginPopup';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const Header = () => {
   const scrollDir = useScrollDirection();
   const [active, setActive] = useState<boolean>(true);
   const [headerBlocks, setHeaderBlocks] = useState<HeaderBlock[]>([]);
+  const { user, logout } = useAuth();
+  const loginPopoverId = "login-popover";
 
 
   const onResize = () => {
@@ -40,9 +44,9 @@ const Header = () => {
     }
   }, [scrollDir]);
 
-  
 
-  
+
+
   return (
     <header className={`${styles.siteHeader} ${scrollDir === 'up' ? '' : styles.inactive}`}>
       <div className={styles.logo}>
@@ -77,6 +81,20 @@ const Header = () => {
                 }
                 return null;
               })}
+            <li className={styles.navLink}>
+              {!user ? (
+                <>
+                  <button popoverTarget={loginPopoverId} popoverTargetAction="show" className={styles.loginBtn}>
+                    Login
+                  </button>
+                  <AuthLoginPopup popoverTarget={loginPopoverId} />
+                </>
+              ) : (
+                <button className={styles.logoutBtn} onClick={logout}>
+                  Logout
+                </button>
+              )}
+            </li>
           </ul>
         </nav>
       </div>

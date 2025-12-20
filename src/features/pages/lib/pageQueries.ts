@@ -102,3 +102,58 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
       })
   ) as PageBlock[];
 }
+
+/**
+ * Sanitize block content for persistence: strip nested children for container-like blocks.
+ */
+function sanitizeContentForSave(block: PageBlock): PageBlock {
+  switch (block.type) {
+    case PageBlocks.Section: {
+      const { heading, appearance } = block.content as any;
+      return { heading, appearance };
+    }
+    case PageBlocks.List: {
+      const { ordered, listStyle } = block.content as any;
+      return { ordered: !!ordered, listStyle };
+    }
+    case PageBlocks.InfiniteSlider: {
+      const { speed } = block.content as any;
+      return { speed };
+    }
+    case PageBlocks.Timeline: {
+      // Entries are represented by child rows; parent holds no inline entries
+      return {};
+    }
+    case PageBlocks.TimelineEntry: {
+      const { label, title, timeSpan, year, yearSpan } = block.content as any;
+      return { label, title, timeSpan, year, yearSpan };
+    }
+    default:
+      return block.content;
+  }
+}
+
+/**
+ * Update a single page_block row's content by id.
+ */
+type UpdatedPageBlockRow = { id: string; content: unknown };
+export async function updatePageBlock(block: PageBlock): Promise<UpdatedPageBlockRow | null> {
+  const t0 = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+  const content = sanitizeContentForSave(block);
+  console.info("updatePageBlock: request", { id: block.id, type: block.type, content });
+  const query = supabase
+    .from("page_blocks")
+    .update({ content })
+    .eq("id", block.id)
+    .select("id, content")
+    .single();
+  const { data, error } = await query;
+  const t1 = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+  console.info("updatePageBlock: response", { id: block.id, ms: Math.round(t1 - t0), hasData: !!data, hasError: !!error });
+  if (error) {
+    console.error("Error updating page block", { id: block.id, error, content });
+    throw error;
+  }
+  console.info("Supabase updated page_block", { id: block.id, content });
+  return (data as UpdatedPageBlockRow) ?? null;
+}

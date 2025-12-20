@@ -1,12 +1,19 @@
 .ul, .ol {
-  width: 70%;
   text-align: left;
   font-size: clamp(1rem, 1.7vw, 1.2rem);
-  white-space: pre-line;
+  white-space: normal;
+  width: 80%;
+  margin: auto;
 }
 
-li > p {
+/* lists with markers: bullets inside + indentation */
+.withMarkers {
+  list-style-position: inside;
+  padding-left: 1rem; /* indent when markers are shown */
+}
+
+li  p {
+  display: inline;
   width: 100%;
   margin: 0;
-  
 }

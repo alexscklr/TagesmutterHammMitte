@@ -2,7 +2,8 @@
   border: 1px solid #eee;
   border-radius: 1em;
   padding: 1em;
-  max-width: 500px;
+  width: 80%;
+  margin: auto;
   background: #fff;
 }
 .toolbar {
@@ -53,6 +54,9 @@
   align-items: center;
   gap: 0.5em;
   margin-bottom: 0.3em;
+}
+.button {
+    color: var(--color-neutral-500);
 }
 .removeBtn {
   background: transparent;

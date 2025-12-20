@@ -8,7 +8,6 @@ export function usePageBlocks(slug: string) {
 
   useEffect(() => {
     let cancelled = false;
-
     const fetchBlocks = async () => {
       setLoading(true);
       setBlocks([]); // reset
@@ -31,8 +30,21 @@ export function usePageBlocks(slug: string) {
 
     fetchBlocks();
 
+    const onUpdated = (ev: Event) => {
+      const ce = ev as CustomEvent<{ id: string; content: unknown } | undefined>;
+      const detail = ce.detail;
+      if (detail && typeof detail.id === "string") {
+        setBlocks(prev => prev.map(b => (b.id === detail.id ? { ...b, content: detail.content as any } : b)));
+      } else {
+        // No payload; fallback to refetch
+        fetchBlocks();
+      }
+    };
+    window.addEventListener("pageblocks:updated", onUpdated as EventListener);
+
     return () => {
       cancelled = true;
+      window.removeEventListener("pageblocks:updated", onUpdated as EventListener);
     };
   }, [slug]);
 

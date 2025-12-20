@@ -50,14 +50,17 @@ export function Imagery({ id, images }: ImageryProps) {
             <div
                 key={idx}
                 className='imageWrapper'
-                style={{ width: `${image.width ? "100%" : ""}` }}
             >
                 <img
                     src={signedUrl}
                     alt={image.alt}
                     loading="lazy"
-                    style={{ width: `${image.width}%` }}
                     className='image'
+                    style={
+                        typeof image.width === "number"
+                            ? { width: `${image.width}%` }
+                            : undefined
+                    }
                 />
                 {image.source && (
                     <small className='imageSource'>

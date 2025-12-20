@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { renderPageBlock } from ".";
 import { usePageBlocks } from "../hooks";
-import React, { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Loading } from "@/shared/components/index";
 import { Error } from "@/shared/components/index";
 import styles from "./PageRenderer.module.css";
 import { supabase } from "@/supabaseClient";
 import { AuthContext } from "@/features/auth/context/AuthContext";
+import { useSelection } from "@/features/admin/context/hooks/useSelection";
 
 export const InsertBlockButton = () => {
   const [loading, setLoading] = useState(false);
@@ -45,8 +46,15 @@ export const InsertBlockButton = () => {
 const PageRenderer = () => {
   const { slug } = useParams<{ slug: string }>();
   const { blocks, loading } = usePageBlocks(slug || "");
-  
+
   const { user } = useContext(AuthContext);
+  const { selectedBlock, setSelectedBlock } = useSelection();
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, [slug]);
+
+
 
   if (loading) return <Loading />
   if (!slug || blocks.length === 0) return <Error message="Seite nicht gefunden" />;
@@ -55,7 +63,13 @@ const PageRenderer = () => {
     <div className={styles.page}>
       {user && <InsertBlockButton />}
       {blocks.map((block, index) => (
-        <React.Fragment key={index}>{renderPageBlock(block)}</React.Fragment>
+        <div
+          key={index}
+          className={`${styles.blockWrapper} ${selectedBlock?.id === block.id ? styles.selected : ""}`}
+          onClick={() => user && setSelectedBlock(block)}
+        >
+          {renderPageBlock(block)}
+        </div>
       ))}
     </div>
   );

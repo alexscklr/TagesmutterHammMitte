@@ -45,8 +45,15 @@ export const useAuth = () => {
   }, []);
 
   const logout = async () => {
-    await signOut();
-    setRole(null);
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      // Clear local auth state immediately so the UI updates even if the event listener lags
+      setUser(null);
+      setRole(null);
+    }
   };
 
   return { user, role, loading, logout };

@@ -12,9 +12,11 @@ interface ListProps {
 }
 
 export function List({ content, listStyle, ordered }: ListProps) {
+  const withMarkers = listStyle && listStyle !== "none";
+
   if (ordered) {
     return (
-      <ol className={styles.ol} style={{ listStyleType: listStyle }}>
+      <ol className={`${styles.ol} ${withMarkers ? styles.withMarkers : ""}`} style={{ listStyleType: listStyle }}>
         {content.map((item, idx) => (
           <li key={`ordered-${idx}`}>{item}</li>
         ))}
@@ -23,11 +25,10 @@ export function List({ content, listStyle, ordered }: ListProps) {
   }
 
   return (
-    <ul className={styles.ul} style={{ listStyleType: listStyle}}>
+    <ul className={`${styles.ul} ${withMarkers ? styles.withMarkers : ""}`} style={{ listStyleType: listStyle }}>
       {content.map((item, idx) => (
         <li key={`unordered-${idx}`}>{item}</li>
       ))}
     </ul>
   );
 }
-// ...existing code...

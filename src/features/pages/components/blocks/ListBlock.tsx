@@ -2,7 +2,7 @@
 import { List } from "@/shared/components/List/List";
 import { type PageBlock } from "../../types";
 import type { ListBlock as TListBlock } from "../../types";
-import { renderPageBlock } from "../PageBlockRenderer";
+import { renderPageBlock } from "..";
 // ...existing code...
 
 interface ListBlockProps {
