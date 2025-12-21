@@ -1,9 +1,10 @@
+
+
 /* ...existing code... */
 .footer {
   width: 100%;
   min-height: 20vh;
   background-color: var(--color-accent);
-  background-image: url('src/assets/redox-01.png');
   color: var(--color-bg);
   margin: 0;
   box-shadow: 0px -3px 5px #555555;

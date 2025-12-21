@@ -9,37 +9,45 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initial Session holen
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setUser(session?.user ?? null);
+    let isMounted = true;
 
-      if (session?.user) {
-        const userRole = await fetchUserRole(session.user.id);
-        setRole(userRole);
+    // Hilfsfunktion um User & Rolle zu setzen
+    const updateAuthState = async (session: any) => {
+      if (!isMounted) return;
+
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+
+      if (currentUser) {
+        try {
+          const userRole = await fetchUserRole(currentUser.id);
+          if (isMounted) setRole(userRole);
+        } catch (err) {
+          console.error("Role fetch failed", err);
+          if (isMounted) setRole(null);
+        }
       } else {
         setRole(null);
       }
-
+      
       setLoading(false);
+    };
+
+    // 1. Hole die aktuelle Session einmalig beim Start
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      updateAuthState(session);
     });
 
-    // Listener für Auth-Änderungen
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        const userRole = await fetchUserRole(session.user.id);
-        setRole(userRole);
-      } else {
-        setRole(null);
+    // 2. Lausche auf Änderungen (Login, Logout, Token Refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Vermeide unnötiges Laden bei INITIAL_SESSION, wenn getSession schon läuft
+      if (event !== 'INITIAL_SESSION') {
+        updateAuthState(session);
       }
-      
-      setLoading(false);
     });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);

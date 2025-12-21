@@ -8,7 +8,7 @@ import { List } from "@/shared/components/List/List";
 import type { PageBlock, TimelineEntry } from "@/features/pages/types";
 import { getCurrentTimelineEntry } from "@/shared/lib/getCurrentTimelineEntry";
 import { renderPageBlock } from "@/features/pages/components";
-import Portrait from "@/assets/Portrait.webp";
+import Portrait from "/Portrait.webp";
 
 
 
