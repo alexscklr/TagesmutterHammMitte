@@ -13,6 +13,7 @@ export interface TimelineEntry {
 
 export interface Timeline {
   entries: TimelineEntry[];
+  content?: PageBlock[]; // Child TimelineEntry blocks for edit mode
 }
 
 export type TimelineBlock = Extract<PageBlock, {type: typeof PageBlocks.Timeline }>;

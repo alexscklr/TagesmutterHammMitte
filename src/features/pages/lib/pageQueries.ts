@@ -86,18 +86,24 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
             cb => cb.parent_block_id === b.id && cb.type === PageBlocks.TimelineEntry
           ) as Extract<PageBlock, { type: typeof PageBlocks.TimelineEntry }>[];
 
-          const entries = entryBlocks.map(entryBlock => {
-            return {
+          // Build nested structure for each entry block
+          const processedEntryBlocks = entryBlocks.map(entryBlock => ({
+            ...entryBlock,
+            content: {
               ...(entryBlock.content as TimelineEntry),
               content: buildNestedBlocks(blocks, entryBlock.id),
-            };
-          });
+            },
+          }));
+
+          // Also create entries array for Timeline component
+          const entries = processedEntryBlocks.map(entryBlock => entryBlock.content);
 
           return {
             ...b,
             content: {
               ...b.content,
               entries,
+              content: processedEntryBlocks, // Store entry blocks as children
             },
           } as PageBlock;
         }

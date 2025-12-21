@@ -67,7 +67,10 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
     >
       <div style={{ position: "relative" }}>
         <button
-          onClick={() => setShowMenu(!showMenu)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMenu(!showMenu);
+          }}
           disabled={loading}
           style={{
             padding: "0.5rem 1rem",
@@ -103,7 +106,10 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
             {blockTypes.map((blockType) => (
               <button
                 key={blockType}
-                onClick={() => handleInsert(blockType)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleInsert(blockType);
+                }}
                 disabled={loading}
                 style={{
                   display: "block",
@@ -135,7 +141,10 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
       {error && <span style={{ color: "red", fontSize: "0.9rem" }}>{error}</span>}
       {showMenu && (
         <div
-          onClick={() => setShowMenu(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMenu(false);
+          }}
           style={{
             position: "fixed",
             top: 0,
