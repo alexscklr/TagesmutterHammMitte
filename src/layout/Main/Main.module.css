@@ -1,6 +1,7 @@
 .main {
     width: 100%;
-    min-height: 100vh;
+    flex: 1;
+    min-height: calc(100vh - 200px);
     background-size: auto;
     background-position: center;
     background-repeat: repeat;
