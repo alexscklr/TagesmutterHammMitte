@@ -1,0 +1,391 @@
+.container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-neutral-200);
+}
+
+.error {
+  padding: 1rem;
+  background-color: #fee;
+  color: #c33;
+  border-radius: 0.4rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+/* Sections */
+.section {
+  background: var(--color-neutral-800);
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-neutral-700);
+}
+
+.sectionHeader h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-neutral-200);
+  margin: 0;
+}
+
+.sectionHeader h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-neutral-300);
+  margin: 0;
+}
+
+.navigationStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Block Rows */
+.blockRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  background: var(--color-neutral-700);
+  border-radius: 0.4rem;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.2s;
+}
+
+.blockRow:hover {
+  background: var(--color-neutral-650, rgba(255, 255, 255, 0.03));
+}
+
+.nestedBlockRow {
+  background: var(--color-neutral-750);
+  margin-bottom: 0.5rem;
+  margin-left: 1.5rem;
+  border-left: 3px solid var(--color-accent);
+  padding-left: 0.75rem;
+}
+
+.nestedBlockRow:hover {
+  background: var(--color-neutral-700);
+}
+
+.blockInfo {
+  flex: 1;
+}
+
+.blockInfo strong {
+  display: block;
+  color: var(--color-neutral-200);
+  margin-bottom: 0.25rem;
+}
+
+.blockTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.3rem;
+  letter-spacing: 0.02em;
+}
+
+.badgeLink {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.badgeDropdown {
+  background: var(--color-neutral-600);
+  color: #fff;
+}
+
+.badgeLogo {
+  background: var(--color-neutral-500);
+  color: #fff;
+}
+
+.blockActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Nested Elements */
+.childList {
+  margin-top: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 2px dashed var(--color-neutral-600);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nestedBlock {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr auto;
+  gap: 0.5rem;
+  align-items: end;
+  padding: 0.75rem;
+  background: var(--color-neutral-700);
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.nestedBlock input,
+.nestedBlock select {
+  padding: 0.5rem;
+  background: var(--color-neutral-600);
+  border: 1px solid var(--color-neutral-500);
+  border-radius: 0.3rem;
+  color: var(--color-neutral-100);
+  font-size: 0.9rem;
+}
+
+.nestedBlock input:focus,
+.nestedBlock select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+/* Edit Form */
+.editForm {
+  background: var(--color-neutral-800);
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.editForm h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-neutral-200);
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-neutral-300);
+  margin-bottom: 0.5rem;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--color-neutral-700);
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.4rem;
+  color: var(--color-neutral-100);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.preview {
+  display: block;
+  max-width: 200px;
+  height: auto;
+  border-radius: 0.4rem;
+  border: 2px solid var(--color-neutral-600);
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: var(--color-accent-dark, #0056b3);
+  transform: translateY(-1px);
+}
+
+.btnPrimary {
+  padding: 0.75rem 2rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnPrimary:hover {
+  background-color: var(--color-accent-dark, #0056b3);
+}
+
+.btnSecondary {
+  padding: 0.75rem 2rem;
+  background-color: transparent;
+  color: var(--color-neutral-300);
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover {
+  background-color: var(--color-neutral-700);
+  border-color: var(--color-neutral-500);
+}
+
+.btnDelete {
+  padding: 0.6rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 38px;
+}
+
+.btnDelete:hover {
+  background-color: #c82333;
+}
+
+.btnClose {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnClose:hover {
+  background-color: #5a6268;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: var(--color-neutral-800);
+  border-radius: 0.5rem;
+  max-width: 900px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-neutral-600);
+  color: var(--color-neutral-200);
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.imageCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--color-neutral-700);
+  border: 2px solid var(--color-neutral-600);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.imageCard:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.imageCard img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.imageName {
+  font-size: 0.8rem;
+  color: var(--color-neutral-300);
+  text-align: center;
+  word-break: break-word;
+}

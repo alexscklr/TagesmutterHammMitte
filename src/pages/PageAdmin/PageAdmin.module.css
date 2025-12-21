@@ -81,6 +81,109 @@
   border-color: var(--color-accent);
 }
 
+.gradientControlRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.gradientControlRow label {
+  font-size: 0.9rem;
+  color: var(--color-neutral-400);
+}
+
+.subLabel {
+  font-size: 0.9rem;
+  color: var(--color-neutral-400);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.gradientStopRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.colorInput {
+  width: 60px;
+  height: 40px;
+  cursor: pointer;
+  padding: 0;
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.25rem;
+}
+
+.removeStopButton {
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.addColorButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.gradientPreviewBox {
+  margin-top: 1rem;
+  height: 60px;
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-neutral-600);
+}
+
+.imagePreview {
+  margin-bottom: 1rem;
+}
+
+.imagePreview img {
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  border: 2px solid var(--color-neutral-600);
+}
+
+.imageMeta {
+  font-size: 0.85rem;
+  color: var(--color-neutral-400);
+  margin-top: 0.5rem;
+}
+
+.imageActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pickImageButton,
+.removeImageButton {
+  padding: 0.75rem 1.5rem;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.pickImageButton {
+  background-color: var(--color-accent);
+}
+
+.removeImageButton {
+  background-color: #dc3545;
+}
+
 .formActions {
   display: flex;
   gap: 1rem;
@@ -233,4 +336,80 @@
 
 .deleteButton:hover {
   background-color: #c82333;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 80vh;
+  overflow: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.btnClose {
+  padding: 0.4rem 0.8rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.imageCard {
+  border: 2px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.imageCard:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imageCard img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.imageName {
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #333;
 }

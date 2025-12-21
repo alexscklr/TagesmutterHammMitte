@@ -8,7 +8,7 @@ interface CopyrightNoticeBlockProps {
 export function CopyrightNoticeBlock({ block }: CopyrightNoticeBlockProps) {
   return (
     <div className="copyright-notice">
-      <p>{block.content.notice}</p>
+      <p>{(block.content as any).notice || (block.content as any).text || ""}</p>
     </div>
   );
 }
