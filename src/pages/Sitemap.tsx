@@ -22,7 +22,6 @@ const Sitemap = () => {
   return (
     <section className={styles.page}>
       <h1>Sitemap</h1>
-      <p style={{ textAlign: "center" }}>Alle verfügbaren Seiten dieser Website</p>
 
       {loading ? (
         <p>Lade Seiten...</p>

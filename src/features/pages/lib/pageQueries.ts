@@ -17,22 +17,15 @@ export interface PageMeta {
 export async function fetchAllPages(): Promise<PageMeta[]> {
   const { data, error } = await supabase
     .from("pages")
-    .select("id, slug, title, sitetitle, created_at, background")
-    .order("created_at", { ascending: true });
+    .select("*")
+    .order("title", { ascending: true });
 
   if (error || !data) {
     console.error("Error fetching all pages:", error);
     return [];
   }
 
-  return data.map(page => ({
-    id: page.id,
-    slug: page.slug,
-    title: page.title,
-    sitetitle: page.sitetitle,
-    created_at: page.created_at,
-    background: page.background
-  }));
+  return data as PageMeta[];
 }
 
 /**

@@ -1,20 +1,23 @@
 import { InfiniteSlider } from "@/shared/components";
 import type { InfiniteSliderBlock, PageBlock } from "../../types/index";
 import { renderPageBlock } from "..";
+import React from "react";
+import { AddBlockButton } from "../AddBlockButton";
 
 interface InfiniteSliderBlockProps {
     block: InfiniteSliderBlock;
 }
 
 export function InfiniteSliderBlock({ block }: InfiniteSliderBlockProps) {
+    const children = (block.content.content as PageBlock[]) || [];
 
     return (
-        <InfiniteSlider
-          key={block.id}
-          items={block.content.content as PageBlock[]}
-          speed={block.content.speed}
-          keyExtractor={(b: PageBlock) => b.id}
-          renderItem={(b: PageBlock) => renderPageBlock(b)}
-        />
-      );
+      <InfiniteSlider
+        key={block.id}
+        items={children}
+        speed={block.content.speed}
+        keyExtractor={(b: PageBlock) => b.id}
+        renderItem={(b: PageBlock) => renderPageBlock(b)}
+      />
+    );
 };

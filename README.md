@@ -1,24 +1,25 @@
 # Tagesmutter Hamm-Mitte – CMS Website
 
-Dies ist das Quellcode-Repository für die Website einer Tagesmutter in Hamm-Mitte. Die Anwendung basiert auf **React**, **TypeScript** und **Vite** und dient als einfaches Content-Management-System (CMS), um Inhalte wie Texte, Bilder und Informationen flexibel zu verwalten.
+This is the source code of a website for a daycare. The project is based on **React**, **TypeScript** and **Vite** und functions as simple Content-Management-System (CMS).
 
 ## Features
 
-- **Modulare Inhaltsblöcke:** Seiten bestehen aus wiederverwendbaren Komponenten (z.B. Text, Bilder, Kontakt).
-- **Bildverwaltung:** Bilder werden sicher geladen und können mit Quellen und Lizenzen versehen werden.
-- **Responsives Design:** Optimiert für Desktop und mobile Endgeräte.
-- **Einfache Erweiterbarkeit:** Neue Inhaltsblöcke und Seiten können leicht hinzugefügt werden.
+- **Modular Content Blocks:** Sites are built from reusable content bloks
+- **Image Management:** Images are loaded safely and can be provided with sources and licences.
+- **Responsive Design:** Optimized for Desktop and mobile devices.
+- **Easy expandability:** New content blocks, block contents and sites can be added easily.
 
-## Projektstruktur
+## Project structure
 
-- `src/features/pages`: Seiten und Inhaltsblöcke
-- `src/layout`: Layout-Komponenten (Header, Footer, Navigation)
-- `src/shared`: Wiederverwendbare Komponenten, Typen und Utilities
-- `src/assets`: Statische Dateien (Bilder, Icons)
-- `public`: Öffentliche Assets
+- `src/features/pages`: sites and content blocks
+- `src/layout`: Layout components (Header, Footer, Navigation)
+- `src/shared`: reusable components, types and utilities
+- `src/pages`: static sites for better SEO
+- `src/assets`: static files (images, icons)
+- `public`: public assets
 - `vite.config.ts`, `tsconfig.json`: Projektkonfiguration
 
-## Entwicklung
+## Development
 
 ```bash
 # Installation der Abhängigkeiten
@@ -31,14 +32,14 @@ npm run dev
 npm run build
 ```
 
-## Mitwirken
+## Contribute
 
-Pull Requests und Vorschläge sind willkommen! Bitte beachte die Struktur und Konventionen des Projekts.
+Pull requests and recommendations are welcome! Please note the structure and conventions of this project.
 
-## Lizenz
+## Licence
 
-Dieses Projekt steht unter der MIT-Lizenz.
+This project is licensed under the MIT license.
 
 ---
 
-**Hinweis:** Die Website ist speziell für die Präsentation und Verwaltung der Inhalte einer Tagesmutter in Hamm-Mitte konzipiert.
+**Notice:** This website is specifically for the content presentation of a daycare.

@@ -8,39 +8,11 @@ import styles from "./PageRenderer.module.css";
 import { supabase } from "@/supabaseClient";
 import { AuthContext } from "@/features/auth/context/AuthContext";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
-
-export const InsertBlockButton = () => {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-
-  const handleInsert = async () => {
-    setLoading(true);
-    setResult(null);
-    const { error } = await supabase.from("page_blocks").insert([
-      {
-        id: crypto.randomUUID(),
-        page_id: "c8572950-69b0-45b5-a0b6-ad2448113b66",
-        type: "paragraph",
-        content: { paragraph: [{ text: "Dies ist ein Texttext" }] },
-        order: 2,
-        created_at: new Date().toISOString(),
-        parent_block_id: "4a5bf9d4-e198-494d-8492-13e8782ecc30",
-      },
-    ]);
-    if (error) setResult("Fehler: " + error.message);
-    else setResult("Block erfolgreich eingefügt!");
-    setLoading(false);
-  };
-
-  return (
-    <div style={{ margin: "2rem 0" }}>
-      <button onClick={handleInsert} disabled={loading}>
-        {loading ? "Einfügen..." : "Block einfügen"}
-      </button>
-      {result && <div>{result}</div>}
-    </div>
-  );
-};
+import { useEditMode } from "@/features/admin/hooks/useEditMode";
+import type { PageBlock } from "../types/page";
+import { AddBlockButton } from "./AddBlockButton";
+import { DeleteBlockButton } from "./DeleteBlockButton";
+import { getDefaultContent } from "./blockDefaults";
 
 
 const PageRenderer = () => {
@@ -54,25 +26,135 @@ const PageRenderer = () => {
     scrollTo(0, 0);
   }, [slug]);
 
-
-
   if (loading) return <Loading />
-  if (!slug || blocks.length === 0) return <Error message="Seite nicht gefunden" />;
+  if (!slug) return <Error message="Slug nicht gefunden" />;
+  if (blocks.length === 0) return <Error message="Seite nicht gefunden" />;
 
   return (
     <div className={styles.page}>
-      {user && <InsertBlockButton />}
-      {blocks.map((block, index) => (
-        <div
-          key={index}
-          className={`${styles.blockWrapper} ${selectedBlock?.id === block.id ? styles.selected : ""}`}
-          onClick={() => user && setSelectedBlock(block)}
-        >
-          {renderPageBlock(block)}
-        </div>
-      ))}
+      <PageRendererContent 
+        blocks={blocks} 
+        slug={slug}
+        user={user}
+        selectedBlock={selectedBlock}
+        setSelectedBlock={setSelectedBlock}
+      />
     </div>
   );
+};
+
+interface PageRendererContentProps {
+  blocks: PageBlock[];
+  slug: string;
+  user: any;
+  selectedBlock: PageBlock | null;
+  setSelectedBlock: (block: PageBlock) => void;
+}
+
+const PageRendererContent: React.FC<PageRendererContentProps> = ({
+  blocks,
+  slug,
+  user,
+  selectedBlock,
+  setSelectedBlock,
+}) => {
+  const [pageId, setPageId] = useState<string | null>(null);
+  const { isEditing } = useEditMode();
+
+  useEffect(() => {
+    const fetchPageId = async () => {
+      const { getPageIdBySlug } = await import("../lib/pageQueries");
+      const id = await getPageIdBySlug(slug);
+      setPageId(id);
+    };
+    fetchPageId();
+  }, [slug]);
+
+  useEffect(() => {
+    if (!pageId) return;
+    const onInsert = async (ev: Event) => {
+      const ce = ev as CustomEvent<{ type: string; order: number; parent_block_id: string | null }>;
+      const detail = ce.detail;
+      if (!detail) return;
+      try {
+        const { error } = await supabase.rpc('insert_page_block_and_reorder', {
+          p_page_id: pageId,
+          p_type: detail.type,
+          p_content: getDefaultContent(detail.type as any),
+          p_order: detail.order,
+          p_parent_block_id: detail.parent_block_id,
+        });
+        if (error) {
+          console.error("Insert error", error);
+        }
+        // trigger refetch
+        window.dispatchEvent(new Event("pageblocks:updated"));
+      } catch (err) {
+        console.error("Insert handler crashed", err);
+      }
+    };
+    window.addEventListener("pageblocks:insert", onInsert as EventListener);
+    return () => window.removeEventListener("pageblocks:insert", onInsert as EventListener);
+  }, [pageId]);
+
+  const handleBlockAdded = () => {
+    // Trigger refetch durch das pageblocks:updated Event ohne Payload
+    window.dispatchEvent(new Event("pageblocks:updated"));
+  };
+
+  const renderAddButton = (order: number, parentBlockId?: string | null) => {
+    if (!pageId) return null;
+    return (
+      <AddBlockButton
+        key={`add-${order}`}
+        pageId={pageId}
+        order={order}
+        parentBlockId={parentBlockId ?? null}
+        onBlockAdded={handleBlockAdded}
+      />
+    );
+  };
+
+  // Berechne die neue Reihenfolge (mit Zwischenräumen für neue Blöcke)
+  const content = [];
+
+  // Vor dem ersten Block
+  if (pageId) {
+    content.push(renderAddButton(0, null));
+  }
+
+  // Blöcke mit AddBlockButton dazwischen
+  blocks.forEach((block) => {
+    content.push(
+      <div
+        key={block.id}
+        className={`${styles.blockWrapper} ${selectedBlock?.id === block.id ? styles.selected : ""}`}
+        onClick={() => user && setSelectedBlock(block)}
+        style={{
+          minHeight: isEditing ? "48px" : undefined,
+          padding: isEditing ? "4px 0" : undefined,
+          cursor: isEditing ? "pointer" : undefined,
+          background: isEditing ? "rgba(0,0,0,0.05)" : undefined,
+          borderRadius: isEditing ? "0.6rem" : undefined,
+          position: "relative",
+        }}
+      >
+        {isEditing && (
+          <div style={{ position: "absolute", top: "0.5rem", right: "0.5rem", zIndex: 10 }}>
+            <DeleteBlockButton blockId={block.id} />
+          </div>
+        )}
+        {renderPageBlock(block)}
+      </div>
+    );
+
+    // AddBlockButton nach jedem Block
+    if (pageId) {
+      content.push(renderAddButton(block.order + 1, null));
+    }
+  });
+
+  return content;
 };
 
 export default PageRenderer;
