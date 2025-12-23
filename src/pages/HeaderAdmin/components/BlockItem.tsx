@@ -11,9 +11,10 @@ export type BlockItemProps = {
   getPageTitle: (id: string) => string;
   onEdit: (block: HeaderBlock) => void;
   onDelete: (id: string) => void;
+  readOnly?: boolean;
 };
 
-export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = false, styles, getPageTitle, onEdit, onDelete }) => {
+export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = false, styles, getPageTitle, onEdit, onDelete, readOnly = false }) => {
   const content = block.content as any;
 
   if (block.type === HeaderBlocks.Logo) {
@@ -28,7 +29,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         </div>
         <div className={styles.blockActions}>
           <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
         </div>
       </div>
     );
@@ -45,7 +46,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         </div>
         <div className={styles.blockActions}>
           <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
         </div>
       </div>
     );
@@ -75,6 +76,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
                   getPageTitle={getPageTitle}
                   onEdit={onEdit}
                   onDelete={onDelete}
+                  readOnly={readOnly}
                 />
               ))}
             </div>
@@ -82,7 +84,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         </div>
         <div className={styles.blockActions}>
           <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
         </div>
       </div>
     );

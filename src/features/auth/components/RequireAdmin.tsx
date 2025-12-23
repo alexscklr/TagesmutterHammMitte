@@ -6,7 +6,7 @@ interface RequireAdminProps {
 }
 
 export const RequireAdmin: React.FC<RequireAdminProps> = ({ children }) => {
-  const { user, role, loading } = useContext(AuthContext);
+  const { user, canEdit, loading } = useContext(AuthContext);
 
   if (loading) {
     return (
@@ -22,7 +22,7 @@ export const RequireAdmin: React.FC<RequireAdminProps> = ({ children }) => {
     );
   }
 
-  if (!user || role !== "admin") {
+  if (!user || !canEdit) {
     return (
       <div style={{
         display: "flex",

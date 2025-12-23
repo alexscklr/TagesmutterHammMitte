@@ -1,8 +1,6 @@
 import { InfiniteSlider } from "@/shared/components";
 import type { InfiniteSliderBlock, PageBlock } from "../../types/index";
 import { renderPageBlock } from "..";
-import React from "react";
-import { AddBlockButton } from "../AddBlockButton";
 
 interface InfiniteSliderBlockProps {
     block: InfiniteSliderBlock;

@@ -24,8 +24,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   // onChangeBlock,
 }) => {
   const { isEditing, setEditing } = useEditMode();
-  const { role } = useAuth();
-  const isAdmin = role === "admin";
+  const { canEdit } = useAuth();
   const { selectedBlock: ctxSelected, setSelectedBlock } = useSelection();
   const { isDirty } = useEditing();
   const visible = open ?? isEditing;
@@ -61,9 +60,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button
               className={styles.button}
-              onClick={() => isAdmin && setEditing(!isEditing)}
-              disabled={!isAdmin}
-              title={isAdmin ? "Bearbeitungsmodus umschalten" : "Nur Admins dürfen editieren"}
+              onClick={() => canEdit && setEditing(!isEditing)}
+              disabled={!canEdit}
+              title={canEdit ? "Bearbeitungsmodus umschalten" : "Keine Berechtigung"}
             >
               Bearbeitungsmodus {isEditing ? "deaktivieren" : "aktivieren"} 
             </button>

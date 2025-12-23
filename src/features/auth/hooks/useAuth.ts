@@ -64,5 +64,7 @@ export const useAuth = () => {
     }
   };
 
-  return { user, role, loading, logout };
+  const canEdit = role === "admin" || role === "auditor";
+
+  return { user, role, loading, canEdit, logout };
 };

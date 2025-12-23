@@ -18,9 +18,8 @@ const Main = ({ children }: { children: ReactNode }) => {
   const [backgroundStyle, setBackgroundStyle] = useState<string>(
     "linear-gradient(0deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6))"
   );
-  const { user, role } = useAuth();
+  const { user, canEdit } = useAuth();
   const { setEditing } = useEditMode();
-  const isAdmin = role === "admin";
 
   useEffect(() => {
     if (slug) {
@@ -40,10 +39,10 @@ const Main = ({ children }: { children: ReactNode }) => {
     }
   }, [meta]);
 
-  // Ensure edit mode toggles only for admins
+  // Ensure edit mode toggles for users with edit permission
   useEffect(() => {
-    setEditing(!!user && isAdmin);
-  }, [user, isAdmin, setEditing]);
+    setEditing(!!user && canEdit);
+  }, [user, canEdit, setEditing]);
 
   useEffect(() => {
     let active = true;
@@ -60,10 +59,10 @@ const Main = ({ children }: { children: ReactNode }) => {
   return (
     <SelectionProvider>
       <EditingProvider>
-      {/* Sidebar nur für Admins */}
-      {user && isAdmin && <SidebarWithSave />}
+      {/* Sidebar für Benutzer mit Bearbeitungsrechten */}
+      {user && canEdit && <SidebarWithSave />}
       <main
-        className={`${styles.main} ${user && isAdmin ? styles.withSidebar : ""}`}
+        className={`${styles.main} ${user && canEdit ? styles.withSidebar : ""}`}
         style={{ backgroundImage: backgroundStyle }}
       >
         {children}

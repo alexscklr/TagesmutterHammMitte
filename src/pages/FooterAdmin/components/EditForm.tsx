@@ -16,9 +16,8 @@ export type EditFormProps = {
   onStartCreateChildLink: (parentId: string) => void;
 };
 
-export const EditForm: React.FC<EditFormProps> = ({ styles, editingId, formData, pages, blocks, onChangeContent, onChangeFormData, onSave, onCancel, onOpenImagePicker, onStartCreateChildLink }) => {
+export const EditForm: React.FC<EditFormProps> = ({ styles, editingId, formData, pages, onChangeContent, onChangeFormData, onSave, onCancel, onOpenImagePicker, onStartCreateChildLink }) => {
   const isNew = editingId.startsWith("new-");
-  const type = formData.type as keyof typeof FooterBlocks;
   const content = (formData.content as any) || {};
 
   return (

@@ -5,11 +5,15 @@ import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
 import type { HeaderBlock, HeaderBlockType } from "@/layout/Header/types/header";
 import { HeaderBlocks } from "@/layout/Header/types/header";
 import styles from "./HeaderAdmin.module.css";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { canEdit } from "@/features/auth/lib/permissions";
 import { BlockItem } from "./components/BlockItem";
 import { EditForm } from "./components/EditForm";
 import { ImagePickerModal } from "./components/ImagePickerModal";
 
 const HeaderAdmin: React.FC = () => {
+  const { role } = useAuth();
+  const readOnly = !canEdit(role);
   const [blocks, setBlocks] = useState<HeaderBlock[]>([]);
   const [pages, setPages] = useState<PageMeta[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +57,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const startCreate = (blockType: HeaderBlockType, parentBlockId?: string) => {
+    if (readOnly) return; // auditors: no create
     const defaults: Record<string, any> = {
       [HeaderBlocks.Logo]: { logo: { url: "", alt: "" } },
       [HeaderBlocks.Link]: { target_site_id: "", url: "", label: [] },
@@ -79,6 +84,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const saveBlock = async () => {
+    if (readOnly) return; // auditors: no save
     const isNew = editingId?.startsWith("new-");
     try {
       const payload = {
@@ -105,6 +111,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const deleteBlock = async (id: string) => {
+    if (readOnly) return; // auditors: no delete
     if (!confirm("Möchten Sie diesen Block wirklich löschen?")) return;
 
     try {
@@ -187,6 +194,7 @@ const HeaderAdmin: React.FC = () => {
           onStartEdit={startEdit}
           onStartCreateChildLink={startCreateChildLink}
           getPageTitle={getPageTitle}
+          readOnly={readOnly}
         />
       ) : (
         <>
@@ -194,7 +202,7 @@ const HeaderAdmin: React.FC = () => {
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>Logo</h2>
-              {!logo && <button onClick={() => startCreate(HeaderBlocks.Logo)} className={styles.btn}>+ Hinzufügen</button>}
+              {!logo && <button onClick={() => startCreate(HeaderBlocks.Logo)} className={styles.btn} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>+ Hinzufügen</button>}
             </div>
             {logo ? (
               <BlockItem
@@ -204,6 +212,7 @@ const HeaderAdmin: React.FC = () => {
                 getPageTitle={getPageTitle}
                 onEdit={startEdit}
                 onDelete={deleteBlock}
+                readOnly={readOnly}
               />
             ) : (
               <p style={{ color: "var(--color-neutral-400)" }}>Kein Logo vorhanden</p>
@@ -215,8 +224,8 @@ const HeaderAdmin: React.FC = () => {
             <div className={styles.sectionHeader}>
               <h2>Navigation</h2>
               <div style={{ display: "flex", gap: "0.5rem" }}>
-                <button onClick={() => startCreate(HeaderBlocks.Link)} className={styles.btn}>+ Link</button>
-                <button onClick={() => startCreate(HeaderBlocks.Dropdown)} className={styles.btn}>+ Dropdown</button>
+                <button onClick={() => startCreate(HeaderBlocks.Link)} className={styles.btn} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>+ Link</button>
+                <button onClick={() => startCreate(HeaderBlocks.Dropdown)} className={styles.btn} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>+ Dropdown</button>
               </div>
             </div>
 
@@ -236,6 +245,7 @@ const HeaderAdmin: React.FC = () => {
                       getPageTitle={getPageTitle}
                       onEdit={startEdit}
                       onDelete={deleteBlock}
+                      readOnly={readOnly}
                     />
                   ))}
               </div>

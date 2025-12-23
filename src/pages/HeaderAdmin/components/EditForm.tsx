@@ -18,6 +18,7 @@ export type EditFormProps = {
   onStartEdit: (block: HeaderBlock) => void;
   onStartCreateChildLink: (parentId: string) => void;
   getPageTitle: (id: string) => string;
+  readOnly?: boolean;
 };
 
 const FormField: React.FC<{ label: string; children: React.ReactNode; styles: { [key: string]: string } }> = ({ label, children, styles }) => (
@@ -42,6 +43,7 @@ export const EditForm: React.FC<EditFormProps> = ({
   onStartEdit,
   onStartCreateChildLink,
   getPageTitle,
+  readOnly = false,
 }) => {
   return (
     <div className={styles.editForm}>
@@ -82,6 +84,8 @@ export const EditForm: React.FC<EditFormProps> = ({
             <select
               value={(formData.target_site_id as any) || ""}
               onChange={(e) => onChangeFormData(prev => ({ ...prev, target_site_id: e.target.value }))}
+              disabled={readOnly}
+              title={readOnly ? "Nur Lesen" : undefined}
             >
               <option value="">-- Seite wählen --</option>
               {pages.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
@@ -93,6 +97,8 @@ export const EditForm: React.FC<EditFormProps> = ({
               value={(formData.content as any)?.url || ""}
               onChange={(e) => onChangeContent({ url: e.target.value })}
               placeholder="https://example.com"
+              disabled={readOnly}
+              title={readOnly ? "Nur Lesen" : undefined}
             />
           </FormField>
         </>
@@ -105,6 +111,8 @@ export const EditForm: React.FC<EditFormProps> = ({
               type="text"
               value={(formData.content as any)?.title?.[0]?.text || ""}
               onChange={(e) => onChangeContent({ title: [{ text: e.target.value }] })}
+              disabled={readOnly}
+              title={readOnly ? "Nur Lesen" : undefined}
             />
           </FormField>
           <div className={styles.formGroup}>
@@ -121,7 +129,7 @@ export const EditForm: React.FC<EditFormProps> = ({
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem" }}>
                     <button type="button" onClick={() => onStartEdit(childLink)} className={styles.btn} style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}>✎</button>
-                    <button type="button" onClick={() => onDeleteChild(childLink.id)} className={styles.btnDelete}>✕</button>
+                    <button type="button" onClick={() => onDeleteChild(childLink.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
                   </div>
                 </div>
               ))
@@ -131,6 +139,8 @@ export const EditForm: React.FC<EditFormProps> = ({
               onClick={() => onStartCreateChildLink(editingId)}
               className={styles.btn}
               style={{ marginTop: "0.5rem" }}
+              disabled={readOnly}
+              title={readOnly ? "Nur Lesen" : undefined}
             >
               + Link hinzufügen
             </button>
@@ -139,7 +149,7 @@ export const EditForm: React.FC<EditFormProps> = ({
       )}
 
       <div className={styles.formActions}>
-        <button onClick={onSave} className={styles.btnPrimary}>Speichern</button>
+        <button onClick={onSave} className={styles.btnPrimary} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>Speichern</button>
         <button onClick={onCancel} className={styles.btnSecondary}>Abbrechen</button>
       </div>
     </div>
