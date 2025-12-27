@@ -8,7 +8,7 @@ import { EditingContext } from "./EditingContextValue";
 
 export const EditingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [changedBlock, setChangedBlock] = useState<PageBlock | null>(null);
-  const { selectedBlock } = useSelection();
+  const { selectedBlock, setSelectedBlock } = useSelection();
 
   // When selection changes, reset changed block baseline
   useEffect(() => {
@@ -41,12 +41,13 @@ export const EditingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       window.dispatchEvent(
         new CustomEvent("pageblocks:updated", { detail: { id: changedBlock.id, content: updated.content } })
       );
+      setSelectedBlock(null);
     } else {
       console.error("EditingContext.save: Update returned null/undefined");
       window.dispatchEvent(new Event("pageblocks:updated"));
     }
     // no explicit dirty flag; derived from selected vs changed
-  }, [changedBlock]);
+  }, [changedBlock, setSelectedBlock]);
 
   return (
     <EditingContext.Provider value={{ isDirty, changedBlock, setChangedBlock, save }}>

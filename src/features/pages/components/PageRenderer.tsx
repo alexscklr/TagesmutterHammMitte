@@ -11,7 +11,6 @@ import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import type { PageBlock } from "../types/page";
 import { AddBlockButton } from "./AddBlockButton";
-import { DeleteBlockButton } from "./DeleteBlockButton";
 import { getDefaultContent } from "./blockDefaults";
 
 
@@ -134,16 +133,9 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
           minHeight: isEditing ? "48px" : undefined,
           padding: isEditing ? "4px 0" : undefined,
           cursor: isEditing ? "pointer" : undefined,
-          background: isEditing ? "rgba(0,0,0,0.05)" : undefined,
-          borderRadius: isEditing ? "0.6rem" : undefined,
           position: "relative",
         }}
       >
-        {isEditing && (
-          <div style={{ position: "absolute", top: "0.5rem", right: "0.5rem", zIndex: 10 }}>
-            <DeleteBlockButton blockId={block.id} />
-          </div>
-        )}
         {renderPageBlock(block)}
       </div>
     );

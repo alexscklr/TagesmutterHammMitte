@@ -85,7 +85,7 @@ const Startseite = () => {
             ]} listStyle="none" ordered={false} />
             <div className={styles.locationMap}></div>
             <GoogleLocation
-              embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4948.220125308352!2d7.8418909775612855!3d51.676128398361975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab43473ea9%3A0x95c62314e737cebd!2sWei%C3%9Fdornweg%2014%2C%2059063%20Hamm!5e0!3m2!1sde!2sde!4v1754507115897!5m2!1sde!2sde"
+              embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510.1946516924802!2d7.843872191452154!3d51.67641419936322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab41c346e9%3A0xceb6b152f4a95450!2sWei%C3%9Fdornweg%2C%2059063%20Hamm!5e1!3m2!1sde!2sde!4v1766867332884!5m2!1sde!2sde"
             />
           </div>
         </div>

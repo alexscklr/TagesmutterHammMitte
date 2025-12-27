@@ -25,23 +25,20 @@ export function renderRichText(spans: RichTextSpan[]) {
   }
 
   return spans.map((span, idx) => {
-    let el: JSX.Element | JSX.Element[] =
-      span.text
-        ? span.text.split("\n").reduce<JSX.Element[]>((acc, line, i, arr) => {
-          acc.push(<span key={`${idx}-line-${i}`}>{line}</span>);
-          if (i < arr.length - 1) acc.push(<br key={`${idx}-br-${i}`} />);
-          return acc;
-        }, [])
-        : [];
+    let el: JSX.Element | JSX.Element[];
 
-    // Inline Function rendern
+    // Inline Function rendern (hat Vorrang vor normalem Text)
     if (span.inlineFunction) {
       const fn: InlineFunction = span.inlineFunction;
 
       switch (fn.type) {
         case InlineFunctions.Age:
-          el = <span>{calculateAge((fn.value as { date: string }).date)}</span>;
-          break;
+          {
+            const dateStr = (fn.value as { date: string }).date;
+            const age = calculateAge(dateStr);
+            el = <span>{age}</span>;
+            break;
+          }
 
         case InlineFunctions.BouncyText:
           {
@@ -68,6 +65,16 @@ export function renderRichText(spans: RichTextSpan[]) {
         default:
           el = <span>{span.text}</span>;
       }
+    } else {
+      // Normaler Text mit Zeilenumbrüchen
+      el =
+        span.text
+          ? span.text.split("\n").reduce<JSX.Element[]>((acc, line, i, arr) => {
+            acc.push(<span key={`${idx}-line-${i}`}>{line}</span>);
+            if (i < arr.length - 1) acc.push(<br key={`${idx}-br-${i}`} />);
+            return acc;
+          }, [])
+          : [];
     }
 
     // Styles

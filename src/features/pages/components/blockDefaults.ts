@@ -29,7 +29,7 @@ export function getDefaultContent(blockType: PageBlockType): unknown {
     case PageBlocks.BouncyText:
       return { text: "Neuer Text", speed: 0.05 };
     case PageBlocks.Imagery:
-      return { content: [] };
+      return { images: [] };
     case PageBlocks.List:
       return { ordered: false, listStyle: "disc", content: [] };
     case PageBlocks.Section:

@@ -19,6 +19,7 @@ import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { AuthContext } from "@/features/auth/context/AuthContext";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import { useEditing } from "@/features/admin/context/hooks/useEditing";
+import { DeleteBlockButton } from "./DeleteBlockButton";
 import {
   EditableParagraph,
   EditableHeading,
@@ -94,7 +95,10 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
     switch (activeBlock.type) {
       case PageBlocks.Paragraph:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <div className="editable-inline" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
+              <DeleteBlockButton blockId={activeBlock.id} />
+            </div>
             <EditableParagraph
               value={activeBlock.content as ParagraphBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
@@ -192,9 +196,14 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
       data-block-id={block.id}
       className="selectable-block-wrapper"
       style={{
-        display: "contents",
+        display: isEditing ? "block" : "contents",
         outline: isSelected ? "2px solid var(--color-accent)" : "none",
-        borderRadius: "0.8rem",
+        borderRadius: isEditing ? "0.5rem" : "0",
+        background: isEditing 
+          ? (isSelected ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.04)") 
+          : "transparent",
+        padding: isEditing ? "0.75rem" : "0",
+        marginBottom: isEditing ? "0.5rem" : "0",
       }}
       onClick={(e) => {
         e.stopPropagation();

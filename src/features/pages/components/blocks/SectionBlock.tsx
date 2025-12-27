@@ -35,7 +35,6 @@ export function SectionBlock({ block }: SectionBlockProps) {
             id={block.id}
             aria-labelledby={`section-heading-${block.id}`}
             className={`${styles.section} ${appearanceClass}`}
-            style={{ background: "rgba(0,0,0,0.05)", borderRadius: "1.2rem" }}
         >
             {block.content.heading?.text && block.content.heading?.level &&
                 React.createElement(
@@ -49,7 +48,9 @@ export function SectionBlock({ block }: SectionBlockProps) {
 
             {children.map((child) => (
                 <React.Fragment key={child.id}>
-                    {renderPageBlock(child)}
+                    <div style={{ position: "relative" }}>
+                        {renderPageBlock(child)}
+                    </div>
                     <AddBlockButton order={child.order + 1} parentBlockId={block.id} />
                 </React.Fragment>
             ))}

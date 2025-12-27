@@ -3,7 +3,6 @@ import type { TimelineBlock as TimelineBlockType, TimelineEntryBlock } from "../
 import { renderPageBlock } from "..";
 import React from "react";
 import { AddBlockButton } from "../AddBlockButton";
-import { DeleteBlockButton } from "../DeleteBlockButton";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
 
@@ -26,13 +25,8 @@ export function TimelineBlock({ block }: TimelineBlockProps) {
             <div
               style={{
                 position: "relative",
-                padding: "1rem",
-                marginBottom: "1rem",
-                background: "rgba(0,0,0,0.03)",
-                borderRadius: "0.6rem",
               }}
             >
-              <DeleteBlockButton blockId={entryBlock.id} />
               {renderPageBlock(entryBlock)}
             </div>
             <AddBlockButton order={entryBlock.order + 1} parentBlockId={block.id} />
@@ -74,9 +68,6 @@ export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
           {children.map((child) => (
             <React.Fragment key={child.id}>
               <div style={{ position: "relative", marginBottom: "0.5rem" }}>
-                <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
-                  <DeleteBlockButton blockId={child.id} />
-                </div>
                 {renderPageBlock(child)}
               </div>
               <AddBlockButton order={child.order + 1} parentBlockId={block.id} />

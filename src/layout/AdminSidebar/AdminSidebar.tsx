@@ -64,16 +64,16 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               disabled={!canEdit}
               title={canEdit ? "Bearbeitungsmodus umschalten" : "Keine Berechtigung"}
             >
-              Bearbeitungsmodus {isEditing ? "deaktivieren" : "aktivieren"} 
+              {isEditing ? "Vorschau anzeigen" : "Bearbeitungsmodus aktivieren"}
             </button>
-            <button
+            {activeBlock && <button
               className={styles.button}
               onClick={() => setSelectedBlock(null)}
               disabled={!activeBlock}
               title={activeBlock ? "Block abwählen" : "Kein Block ausgewählt"}
             >
               Block abwählen
-            </button>
+            </button>}
             {/* Save logic moved into inline editors via SaveBlockButton */}
           </div>
           <div style={{ marginTop: "0.5rem" }}>
