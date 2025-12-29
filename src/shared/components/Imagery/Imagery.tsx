@@ -1,61 +1,45 @@
 import { useEffect, useState } from "react";
 import type { Image } from "@/shared/types/index";
 import { getImageUrl } from "@/shared/lib/imageQueries";
+import styles from "./Imagery.module.css";
 
 interface ImageryProps {
     id?: string
-    images: Image[];
+    image: Image;
 }
 
-export function Imagery({ id, images }: ImageryProps) {
-
-    useEffect(() => {
-        if (images.length < 1) { return; }
-    }, [images.length]);
-
-
-    
-    const [urls, setUrls] = useState<(string | null)[]>([]);
+export function Imagery({ id, image }: ImageryProps) {
+    const [url, setUrl] = useState<string | null>(null);
 
     useEffect(() => {
         let active = true;
 
-        const loadUrls = async () => {
-            const signedUrls = await Promise.all(
-                images.map(async (img) => {
-                    try {
-                        return await getImageUrl(img.url, 'public_images', 60);
-                    } catch (e) {
-                        console.error("Fehler beim Laden der Bild-URL:", e);
-                        return null;
-                    }
-                })
-            );
-
-            if (active) setUrls(signedUrls);
+        const loadUrl = async () => {
+            try {
+                const signedUrl = await getImageUrl(image.url, 'public_images', 60);
+                if (active) setUrl(signedUrl);
+            } catch (e) {
+                console.error("Fehler beim Laden der Bild-URL:", e);
+            }
         };
 
-        loadUrls();
+        loadUrl();
 
         return () => {
             active = false;
         };
-    }, [images]);
+    }, [image]);
 
-    const renderImage = (image: Image, idx: number) => {
-        const signedUrl = urls[idx];
-        if (!signedUrl) return <div key={idx}>Bild konnte nicht geladen werden</div>;
+    if (!url) return <div>Bild konnte nicht geladen werden</div>;
 
-        return (
-            <div
-                key={idx}
-                className='imageWrapper'
-            >
+    return (
+        <div id={id} className={styles.imageContainer}>
+            <div className={styles.imageWrapper}>
                 <img
-                    src={signedUrl}
+                    src={url}
                     alt={image.alt}
                     loading="lazy"
-                    className='image'
+                    className={styles.image}
                     style={
                         typeof image.width === "number"
                             ? { width: `${image.width}%` }
@@ -63,7 +47,7 @@ export function Imagery({ id, images }: ImageryProps) {
                     }
                 />
                 {image.source && (
-                    <small className='imageSource'>
+                    <small className={styles.imageSource}>
                         Bild:{" "}
                         {image.sourceUrl ? (
                             <a
@@ -80,20 +64,6 @@ export function Imagery({ id, images }: ImageryProps) {
                     </small>
                 )}
             </div>
-        );
-    };
-
-    if (images.length === 1) {
-        return (
-            <div id={id} className='singleImageContainer'>
-                {renderImage(images[0], 0)}
-            </div>
-        );
-    }
-
-    return (
-        <div id={id} className='doubleImageContainer'>
-            {images.slice(0, 2).map((img, idx) => renderImage(img, idx))}
         </div>
     );
 }

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./RichTextEditor.module.css";
-import type { RichTextSpan } from "@/shared/types/RichTextSpan";
+import type { RichTextSpan, LinkType } from "@/shared/types/RichTextSpan";
 import { InlineFunctions, type InlineFunction, type InlineFunctionType } from "@/shared/types/InlineFunctions";
 import { renderRichText } from "@/shared/utils";
+import { PageSlugs, type PageSlug } from "@/constants/slugs";
 
 
 const StyleButton = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
@@ -46,7 +47,20 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
     }, [value]);
 
     const handleLinkInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrent((prev) => ({ ...prev, link: e.target.value || undefined }));
+        setCurrent((prev) => ({ ...prev, linkUrl: e.target.value || undefined }));
+    };
+
+    const handleLinkSlugChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCurrent((prev) => ({ ...prev, linkSlug: (e.target.value || undefined) as PageSlug | undefined }));
+    };
+
+    const handleLinkTypeChange = (linkType: LinkType) => {
+        setCurrent((prev) => ({
+            ...prev,
+            linkType,
+            linkSlug: linkType === "internal" ? prev.linkSlug : undefined,
+            linkUrl: linkType === "external" ? prev.linkUrl : undefined,
+        }));
     };
 
     const applyStyle = (
@@ -119,7 +133,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         onChange(next);
         setCurrent(initialSpan);
         setEditingIndex(null);
-        setShowLinkInput(!!current.link);
+        setShowLinkInput(!!current.linkType);
         setShowInlineFn(!!current.inlineFunction);
     };
 
@@ -134,40 +148,22 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
     return (
         <div className={styles.editor}>
             <div className={styles.toolbar}>
-                <StyleButton
-                    active={!!current.bold}
-                    onClick={() => applyStyle("bold")}
-                >
+                <StyleButton active={!!current.bold} onClick={() => applyStyle("bold")} >
                     <b>B</b>
                 </StyleButton>
-                <StyleButton
-                    active={!!current.italic}
-                    onClick={() => applyStyle("italic")}
-                >
+                <StyleButton active={!!current.italic} onClick={() => applyStyle("italic")}>
                     <i>I</i>
                 </StyleButton>
-                <StyleButton
-                    active={!!current.underline}
-                    onClick={() => applyStyle("underline")}
-                >
+                <StyleButton active={!!current.underline} onClick={() => applyStyle("underline")}>
                     <u>U</u>
                 </StyleButton>
-                <StyleButton
-                    active={!!current.accent}
-                    onClick={() => applyStyle("accent")}
-                >
+                <StyleButton active={!!current.accent} onClick={() => applyStyle("accent")}>
                     <span style={{ color: "var(--color-accent)" }}>A</span>
                 </StyleButton>
-                <StyleButton
-                    active={!!current.link}
-                    onClick={() => setShowLinkInput((v) => !v)}
-                >
+                <StyleButton active={!!current.linkType} onClick={() => setShowLinkInput((v) => !v)}>
                     🔗
                 </StyleButton>
-                <StyleButton
-                    active={!!current.inlineFunction}
-                    onClick={() => setShowInlineFn((v) => !v)}
-                >
+                <StyleButton active={!!current.inlineFunction} onClick={() => setShowInlineFn((v) => !v)}>
                     ⚡
                 </StyleButton>
             </div>
@@ -179,13 +175,39 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                 rows={2}
             />
             {showLinkInput && (
-                <input
-                    className={styles.input}
-                    type="url"
-                    value={current.link || ""}
-                    onChange={handleLinkInput}
-                    placeholder="Link-URL (optional)"
-                />
+                <div className={styles.linkBox}>
+                    <div className={styles.linkTypeToggle}>
+                        <button
+                            type="button"
+                            className={`${styles.button} ${current.linkType === "internal" ? styles.active : ""}`}
+                            onClick={() => handleLinkTypeChange("internal")}
+                        >
+                            Unterseite
+                        </button>
+                        <button
+                            type="button"
+                            className={`${styles.button} ${current.linkType === "external" ? styles.active : ""}`}
+                            onClick={() => handleLinkTypeChange("external")}
+                        >
+                            Externe Seite
+                        </button>
+                    </div>
+                    
+                    {current.linkType === "internal" && (
+                        <select value={current.linkSlug || ""} onChange={handleLinkSlugChange} className={styles.input} >
+                            <option value="">-- Seite wählen --</option>
+                            {Object.entries(PageSlugs).map(([key, slug]) => (
+                                <option key={key} value={slug}>
+                                    {slug ? `${slug}` : "Startseite"}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+                    
+                    {current.linkType === "external" && (
+                        <input className={styles.input} type="url" value={current.linkUrl || ""} onChange={handleLinkInput} placeholder="https://example.com" />
+                    )}
+                </div>
             )}
             {showInlineFn && (
                 <div className={styles.inlineFnBox}>
@@ -272,7 +294,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                             onClick={() => {
                                 setCurrent(span);
                                 setEditingIndex(i);
-                                setShowLinkInput(!!span.link);
+                                setShowLinkInput(!!span.linkType);
                                 setShowInlineFn(!!span.inlineFunction);
                             }}
                             aria-label="Bearbeiten"

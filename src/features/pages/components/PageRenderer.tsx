@@ -69,6 +69,24 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
     fetchPageId();
   }, [slug]);
 
+  // Select newly created blocks when notified
+  useEffect(() => {
+    const onSelect = (ev: Event) => {
+      const ce = ev as CustomEvent<{ id: string; block?: PageBlock }>;
+      const detail = ce.detail;
+      if (!detail) return;
+      if (detail.block) {
+        setSelectedBlock(detail.block);
+      } else {
+        // Fallback: find by id when blocks updated
+        const match = blocks.find(b => b.id === detail.id);
+        if (match) setSelectedBlock(match);
+      }
+    };
+    window.addEventListener("pageblocks:select", onSelect as EventListener);
+    return () => window.removeEventListener("pageblocks:select", onSelect as EventListener);
+  }, [blocks, setSelectedBlock]);
+
   useEffect(() => {
     if (!pageId) return;
     const onInsert = async (ev: Event) => {

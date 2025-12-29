@@ -12,7 +12,8 @@ import type {
   Heading,
   InfiniteSlider,
   TimelineEntry,
-  ContactForm
+  ContactForm,
+  SplitContent
 } from "./blocks";
 
 export const PageBlocks = {
@@ -28,14 +29,16 @@ export const PageBlocks = {
   Section: "section",
   InfiniteSlider: "infiniteslider",
   GoogleLocation: "googlelocation",
-  ContactForm: "contactform"
+  ContactForm: "contactform",
+  SplitContent: "splitcontent"
 } as const;
 
 export const ContainerBlocks = [
   PageBlocks.Section,
   PageBlocks.InfiniteSlider,
   PageBlocks.Timeline,
-  PageBlocks.TimelineEntry
+  PageBlocks.TimelineEntry,
+  PageBlocks.SplitContent
 ]
 
 export type PageBlockType = typeof PageBlocks[keyof typeof PageBlocks];
@@ -53,6 +56,7 @@ export type PageBlock =
   | { id: string; parent_block_id: string | null; type: typeof PageBlocks.InfiniteSlider; order: number; content: InfiniteSlider }
   | { id: string; parent_block_id: string | null; type: typeof PageBlocks.Section; order: number; content: Section }
   | { id: string; parent_block_id: string | null; type: typeof PageBlocks.GoogleLocation; order: number; content: GoogleLocation }
-  | { id: string; parent_block_id: string | null; type: typeof PageBlocks.ContactForm; order: number; content: ContactForm };
+  | { id: string; parent_block_id: string | null; type: typeof PageBlocks.ContactForm; order: number; content: ContactForm }
+  | { id: string; parent_block_id: string | null; type: typeof PageBlocks.SplitContent; order: number; content: SplitContent };
 
 export type Page = PageBlock[];

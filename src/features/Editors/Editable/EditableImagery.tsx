@@ -1,9 +1,9 @@
 import React from "react";
 import { SaveBlockButton } from "@/shared/components";
 import type { Imagery } from "@/features/pages/types/blocks";
-import type { Image } from "@/shared/types/Image";
 import { listImages } from "@/features/media/lib/storage";
 import { supabase } from "@/supabaseClient";
+import { createPortal } from "react-dom";
 
 export interface EditableImageryProps {
   value: Imagery;
@@ -11,25 +11,24 @@ export interface EditableImageryProps {
 }
 
 const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) => {
-  const updateImage = (index: number, field: "alt"|"source"|"sourceUrl"|"license", val: string) => {
-    const images: Image[] = value.images.slice();
-    images[index] = { ...images[index], [field]: val };
-    onChange({ ...value, images });
+  // Ensure we always have exactly one image
+  const img = value.images[0] || { url: "", alt: "" };
+
+  const updateImage = (field: "alt"|"source"|"sourceUrl"|"license", val: string) => {
+    const updatedImage = { ...img, [field]: val };
+    onChange({ ...value, images: [updatedImage] });
   };
 
-  const updateWidth = (index: number, val: string) => {
+  const updateWidth = (val: string) => {
     const width = val === "" ? undefined : Number(val);
-    const images: Image[] = value.images.slice();
-    images[index] = { ...images[index], width };
-    onChange({ ...value, images });
+    const updatedImage = { ...img, width };
+    onChange({ ...value, images: [updatedImage] });
   };
 
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [files, setFiles] = React.useState<{ name: string; url: string }[]>([]);
-  const [pickIndex, setPickIndex] = React.useState<number | null>(null);
 
-  const openPicker = async (index: number) => {
-    setPickIndex(index);
+  const openPicker = async () => {
     setPickerOpen(true);
     const items = await listImages("");
     // Get public URLs for all images
@@ -41,17 +40,9 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
   };
 
   const chooseFile = (name: string) => {
-    if (pickIndex == null) return;
-    const images: Image[] = value.images.slice();
-    images[pickIndex] = { ...images[pickIndex], url: name };
-    onChange({ ...value, images });
+    const updatedImage = { ...img, url: name };
+    onChange({ ...value, images: [updatedImage] });
     setPickerOpen(false);
-    setPickIndex(null);
-  };
-
-  const removeImage = (index: number) => {
-    const images = value.images.filter((_, i) => i !== index);
-    onChange({ ...value, images });
   };
 
   const getImagePreviewUrl = (imageName: string) => {
@@ -62,135 +53,100 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
   return (
     <>
     <div>
-      {value.images.map((img, i) => (
-        <div key={i} style={{ 
-          border: "1px solid #ddd", 
-          borderRadius: "0.5rem", 
-          padding: "1rem", 
-          marginBottom: "1rem",
-          backgroundColor: "#f9f9f9"
-        }}>
-          {/* Image Preview and Selection */}
-          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
+      <div style={{ 
+        border: "1px solid #ddd", 
+        borderRadius: "0.5rem", 
+        padding: "1rem", 
+        backgroundColor: "#f9f9f9"
+      }}>
+        {/* Image Preview and Selection */}
+        <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
+          {img.url && (
+            <img 
+              src={getImagePreviewUrl(img.url)} 
+              alt={img.alt || "Preview"} 
+              style={{ 
+                width: "150px", 
+                height: "150px", 
+                objectFit: "cover", 
+                borderRadius: "0.4rem",
+                border: "2px solid #ccc"
+              }} 
+            />
+          )}
+          <div style={{ flex: 1 }}>
+            <button 
+              type="button" 
+              onClick={openPicker}
+              style={{
+                padding: "0.5rem 1rem",
+                backgroundColor: "var(--color-accent)",
+                color: "white",
+                border: "none",
+                borderRadius: "0.4rem",
+                cursor: "pointer",
+                marginBottom: "0.5rem",
+                width: "100%"
+              }}
+            >
+              {img.url ? "Bild ändern" : "Bild auswählen"}
+            </button>
             {img.url && (
-              <img 
-                src={getImagePreviewUrl(img.url)} 
-                alt={img.alt || "Preview"} 
-                style={{ 
-                  width: "150px", 
-                  height: "150px", 
-                  objectFit: "cover", 
-                  borderRadius: "0.4rem",
-                  border: "2px solid #ccc"
-                }} 
-              />
+              <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
+                Ausgewählt: {img.url}
+              </div>
             )}
-            <div style={{ flex: 1 }}>
-              <button 
-                type="button" 
-                onClick={() => openPicker(i)}
-                style={{
-                  padding: "0.5rem 1rem",
-                  backgroundColor: "var(--color-accent)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "0.4rem",
-                  cursor: "pointer",
-                  marginBottom: "0.5rem",
-                  width: "100%"
-                }}
-              >
-                {img.url ? "Bild ändern" : "Bild auswählen"}
-              </button>
-              {img.url && (
-                <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
-                  Ausgewählt: {img.url}
-                </div>
-              )}
-            </div>
           </div>
-
-          {/* Image Metadata */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.5rem" }}>
-            <input 
-              type="text" 
-              placeholder="Alt-Text" 
-              value={img.alt ?? ""} 
-              onChange={(e) => updateImage(i, "alt", e.target.value)}
-              style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
-            />
-            <input 
-              type="number" 
-              placeholder="Breite (px)" 
-              value={img.width ?? ""} 
-              onChange={(e) => updateWidth(i, e.target.value)}
-              style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
-            />
-            <input 
-              type="text" 
-              placeholder="Quelle (Name)" 
-              value={img.source ?? ""} 
-              onChange={(e) => updateImage(i, "source", e.target.value)}
-              style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
-            />
-            <input 
-              type="text" 
-              placeholder="Quelle URL" 
-              value={img.sourceUrl ?? ""} 
-              onChange={(e) => updateImage(i, "sourceUrl", e.target.value)}
-              style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
-            />
-            <input 
-              type="text" 
-              placeholder="Lizenz" 
-              value={img.license ?? ""} 
-              onChange={(e) => updateImage(i, "license", e.target.value)}
-              style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc", gridColumn: "span 2" }}
-            />
-          </div>
-
-          {/* Remove Button */}
-          <button
-            type="button"
-            onClick={() => removeImage(i)}
-            style={{
-              marginTop: "0.5rem",
-              padding: "0.4rem 0.8rem",
-              backgroundColor: "#dc3545",
-              color: "white",
-              border: "none",
-              borderRadius: "0.3rem",
-              cursor: "pointer",
-              fontSize: "0.85rem"
-            }}
-          >
-            Bild entfernen
-          </button>
         </div>
-      ))}
-      
-      <button
-        type="button"
-        onClick={() => onChange({ ...value, images: [...value.images, { url: "", alt: "" }] as Image[] })}
-        style={{
-          padding: "0.5rem 1rem",
-          backgroundColor: "#28a745",
-          color: "white",
-          border: "none",
-          borderRadius: "0.4rem",
-          cursor: "pointer",
-          marginBottom: "0.5rem"
-        }}
-      >
-        + Bild hinzufügen
-      </button>
+
+        {/* Image Metadata */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.5rem" }}>
+          <input 
+            type="text" 
+            placeholder="Alt-Text" 
+            value={img.alt ?? ""} 
+            onChange={(e) => updateImage("alt", e.target.value)}
+            style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
+          />
+          <input 
+            type="number" 
+            placeholder="Breite (%)" 
+            min="1"
+            max="100"
+            value={img.width ?? ""} 
+            onChange={(e) => updateWidth(e.target.value)}
+            style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
+          />
+          <input 
+            type="text" 
+            placeholder="Quelle (Name)" 
+            value={img.source ?? ""} 
+            onChange={(e) => updateImage("source", e.target.value)}
+            style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
+          />
+          <input 
+            type="text" 
+            placeholder="Quelle URL" 
+            value={img.sourceUrl ?? ""} 
+            onChange={(e) => updateImage("sourceUrl", e.target.value)}
+            style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc" }}
+          />
+          <input 
+            type="text" 
+            placeholder="Lizenz" 
+            value={img.license ?? ""} 
+            onChange={(e) => updateImage("license", e.target.value)}
+            style={{ padding: "0.5rem", borderRadius: "0.3rem", border: "1px solid #ccc", gridColumn: "span 2" }}
+          />
+        </div>
+      </div>
 
       <div style={{ marginTop: 8 }}>
         <SaveBlockButton />
       </div>
     </div>
 
-    {pickerOpen && (
+    {pickerOpen && createPortal(
       <div 
         style={{ 
           position: "fixed", 
@@ -200,7 +156,7 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
           placeItems: "center",
           zIndex: 10000
         }}
-        onClick={() => { setPickerOpen(false); setPickIndex(null); }}
+        onClick={() => setPickerOpen(false)}
       >
         <div 
           style={{ 
@@ -217,7 +173,7 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
             <strong style={{ fontSize: "1.2rem" }}>Bild auswählen</strong>
             <button 
-              onClick={() => { setPickerOpen(false); setPickIndex(null); }}
+              onClick={() => setPickerOpen(false)}
               style={{
                 padding: "0.5rem 1rem",
                 backgroundColor: "#6c757d",
@@ -282,7 +238,8 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
             ))}
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     )}
     </>
   );

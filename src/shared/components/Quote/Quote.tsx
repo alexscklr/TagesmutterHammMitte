@@ -1,13 +1,13 @@
 import React from "react";
-import type { QuoteBlock } from "@/features/pages/types/blocks";
+import type { RichTextSpan } from "@/shared/types";
 import { renderRichText } from "@/shared/utils/renderRichText";
 
 export interface QuoteProps {
-  block: QuoteBlock;
+  text: RichTextSpan[];
+  author?: string;
 }
 
-export const Quote: React.FC<QuoteProps> = ({ block }) => {
-  const { text, author } = block.content;
+export const Quote: React.FC<QuoteProps> = ({ text, author }) => {
   return (
     <blockquote>
       <div>{renderRichText(text)}</div>

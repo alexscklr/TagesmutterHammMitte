@@ -39,10 +39,11 @@ const Main = ({ children }: { children: ReactNode }) => {
     }
   }, [meta]);
 
-  // Ensure edit mode toggles for users with edit permission
+  // Initialize edit mode only on mount, not on every auth change
   useEffect(() => {
     setEditing(!!user && canEdit);
-  }, [user, canEdit, setEditing]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once on mount
 
   useEffect(() => {
     let active = true;

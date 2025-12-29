@@ -14,7 +14,6 @@
 
 .sliderItem {
     flex: 0 0 auto;
-    
     position: relative;
     user-select: none;
     border-radius: 10px;
@@ -40,19 +39,12 @@
     filter: brightness(0.5);
 }
 
-.sliderItem .singleImageContainer {
-    width: fit-content;
-    padding: 0;
-}
-
-.sliderItem .singleImageContainer .imageWrapper {
-    width: fit-content;
-    margin: 0;
-}
-
-.sliderItem .singleImageContainer .imageWrapper > * {
+.sliderItem * {
     height: 30vh;
-    /* oder max-height, damit nicht zu groß */
-    object-fit: cover;
-    display: block;
+}
+
+@media (max-width: 767px) {
+    .sliderContainer {
+        width: 95%;
+    }
 }

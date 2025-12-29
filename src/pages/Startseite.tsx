@@ -83,7 +83,7 @@ const Startseite = () => {
               <>Tel.: 02381/31366</>,
               <>E-Mail.: <a href="mailto:kerstin.sickler@web.de">kerstin.sickler@web.de</a></>
             ]} listStyle="none" ordered={false} />
-            <div className={styles.locationMap}></div>
+            
             <GoogleLocation
               embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510.1946516924802!2d7.843872191452154!3d51.67641419936322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab41c346e9%3A0xceb6b152f4a95450!2sWei%C3%9Fdornweg%2C%2059063%20Hamm!5e1!3m2!1sde!2sde!4v1766867332884!5m2!1sde!2sde"
             />

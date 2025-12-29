@@ -14,6 +14,7 @@ export const BLOCK_TYPE_LABELS: Record<PageBlockType, string> = {
   [PageBlocks.InfiniteSlider]: "Infinite Slider",
   [PageBlocks.GoogleLocation]: "Google Maps",
   [PageBlocks.ContactForm]: "Kontaktformular",
+  [PageBlocks.SplitContent]: "Geteilter Inhalt",
 };
 
 export function getDefaultContent(blockType: PageBlockType): unknown {
@@ -44,6 +45,8 @@ export function getDefaultContent(blockType: PageBlockType): unknown {
       return { latitude: 0, longitude: 0, zoom: 10 };
     case PageBlocks.ContactForm:
       return { placeholder: "Nachricht..." };
+    case PageBlocks.SplitContent:
+      return { firstItemWidth: 50, content: [] };
     default:
       return {};
   }

@@ -4,6 +4,26 @@ import { InlineFunctions, type RichTextSpan, type InlineFunction } from "../type
 import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
 
 /**
+ * Resolve link href from RichTextSpan
+ */
+function getHrefFromSpan(span: RichTextSpan): string | undefined {
+  // New format: linkType and linkSlug/linkUrl
+  if (span.linkType === "internal" && span.linkSlug !== undefined) {
+    // Internal link using slug
+    return `/${span.linkSlug}`;
+  }
+  if (span.linkType === "external" && span.linkUrl) {
+    // External link
+    return span.linkUrl;
+  }
+  // Legacy: direct link property
+  if (span.link) {
+    return span.link;
+  }
+  return undefined;
+}
+
+/**
  * Render RichTextSpan Array in JSX
  */
 export function renderRichText(spans: RichTextSpan[]) {
@@ -82,15 +102,23 @@ export function renderRichText(spans: RichTextSpan[]) {
     if (span.italic) el = <em>{el}</em>;
     if (span.underline) el = <u>{el}</u>;
 
-    if (span.link) {
+    // Handle links (both new and legacy format)
+    const href = getHrefFromSpan(span);
+    if (href) {
       const anchorClass = span.accent ? "accent-color" : undefined;
+      const isExternalLink = span.linkType === "external" || (!span.linkType && span.link?.startsWith("http"));
       el = (
-        <a className={anchorClass} href={span.link} target="_blank" rel="noopener noreferrer">
+        <a 
+          className={anchorClass} 
+          href={href} 
+          target={isExternalLink ? "_blank" : undefined}
+          rel={isExternalLink ? "noopener noreferrer" : undefined}
+        >
           {el}
         </a>
       );
     }
-    const classNames = !span.link && span.accent ? "accent-color" : "";
+    const classNames = !href && span.accent ? "accent-color" : "";
 
     return (
       <span key={`${idx}-${span.text}-${span.inlineFunction?.type ?? ""}`} className={classNames}>

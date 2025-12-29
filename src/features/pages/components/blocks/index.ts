@@ -10,3 +10,4 @@ export * from "./InfiniteSliderBlock";
 export * from "./BouncyTextBlock";
 export * from "./GoogleLocationBlock";
 export * from "./ContactFormBlock";
+export * from "./SplitContentBlock";

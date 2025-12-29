@@ -10,10 +10,10 @@ import {
   SectionBlock,
   TimelineBlock,
   InfiniteSliderBlock,
-  BouncyTextBlock,
   TimelineEntryBlock,
   GoogleLocationBlock,
   ContactFormBlock,
+  SplitContentBlock,
 } from "./blocks";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { AuthContext } from "@/features/auth/context/AuthContext";
@@ -24,13 +24,13 @@ import {
   EditableParagraph,
   EditableHeading,
   EditableQuote,
-  EditableBouncyText,
   EditableTimelineEntry,
   EditableList,
   EditableImagery,
   EditableSection,
   EditableGoogleLocation,
   EditableContactForm,
+  EditableSplitContent,
 } from "@/features/Editors";
 
 import {
@@ -43,10 +43,10 @@ import {
   type SectionBlock as SectionBlockType,
   type TimelineBlock as TimelineBlockType,
   type InfiniteSliderBlock as InfiniteSliderBlockType,
-  type BouncyTextBlock as BouncyTextBlockType,
   type TimelineEntryBlock as TimelineEntryBlockType,
   type GoogleLocationBlock as GoogleLocationBlockType,
   type ContactFormBlock as ContactFormBlockType,
+  type SplitContentBlock as SplitContentBlockType,
 } from "../types/blocks";
 
 type BlockComponentMap = {
@@ -54,7 +54,6 @@ type BlockComponentMap = {
   [PageBlocks.Heading]: (block: HeadingBlockType) => JSX.Element;
   [PageBlocks.Paragraph]: (block: ParagraphBlockType) => JSX.Element;
   [PageBlocks.List]: (block: ListBlockType) => JSX.Element;
-  [PageBlocks.BouncyText]: (block: BouncyTextBlockType) => JSX.Element;
   [PageBlocks.Imagery]: (block: ImageryBlockType) => JSX.Element;
   [PageBlocks.Quote]: (block: QuoteBlockType) => JSX.Element;
   [PageBlocks.Timeline]: (block: TimelineBlockType) => JSX.Element;
@@ -63,6 +62,7 @@ type BlockComponentMap = {
   [PageBlocks.InfiniteSlider]: (block: InfiniteSliderBlockType) => JSX.Element;
   [PageBlocks.GoogleLocation]: (block: GoogleLocationBlockType) => JSX.Element;
   [PageBlocks.ContactForm]: (block: ContactFormBlockType) => JSX.Element;
+  [PageBlocks.SplitContent]: (block: SplitContentBlockType) => JSX.Element;
 };
 
 const blockMap: BlockComponentMap = {
@@ -70,7 +70,6 @@ const blockMap: BlockComponentMap = {
   [PageBlocks.Heading]: (block) => <HeadingBlock block={block} />,
   [PageBlocks.Paragraph]: (block) => <ParagraphBlock block={block} />,
   [PageBlocks.List]: (block) => <ListBlock block={block} />,
-  [PageBlocks.BouncyText]: (block) => <BouncyTextBlock block={block} />,
   [PageBlocks.Imagery]: (block) => <ImageryBlock block={block} />,
   [PageBlocks.Quote]: (block) => <QuoteBlock block={block} />,
   [PageBlocks.Timeline]: (block) => <TimelineBlock block={block} />,
@@ -79,112 +78,125 @@ const blockMap: BlockComponentMap = {
   [PageBlocks.InfiniteSlider]: (block) => <InfiniteSliderBlock block={block} />,
   [PageBlocks.GoogleLocation]: (block) => <GoogleLocationBlock block={block} />,
   [PageBlocks.ContactForm]: (block) => <ContactFormBlock block={block} />,
+  [PageBlocks.SplitContent]: (block) => <SplitContentBlock block={block} />,
 };
+
+// Wrapper für editierbare Blöcke mit DeleteButton
+const EditableBlockWrapper: React.FC<{ blockId: string; children: React.ReactNode }> = ({ blockId, children }) => (
+  <div className="editable-inline" style={{ position: "relative" }}>
+    <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
+      <DeleteBlockButton blockId={blockId} />
+    </div>
+    {children}
+  </div>
+);
 
 export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
   const { selectedBlock, setSelectedBlock } = useSelection();
   const { user } = React.useContext(AuthContext);
   const { isEditing } = useEditMode();
   const { changedBlock, setChangedBlock } = useEditing();
-  const render = blockMap[block.type] as ((block: PageBlock) => JSX.Element | null) | undefined;
+  const render = block.type in blockMap ? (blockMap[block.type as keyof typeof blockMap] as ((block: PageBlock) => JSX.Element | null)) : undefined;
   const isSelected = selectedBlock?.id === block.id;
   const activeBlock = isSelected && changedBlock?.id === block.id ? changedBlock : block;
 
   const renderEditable = () => {
     if (!isEditing || !isSelected) return null;
-    switch (activeBlock.type) {
+    
+    const blockType = activeBlock.type;
+    const blockContent = activeBlock.content;
+    const blockId = activeBlock.id;
+
+    switch (blockType) {
       case PageBlocks.Paragraph:
         return (
-          <div className="editable-inline" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
-              <DeleteBlockButton blockId={activeBlock.id} />
-            </div>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableParagraph
-              value={activeBlock.content as ParagraphBlockType["content"]}
+              value={blockContent as ParagraphBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.Heading:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableHeading
-              value={activeBlock.content as HeadingBlockType["content"]}
+              value={blockContent as HeadingBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.Quote:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableQuote
-              value={activeBlock.content as QuoteBlockType["content"]}
+              value={blockContent as QuoteBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
-        );
-      case PageBlocks.BouncyText:
-        return (
-          <div className="editable-inline" style={{ display: "contents" }}>
-            <EditableBouncyText
-              value={activeBlock.content as BouncyTextBlockType["content"]}
-              onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
-            />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.TimelineEntry:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableTimelineEntry
-              value={activeBlock.content as TimelineEntryBlockType["content"]}
+              value={blockContent as TimelineEntryBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.List:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableList
-              value={activeBlock.content as ListBlockType["content"]}
+              value={blockContent as ListBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.Imagery:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableImagery
-              value={activeBlock.content as ImageryBlockType["content"]}
+              value={blockContent as ImageryBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.Section:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableSection
-              value={activeBlock.content as SectionBlockType["content"]}
+              value={blockContent as SectionBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.GoogleLocation:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableGoogleLocation
-              value={activeBlock.content as GoogleLocationBlockType["content"]}
+              value={blockContent as GoogleLocationBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
         );
       case PageBlocks.ContactForm:
         return (
-          <div className="editable-inline" style={{ display: "contents" }}>
+          <EditableBlockWrapper blockId={blockId}>
             <EditableContactForm
-              value={activeBlock.content as ContactFormBlockType["content"]}
+              value={blockContent as ContactFormBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
-          </div>
+          </EditableBlockWrapper>
+        );
+      case PageBlocks.SplitContent:
+        return (
+          <EditableBlockWrapper blockId={blockId}>
+            <EditableSplitContent
+              value={blockContent as SplitContentBlockType["content"]}
+              onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
+            />
+          </EditableBlockWrapper>
         );
       default:
         return null;
@@ -200,7 +212,7 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
         outline: isSelected ? "2px solid var(--color-accent)" : "none",
         borderRadius: isEditing ? "0.5rem" : "0",
         background: isEditing 
-          ? (isSelected ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.04)") 
+          ? (isSelected ? "rgba(0,255,0,0.04)" : "rgba(0,0,0,0.04)") 
           : "transparent",
         padding: isEditing ? "0.75rem" : "0",
         marginBottom: isEditing ? "0.5rem" : "0",

@@ -15,7 +15,7 @@ export function usePageBlocks(slug: string) {
         return { ...block, content } as PageBlock;
       }
 
-      if (block.type === PageBlocks.Section || block.type === PageBlocks.InfiniteSlider) {
+      if (block.type === PageBlocks.Section || block.type === PageBlocks.InfiniteSlider || block.type === PageBlocks.SplitContent) {
         const children = (block.content as any).content || [];
         const nextChildren = updateBlockContent(children, id, content);
         return { ...block, content: { ...(block.content as any), content: nextChildren } } as PageBlock;
@@ -114,6 +114,12 @@ export function usePageBlocks(slug: string) {
         (payload) => {
           if (payload.eventType === "UPDATE" && payload.new && "id" in payload.new) {
             setBlocks(prev => updateBlockContent(prev, (payload.new as any).id, (payload.new as any).content));
+          } else if (payload.eventType === "INSERT" && payload.new && "id" in payload.new) {
+            // Select the newly inserted block (consumer listens to this event)
+            try {
+              window.dispatchEvent(new CustomEvent("pageblocks:select", { detail: { id: (payload.new as any).id, block: payload.new } }));
+            } catch {}
+            refetch();
           } else {
             refetch();
           }

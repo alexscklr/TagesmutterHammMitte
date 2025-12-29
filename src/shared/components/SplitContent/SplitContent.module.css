@@ -1,0 +1,39 @@
+.splitContainer {
+  display: flex;
+  gap: 1rem;
+  width: 90%;
+  margin: auto;
+  align-items: center;
+}
+
+.splitItem {
+  flex: 1 1 0; /* Erzwingt, dass beide exakt 50% Platz einnehmen */
+  min-width: 0;
+  display: flex;
+}
+
+/* On larger screens, use the custom width ratio */
+@media (min-width: 768px) {
+  .splitContainer {
+    flex-wrap: nowrap;
+  }
+
+  .splitItem:first-child {
+    flex: 0 0 var(--first-item-width, 50%);
+  }
+
+  .splitItem:last-child {
+    flex: 1;
+  }
+}
+
+/* On smaller screens, stack vertically */
+@media (max-width: 767px) {
+  .splitContainer {
+    flex-direction: column;
+  }
+
+  .splitItem {
+    width: 100%;
+  }
+}

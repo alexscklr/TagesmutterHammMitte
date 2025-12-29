@@ -71,7 +71,7 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
     blocks
       .filter(b => b.parent_block_id === parentId)
       .map(b => {
-        if (b.type === PageBlocks.Section || b.type === PageBlocks.InfiniteSlider) {
+        if (b.type === PageBlocks.Section || b.type === PageBlocks.InfiniteSlider || b.type === PageBlocks.SplitContent) {
           return {
             ...b,
             content: {
@@ -151,6 +151,10 @@ function sanitizeContentForSave(block: PageBlock): unknown {
     case PageBlocks.InfiniteSlider: {
       const { speed } = block.content as any;
       return { speed };
+    }
+    case PageBlocks.SplitContent: {
+      const { firstItemWidth } = block.content as any;
+      return { firstItemWidth: firstItemWidth ?? 50 };
     }
     case PageBlocks.Timeline: {
       // Entries are represented by child rows; parent holds no inline entries

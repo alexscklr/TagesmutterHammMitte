@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
+import { useSelection } from "@/features/admin/context/hooks/useSelection";
 
 interface DeleteBlockButtonProps {
   blockId: string;
@@ -11,6 +12,7 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { isEditing } = useEditMode();
+  const { setSelectedBlock } = useSelection();
 
   const handleDelete = async () => {
     setLoading(true);
@@ -24,6 +26,8 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
       } else {
         console.log('Block gelöscht und Reihenfolge angepasst.');
         onBlockDeleted?.();
+        // Deselect any selected block to avoid referencing a deleted one
+        setSelectedBlock(null);
         window.dispatchEvent(new Event("pageblocks:updated"));
       }
     } catch (err) {

@@ -1,4 +1,4 @@
-import { Timeline } from "@/shared/components";
+import { Timeline, TimelineEntry } from "@/shared/components";
 import type { TimelineBlock as TimelineBlockType, TimelineEntryBlock } from "../../types/index";
 import { renderPageBlock } from "..";
 import React from "react";
@@ -58,11 +58,9 @@ export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
 
   if (isEditing && !isSelected) {
     // Edit mode but this TimelineEntry is not selected
-    // Show normal content with add/delete buttons for children
+    // Show content using shared TimelineEntry with add/delete buttons for children
     return (
-      <div className="timeline-entry">
-        <div className="time-box">{block.content.label}</div>
-        <h3>{block.content.title}</h3>
+      <TimelineEntry label={block.content.label} title={block.content.title}>
         <div style={{ marginTop: "0.5rem" }}>
           <AddBlockButton order={0} parentBlockId={block.id} />
           {children.map((child) => (
@@ -74,20 +72,18 @@ export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
             </React.Fragment>
           ))}
         </div>
-      </div>
+      </TimelineEntry>
     );
   }
 
   // Normal rendering (non-edit mode or when selected - EditableTimelineEntry is shown by SelectableBlock)
   return (
-    <div className="timeline-entry">
-      <div className="time-box">{block.content.label}</div>
-      <h3>{block.content.title}</h3>
+    <TimelineEntry label={block.content.label} title={block.content.title}>
       {children.map((child) => (
-        <div key={child.id} className="timeline-entry-content">
+        <div key={child.id}>
           {renderPageBlock(child)}
         </div>
       ))}
-    </div>
+    </TimelineEntry>
   );
 }

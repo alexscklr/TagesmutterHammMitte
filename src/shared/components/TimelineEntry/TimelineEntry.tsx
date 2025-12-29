@@ -1,21 +1,18 @@
-import React from "react";
-import type { TimelineEntryBlock } from "@/features/pages/types/blocks";
-import { renderPageBlock } from "@/features/pages/components";
+import React, { type ReactNode } from "react";
 
 export interface TimelineEntryProps {
-  block: TimelineEntryBlock;
+  label: string;
+  title: string;
+  children: ReactNode;
 }
 
-export const TimelineEntry: React.FC<TimelineEntryProps> = ({ block }) => {
-  const { label, title, content } = block.content;
+export const TimelineEntry: React.FC<TimelineEntryProps> = ({ label, title, children }) => {
   return (
     <div className="timeline-entry">
       <div className="time-box">{label}</div>
       <h3>{title}</h3>
       <div className="timeline-entry-content">
-        {content.map((child) => (
-          <div key={child.id}>{renderPageBlock(child)}</div>
-        ))}
+        {children}
       </div>
     </div>
   );
