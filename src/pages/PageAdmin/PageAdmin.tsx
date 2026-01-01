@@ -1,108 +1,80 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "@/supabaseClient";
-import { listImages } from "@/features/media/lib/storage";
+import React, { useEffect } from "react";
 import styles from "./PageAdmin.module.css";
 import { PageList } from "./components/PageList";
 import { ImagePickerModal } from "./components/ImagePickerModal";
-import type { Gradient, PageData } from "./types";
+import { GradientEditor } from "./components/GradientEditor";
+import { ColorSpotsEditor } from "./components/ColorSpotsEditor";
 import { gradientToCss } from "./utils";
-
-const DEFAULT_GRADIENT: Gradient = {
-  stops: [{ color: "#FAF4DC" }, { color: "#B4BEDC" }],
-  direction: "0deg",
-};
+import { usePageManagement } from "./hooks/usePageManagement";
+import { useGradientEditor } from "./hooks/useGradientEditor";
+import { useColorSpotEditor } from "./hooks/useColorSpotEditor";
+import { useImagePicker } from "./hooks/useImagePicker";
+import { pageQueries } from "./lib/pageQueries";
+import type { PageData } from "./types";
 
 const PageAdmin: React.FC = () => {
-  const [pages, setPages] = useState<PageData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<PageData>>({});
-  const [isCreating, setIsCreating] = useState(false);
-  const [imagePickerOpen, setImagePickerOpen] = useState(false);
-  const [availableImages, setAvailableImages] = useState<{ name: string; url: string }[]>([]);
-
-  const loadPages = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data, error: fetchError } = await supabase
-        .from("pages")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (fetchError) throw fetchError;
-      setPages(data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Fehler beim Laden der Seiten");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const pageManagement = usePageManagement();
+  const gradientEditor = useGradientEditor(pageManagement.formData, pageManagement.setFormData);
+  const colorSpotEditor = useColorSpotEditor(pageManagement.formData, pageManagement.setFormData);
+  const imagePicker = useImagePicker();
 
   useEffect(() => {
-    loadPages();
+    const load = async () => {
+      pageManagement.setLoading(true);
+      pageManagement.setError(null);
+      try {
+        const data = await pageQueries.loadPages();
+        pageManagement.setPages(data);
+      } catch (err) {
+        pageManagement.setError(
+          err instanceof Error ? err.message : "Fehler beim Laden der Seiten"
+        );
+      } finally {
+        pageManagement.setLoading(false);
+      }
+    };
+    load();
   }, []);
 
   const startEdit = (page: PageData) => {
-    setEditingId(page.id);
-    setFormData(page);
-    setIsCreating(false);
+    pageManagement.setEditingId(page.id);
+    pageManagement.setFormData(page);
+    pageManagement.setIsCreating(false);
+    pageManagement.setError(null);
   };
 
   const startCreate = () => {
-    setIsCreating(true);
-    setEditingId(null);
-    setFormData({
+    pageManagement.setIsCreating(true);
+    pageManagement.setEditingId(null);
+    pageManagement.setFormData({
       slug: "",
       title: "",
       sitetitle: "",
       background: {
-        gradient: DEFAULT_GRADIENT,
+        gradient: gradientEditor.DEFAULT_GRADIENT,
         image_url: "",
       },
     });
+    pageManagement.setError(null);
   };
 
   const cancelEdit = () => {
-    setEditingId(null);
-    setIsCreating(false);
-    setFormData({});
+    pageManagement.setEditingId(null);
+    pageManagement.setIsCreating(false);
+    pageManagement.setFormData({});
+    pageManagement.setError(null);
   };
 
   const savePage = async () => {
     try {
-      if (isCreating) {
-        const { error: insertError } = await supabase
-          .from("pages")
-          .insert([
-            {
-              slug: formData.slug,
-              title: formData.title,
-              sitetitle: formData.sitetitle,
-              background: formData.background || null,
-            },
-          ]);
-
-        if (insertError) throw insertError;
-      } else if (editingId) {
-        const { error: updateError } = await supabase
-          .from("pages")
-          .update({
-            slug: formData.slug,
-            title: formData.title,
-            sitetitle: formData.sitetitle,
-            background: formData.background || null,
-          })
-          .eq("id", editingId);
-
-        if (updateError) throw updateError;
-      }
-
-      await loadPages();
+      await pageQueries.savePage(pageManagement.formData, pageManagement.editingId);
+      const data = await pageQueries.loadPages();
+      pageManagement.setPages(data);
       cancelEdit();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Fehler beim Speichern");
+      pageManagement.setError(
+        err instanceof Error ? err.message : "Fehler beim Speichern"
+      );
     }
   };
 
@@ -110,119 +82,23 @@ const PageAdmin: React.FC = () => {
     if (!confirm("Möchten Sie diese Seite wirklich löschen?")) return;
 
     try {
-      const { error: deleteError } = await supabase.from("pages").delete().eq("id", id);
-      if (deleteError) throw deleteError;
-      await loadPages();
+      const page = pageManagement.pages.find(p => p.id === id);
+      if (page?.is_static) {
+        pageManagement.setError("Statische Seiten können nicht gelöscht werden.");
+        return;
+      }
+
+      await pageQueries.deletePage(id);
+      const data = await pageQueries.loadPages();
+      pageManagement.setPages(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Fehler beim Löschen");
+      pageManagement.setError(
+        err instanceof Error ? err.message : "Fehler beim Löschen"
+      );
     }
   };
 
-  const updateFormField = (field: keyof PageData, value: unknown) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const updateBackground = (field: "image_url", value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      background: {
-        ...(prev.background || { gradient: DEFAULT_GRADIENT, image_url: "" }),
-        [field]: value,
-      },
-    }));
-  };
-
-  const updateGradientStop = (index: number, color: string) => {
-    setFormData(prev => {
-      const currentStops = prev.background?.gradient?.stops || [];
-      const newStops = [...currentStops];
-      newStops[index] = { color };
-      return {
-        ...prev,
-        background: {
-          ...prev.background,
-          gradient: {
-            stops: newStops,
-            direction: prev.background?.gradient?.direction || DEFAULT_GRADIENT.direction,
-          },
-        },
-      };
-    });
-  };
-
-  const updateGradientDirection = (direction: string) => {
-    setFormData(prev => ({
-      ...prev,
-      background: {
-        ...prev.background,
-        gradient: {
-          stops: prev.background?.gradient?.stops || DEFAULT_GRADIENT.stops,
-          direction,
-        },
-      },
-    }));
-  };
-
-  const addGradientStop = () => {
-    setFormData(prev => {
-      const currentStops = prev.background?.gradient?.stops || DEFAULT_GRADIENT.stops;
-      return {
-        ...prev,
-        background: {
-          ...prev.background,
-          gradient: {
-            stops: [...currentStops, { color: "#FFFFFF" }],
-            direction: prev.background?.gradient?.direction || DEFAULT_GRADIENT.direction,
-          },
-        },
-      };
-    });
-  };
-
-  const removeGradientStop = (index: number) => {
-    setFormData(prev => {
-      const currentStops = prev.background?.gradient?.stops || [];
-      if (currentStops.length <= 2) return prev;
-      return {
-        ...prev,
-        background: {
-          ...prev.background,
-          gradient: {
-            stops: currentStops.filter((_, i) => i !== index),
-            direction: prev.background?.gradient?.direction || DEFAULT_GRADIENT.direction,
-          },
-        },
-      };
-    });
-  };
-
-  const openImagePicker = async () => {
-    setImagePickerOpen(true);
-    try {
-      const items = await listImages("");
-      const filesWithUrls = items.map(i => {
-        const { data } = supabase.storage.from("public_images").getPublicUrl(i.name);
-        return { name: i.name, url: data.publicUrl };
-      });
-      setAvailableImages(filesWithUrls);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Fehler beim Laden der Bilder");
-      setImagePickerOpen(false);
-    }
-  };
-
-  const selectBackgroundImage = (imageName: string) => {
-    updateBackground("image_url", imageName);
-    setImagePickerOpen(false);
-  };
-
-  const getImagePreviewUrl = (imageName: string) => {
-    if (!imageName) return "";
-    const { data } = supabase.storage.from("public_images").getPublicUrl(imageName);
-    return data.publicUrl;
-  };
-
-  if (loading) {
+  if (pageManagement.loading) {
     return <div className={styles.container}>Lädt...</div>;
   }
 
@@ -230,26 +106,32 @@ const PageAdmin: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>Seitenverwaltung</h1>
-        {!isCreating && !editingId && (
+        {!pageManagement.isCreating && !pageManagement.editingId && (
           <button onClick={startCreate} className={styles.createButton}>
             + Neue Seite erstellen
           </button>
         )}
       </div>
 
-      {error && <div className={styles.error}>{error}</div>}
+      {pageManagement.error && <div className={styles.error}>{pageManagement.error}</div>}
 
-      {isCreating || editingId ? (
+      {pageManagement.isCreating || pageManagement.editingId ? (
         <div className={styles.editForm}>
-          <h2>{isCreating ? "Neue Seite erstellen" : "Seite bearbeiten"}</h2>
+          <h2>{pageManagement.isCreating ? "Neue Seite erstellen" : "Seite bearbeiten"}</h2>
 
           <div className={styles.formGroup}>
-            <label>Slug (URL)</label>
+            <label>
+              Slug (URL)
+              {pageManagement.formData.is_static && (
+                <span className={styles.staticLabel}> (nicht änderbar)</span>
+              )}
+            </label>
             <input
               type="text"
-              value={formData.slug || ""}
-              onChange={e => updateFormField("slug", e.target.value)}
+              value={pageManagement.formData.slug || ""}
+              onChange={e => pageManagement.updateFormField("slug", e.target.value)}
               placeholder="z.B. ueber-uns"
+              disabled={pageManagement.formData.is_static}
             />
           </div>
 
@@ -257,8 +139,8 @@ const PageAdmin: React.FC = () => {
             <label>Titel</label>
             <input
               type="text"
-              value={formData.title || ""}
-              onChange={e => updateFormField("title", e.target.value)}
+              value={pageManagement.formData.title || ""}
+              onChange={e => pageManagement.updateFormField("title", e.target.value)}
               placeholder="Seitentitel"
             />
           </div>
@@ -267,67 +149,60 @@ const PageAdmin: React.FC = () => {
             <label>Site-Titel (Browser-Tab)</label>
             <input
               type="text"
-              value={formData.sitetitle || ""}
-              onChange={e => updateFormField("sitetitle", e.target.value)}
+              value={pageManagement.formData.sitetitle || ""}
+              onChange={e => pageManagement.updateFormField("sitetitle", e.target.value)}
               placeholder="Titel für Browser-Tab"
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label>Hintergrund - Gradient</label>
-            <div className={styles.gradientControlRow}>
-              <label>Richtung</label>
-              <input
-                type="text"
-                value={formData.background?.gradient?.direction || DEFAULT_GRADIENT.direction}
-                onChange={e => updateGradientDirection(e.target.value)}
-                placeholder="z.B. 0deg, 90deg, 180deg"
-              />
-            </div>
-            <label className={styles.subLabel}>Farben</label>
-            {(formData.background?.gradient?.stops || DEFAULT_GRADIENT.stops).map((stop, index) => (
-              <div key={index} className={styles.gradientStopRow}>
-                <input
-                  type="color"
-                  value={stop.color}
-                  onChange={e => updateGradientStop(index, e.target.value)}
-                  className={styles.colorInput}
-                />
-                <input
-                  type="text"
-                  value={stop.color}
-                  onChange={e => updateGradientStop(index, e.target.value)}
-                  placeholder="#FFFFFF"
-                />
-                {(formData.background?.gradient?.stops?.length || DEFAULT_GRADIENT.stops.length) > 2 && (
-                  <button type="button" onClick={() => removeGradientStop(index)} className={styles.removeStopButton}>
-                    ✕
-                  </button>
-                )}
-              </div>
-            ))}
-            <button type="button" onClick={addGradientStop} className={styles.addColorButton}>
-              + Farbe hinzufügen
-            </button>
-            {formData.background?.gradient && (
-              <div className={styles.gradientPreviewBox} style={{ background: gradientToCss(formData.background.gradient) }} />
-            )}
-          </div>
+          <GradientEditor
+            formData={pageManagement.formData}
+            isDraggingWheel={gradientEditor.isDraggingWheel}
+            onWheelDrag={gradientEditor.handleWheelDrag}
+            onUpdateStop={gradientEditor.updateGradientStop}
+            onAddStop={gradientEditor.addGradientStop}
+            onRemoveStop={gradientEditor.removeGradientStop}
+            defaultGradient={gradientEditor.DEFAULT_GRADIENT}
+          />
+
+          <ColorSpotsEditor
+            formData={pageManagement.formData}
+            onAddSpot={colorSpotEditor.addColorSpot}
+            onUpdateSpot={colorSpotEditor.updateColorSpot}
+            onRemoveSpot={colorSpotEditor.removeColorSpot}
+          />
 
           <div className={styles.formGroup}>
             <label>Hintergrund - Bild</label>
-            {formData.background?.image_url && (
+            {pageManagement.formData.background?.image_url && (
               <div className={styles.imagePreview}>
-                <img src={getImagePreviewUrl(formData.background.image_url)} alt="Hintergrundbild Vorschau" />
-                <div className={styles.imageMeta}>Ausgewählt: {formData.background.image_url}</div>
+                <img
+                  src={imagePicker.getImagePreviewUrl(pageManagement.formData.background.image_url)}
+                  alt="Hintergrundbild Vorschau"
+                />
+                <div className={styles.imageMeta}>
+                  Ausgewählt: {pageManagement.formData.background.image_url}
+                </div>
               </div>
             )}
             <div className={styles.imageActions}>
-              <button type="button" onClick={openImagePicker} className={styles.pickImageButton}>
-                {formData.background?.image_url ? "Bild ändern" : "Bild auswählen"}
+              <button
+                type="button"
+                onClick={() =>
+                  imagePicker.openImagePicker(pageManagement.setError)
+                }
+                className={styles.pickImageButton}
+              >
+                {pageManagement.formData.background?.image_url
+                  ? "Bild ändern"
+                  : "Bild auswählen"}
               </button>
-              {formData.background?.image_url && (
-                <button type="button" onClick={() => updateBackground("image_url", "")} className={styles.removeImageButton}>
+              {pageManagement.formData.background?.image_url && (
+                <button
+                  type="button"
+                  onClick={() => pageManagement.updateBackground("image_url", "")}
+                  className={styles.removeImageButton}
+                >
                   Bild entfernen
                 </button>
               )}
@@ -344,15 +219,24 @@ const PageAdmin: React.FC = () => {
           </div>
         </div>
       ) : (
-        <PageList pages={pages} styles={styles} gradientToCss={gradientToCss} onEdit={startEdit} onDelete={deletePage} />
+        <PageList
+          pages={pageManagement.pages}
+          styles={styles}
+          gradientToCss={gradientToCss}
+          onEdit={startEdit}
+          onDelete={deletePage}
+        />
       )}
 
       <ImagePickerModal
-        open={imagePickerOpen}
-        images={availableImages}
+        open={imagePicker.imagePickerOpen}
+        images={imagePicker.availableImages}
         styles={styles}
-        onSelect={selectBackgroundImage}
-        onClose={() => setImagePickerOpen(false)}
+        onSelect={(imageName: string) => {
+          pageManagement.updateBackground("image_url", imageName);
+          imagePicker.setImagePickerOpen(false);
+        }}
+        onClose={() => imagePicker.setImagePickerOpen(false)}
         title="Hintergrundbild auswählen"
       />
     </div>

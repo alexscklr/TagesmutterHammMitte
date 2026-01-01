@@ -35,7 +35,7 @@
 
 .error {
   padding: 1rem;
-  background-color: #ff4444;
+  background: var(--gradient-danger);
   color: white;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
@@ -81,16 +81,93 @@
   border-color: var(--color-accent);
 }
 
+.formGroup input:disabled {
+  background-color: var(--color-neutral-700);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.staticLabel {
+  font-size: 0.85rem;
+  color: var(--color-neutral-400);
+  font-weight: 400;
+  font-style: italic;
+}
+
 .gradientControlRow {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
 .gradientControlRow label {
   font-size: 0.9rem;
   color: var(--color-neutral-400);
+  font-weight: 600;
+}
+
+.directionWheel {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8f4f0 100%);
+  border: 4px solid var(--color-neutral-600);
+  position: relative;
+  margin: 1rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.directionWheel:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.directionWheel.dragging {
+  cursor: grabbing;
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(124, 135, 248, 0.3);
+}
+
+.directionIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 55%;
+  background: var(--gradient-accent);
+  transform-origin: top center;
+  margin-left: -3px;
+  margin-top: -2px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: none;
+  pointer-events: none;
+}
+
+.directionWheel::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--color-neutral-600);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.helpText {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-neutral-500);
+  font-style: italic;
+  margin-top: 0.5rem;
 }
 
 .subLabel {
@@ -118,7 +195,7 @@
 
 .removeStopButton {
   padding: 0.5rem 1rem;
-  background-color: #dc3545;
+  background: var(--gradient-danger);
   color: white;
   border: none;
   border-radius: 0.3rem;
@@ -135,11 +212,31 @@
   margin-top: 0.5rem;
 }
 
-.gradientPreviewBox {
+.gradientLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   margin-top: 1rem;
-  height: 60px;
+}
+
+.gradientControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gradientPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradientPreviewBox {
+  width: 100%;
+  height: 300px;
   border-radius: 0.4rem;
-  border: 1px solid var(--color-neutral-600);
+  border: 2px solid var(--color-neutral-600);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .imagePreview {
@@ -181,7 +278,7 @@
 }
 
 .removeImageButton {
-  background-color: #dc3545;
+  background: var(--gradient-danger);
 }
 
 .formActions {
@@ -287,6 +384,7 @@
   height: 20px;
   border-radius: 0.3rem;
   border: 1px solid var(--color-neutral-600);
+  flex-shrink: 0;
 }
 
 .imageUrl {
@@ -326,7 +424,7 @@
 
 .deleteButton {
   padding: 0.5rem 1rem;
-  background-color: #dc3545;
+  background: var(--gradient-danger);
   color: white;
   border: none;
   border-radius: 0.3rem;
@@ -335,7 +433,7 @@
 }
 
 .deleteButton:hover {
-  background-color: #c82333;
+  opacity: 0.9;
 }
 
 .modal {
@@ -412,4 +510,184 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #333;
+}
+
+.colorSpotsLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.colorSpotsControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.colorSpotsPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colorSpotsPreviewBox {
+  width: 100%;
+  height: 300px;
+  border-radius: 0.4rem;
+  border: 2px solid var(--color-neutral-600);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.colorSpotsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.colorSpotRow {
+  background-color: var(--color-neutral-750);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-neutral-600);
+}
+
+.colorSpotHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.colorSpotHeader label {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-neutral-100);
+  font-size: 0.95rem;
+}
+
+.removeSpotButton {
+  padding: 0.4rem 0.8rem;
+  background: var(--gradient-danger);
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.removeSpotButton:hover {
+  opacity: 0.9;
+}
+
+.colorSpotGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.colorSpotGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.colorSpotGrid label {
+  font-size: 0.85rem;
+  color: var(--color-neutral-300);
+  margin: 0;
+}
+
+.colorInputRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.colorInputRow input[type="color"] {
+  width: 50px;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.colorInputRow input[type="text"] {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.3rem;
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-100);
+  font-size: 0.9rem;
+}
+
+.numberInput {
+  padding: 0.5rem;
+  border: 1px solid var(--color-neutral-600);
+  border-radius: 0.3rem;
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-100);
+  font-size: 0.9rem;
+}
+
+.rangeInput {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-neutral-600);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-neutral-700);
+}
+
+.rangeInput::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-neutral-700);
+}
+
+.colorSpotGrid > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.colorSpotGrid > div:last-child span {
+  font-size: 0.8rem;
+  color: var(--color-neutral-400);
+}
+
+.addSpotButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.addSpotButton:hover {
+  opacity: 0.9;
 }

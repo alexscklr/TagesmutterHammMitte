@@ -52,7 +52,9 @@ export const PageList: React.FC<PageListProps> = ({ pages, styles, gradientToCss
               <td>
                 <div className={styles.actions}>
                   <button onClick={() => onEdit(page)} className={styles.editButton}>Bearbeiten</button>
-                  <button onClick={() => onDelete(page.id)} className={styles.deleteButton}>Löschen</button>
+                  {!page.is_static && (
+                    <button onClick={() => onDelete(page.id)} className={styles.deleteButton}>Löschen</button>
+                  )}
                 </div>
               </td>
             </tr>
