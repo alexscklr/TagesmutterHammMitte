@@ -14,10 +14,13 @@ export function ListBlock({ block }: ListBlockProps) {
   return (
     <div className="footerBlock">
       <List
-        content={children.map((childBlock) => (renderFooterBlock(childBlock)))}
         listStyle={"none"}
         ordered={false}
-      />
+      >
+        {children.map((childBlock) => (
+          <li key={(childBlock as any).id}>{renderFooterBlock(childBlock)}</li>
+        ))}
+      </List>
     </div>
   );
 }

@@ -15,9 +15,13 @@ export function ListBlock({ block }: ListBlockProps) {
 
   return (
     <List
-      content={children.map((childBlock) => (renderPageBlock(childBlock)))}
       listStyle={block.content.listStyle || "disc"}
       ordered={block.content.ordered || false}
-    />
+      margin={block.content.margin}
+    >
+      {children.map((childBlock) => (
+        <li key={childBlock.id}>{renderPageBlock(childBlock)}</li>
+      ))}
+    </List>
   );
 }

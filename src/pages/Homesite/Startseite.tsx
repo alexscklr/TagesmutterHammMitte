@@ -64,7 +64,11 @@ const Startseite = () => {
             {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
             <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
             <div className={styles.portraitText}>
-              <List content={[<>Tagesmutter seit 2009</>, <>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</>, <>Mutter von drei Söhnen</>]} listStyle="none" ordered={false} />
+              <List listStyle="none" ordered={false} margin="left">
+                <li>Tagesmutter seit 2009</li>
+                <li>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</li>
+                <li>Mutter von drei Söhnen</li>
+              </List>
             </div>
           </div>
         </div>
@@ -77,12 +81,12 @@ const Startseite = () => {
         <div className={styles.sectionContent}>
           <h2>Kontakt & Standort</h2>
           <div className={styles.location}>
-            <List content={[
-              <>Weißdornweg 14</>,
-              <>59063 Hamm</>,
-              <>Tel.: 02381/31366</>,
-              <>E-Mail.: <a href="mailto:kerstin.sickler@web.de">kerstin.sickler@web.de</a></>
-            ]} listStyle="none" ordered={false} />
+            <List listStyle="none" ordered={false}>
+              <li>Weißdornweg 14</li>
+              <li>59063 Hamm</li>
+              <li>Tel.: 02381/31366</li>
+              <li>E-Mail.: <a href="mailto:kerstin.sickler@web.de">kerstin.sickler@web.de</a></li>
+            </List>
             
             <GoogleLocation
               embedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510.1946516924802!2d7.843872191452154!3d51.67641419936322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b976ab41c346e9%3A0xceb6b152f4a95450!2sWei%C3%9Fdornweg%2C%2059063%20Hamm!5e1!3m2!1sde!2sde!4v1766867332884!5m2!1sde!2sde"
@@ -123,13 +127,13 @@ const Startseite = () => {
       <section className={styles.section} aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
         <div className={styles.sectionContent}>
           <h2>Pädagogische Schwerpunkte</h2>
-          <List content={[
-            <>Musikalische Früherziehung</>,
-            <>Bewegungsförderung</>,
-            <>Gesundheitsförderung</>,
-            <>Individuelle Entwicklungsbegleitung</>,
-            <>Soziale Kompetenz und Gemeinschaftserfahrung</>]
-          } listStyle="disc" ordered={false} />
+          <List listStyle="disc" ordered={false} margin="left">
+            <li>Musikalische Früherziehung</li>
+            <li>Bewegungsförderung</li>
+            <li>Gesundheitsförderung</li>
+            <li>Individuelle Entwicklungsbegleitung</li>
+            <li>Soziale Kompetenz und Gemeinschaftserfahrung</li>
+          </List>
         </div>
         <div className={styles.sectionLinks}>
           <Link to="/musik">Mehr über "Hier spielt die Musik"</Link>

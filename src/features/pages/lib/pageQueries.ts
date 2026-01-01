@@ -145,8 +145,8 @@ function sanitizeContentForSave(block: PageBlock): unknown {
       return { heading, appearance };
     }
     case PageBlocks.List: {
-      const { ordered, listStyle } = block.content as any;
-      return { ordered: !!ordered, listStyle };
+      const { ordered, listStyle, margin } = block.content as any;
+      return { ordered: !!ordered, listStyle, margin };
     }
     case PageBlocks.InfiniteSlider: {
       const { speed } = block.content as any;

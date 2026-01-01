@@ -29,6 +29,18 @@ const EditableList: React.FC<EditableListProps> = ({ value, onChange }) => {
           <option key={opt} value={opt}>{opt}</option>
         ))}
       </select>
+      <label style={{ display: "block", marginTop: "0.5em" }}>
+        Margin:
+        <select
+          value={value.margin ?? "left"}
+          onChange={(e) => update("margin", e.target.value as List["margin"])}
+          style={{ marginLeft: "0.5em" }}
+        >
+          <option value="left">Left</option>
+          <option value="center">Center</option>
+          <option value="right">Right</option>
+        </select>
+      </label>
       <div style={{ marginTop: "0.5em" }}>
         <SaveBlockButton />
       </div>
