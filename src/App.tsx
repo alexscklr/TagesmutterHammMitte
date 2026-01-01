@@ -17,6 +17,8 @@ import HeaderAdmin from "@/pages/HeaderAdmin/HeaderAdmin";
 import FooterAdmin from "@/pages/FooterAdmin";
 import { RequireAdmin } from "@/features/auth/components/RequireAdmin";
 import { useState } from 'react';
+import { ReviewAdmin } from './pages/ReviewAdmin';
+import ReviewSubmit from './pages/ReviewSite/ReviewSubmit';
 
 const App = () => {
 
@@ -31,11 +33,13 @@ const App = () => {
         <Route path="" element={<Main><Startseite /></Main>} />
         <Route path="rezensionen" element={<Main><ReviewSite /></Main>} />
         <Route path="sitemap" element={<Main><Sitemap /></Main>} />
+        <Route path="review" element={<Main><ReviewSubmit /></Main>} />
         <Route path="test" element={<Main><RichTextEditor value={richText} onChange={setRichText} /></Main>} />
         <Route path="admin/media" element={<Main><RequireAdmin><MediaAdmin /></RequireAdmin></Main>} />
         <Route path="admin/pages" element={<Main><RequireAdmin><PageAdmin /></RequireAdmin></Main>} />
         <Route path="admin/header" element={<Main><RequireAdmin><HeaderAdmin /></RequireAdmin></Main>} />
         <Route path="admin/footer" element={<Main><RequireAdmin><FooterAdmin /></RequireAdmin></Main>} />
+        <Route path="admin/reviews" element={<Main><RequireAdmin><ReviewAdmin /></RequireAdmin></Main>} />
       </Routes>
 
       <Footer />

@@ -1,0 +1,397 @@
+.container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(to bottom, #ffffff 0%, #ffffff 85%, rgba(255, 255, 255, 0.95) 100%);
+    padding: 1.5rem 1.5rem 1.25rem;
+    margin: -1rem -2rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 0 0 16px 16px;
+    backdrop-filter: blur(8px);
+}
+
+.header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-neutral-300);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.section h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--color-neutral-300);
+}
+
+.description {
+    margin: 0 0 1.5rem 0;
+    color: var(--color-neutral-500);
+    line-height: 1.6;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.formGroup label {
+    font-weight: 600;
+    color: var(--color-neutral-500);
+}
+
+.select {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--color-neutral-300);
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.select:hover {
+    border-color: var(--color-accent);
+}
+
+.button {
+    background: linear-gradient(230deg, var(--color-accent), var(--color-accent));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(124, 135, 248, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 135, 248, 0.4);
+}
+
+.button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.bulkActions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.inlineActionGroup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.buttonSmall {
+    background: linear-gradient(230deg, var(--color-accent2), var(--color-accent2));
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.buttonSmall:hover {
+    transform: translateY(-1px);
+}
+
+.buttonSmall:active {
+    transform: translateY(0);
+}
+
+.icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    color: #c33;
+}
+
+.linkContainer {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(124, 135, 248, 0.05) 0%, rgba(124, 135, 248, 0.1) 100%);
+    border: 1px solid rgba(124, 135, 248, 0.2);
+    border-radius: 12px;
+}
+
+.linkContainer h3 {
+    margin: 0 0 1rem 0;
+    color: var(--color-accent);
+    font-size: 1.1rem;
+}
+
+.linkBox {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.linkInput {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    background: #fff;
+}
+
+.copyButton {
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.copyButton:hover {
+    background: var(--color-accent2);
+    transform: translateY(-1px);
+}
+
+.copyButton:active {
+    transform: translateY(0);
+}
+
+.hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-neutral-600);
+    line-height: 1.5;
+}
+
+.tableContainer {
+    overflow-x: auto;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table thead {
+    background: var(--color-neutral-100);
+    border-bottom: 2px solid var(--color-neutral-300);
+}
+
+.table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: var(--color-neutral-300);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.02));
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.tableRow {
+    transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+    background: rgba(124, 135, 248, 0.04);
+}
+
+.tableRow.used {
+    opacity: 0.7;
+    background: rgba(200, 200, 200, 0.05);
+}
+
+.tableRow.expired {
+    opacity: 0.6;
+}
+
+.tokenCell code {
+    background: var(--color-neutral-100);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badgeActive {
+    background: rgba(76, 175, 80, 0.2);
+    color: #2e7d32;
+}
+
+.badgeUsed {
+    background: rgba(158, 158, 158, 0.2);
+    color: #616161;
+}
+
+.badgeExpired {
+    background: rgba(244, 67, 54, 0.2);
+    color: #c62828;
+}
+
+.actionsCell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.extendSelect {
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--color-neutral-300);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.extendSelect:hover {
+    border-color: var(--color-accent);
+}
+
+.deleteButton {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.deleteButton:hover {
+    background: rgba(211, 47, 47, 0.1);
+    color: #b71c1c;
+}
+
+.inlineConfirm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--color-neutral-100);
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.confirmButton,
+.cancelButton {
+    border: none;
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
+}
+
+.confirmButton {
+    background: var(--color-accent, #7c87f8);
+    color: #fff;
+}
+
+.confirmButton:hover {
+    filter: brightness(0.95);
+}
+
+.cancelButton {
+    background: var(--color-neutral-200);
+    color: var(--color-neutral-500);
+}
+
+.cancelButton:hover {
+    filter: brightness(0.97);
+}
+
+.loading {
+    text-align: center;
+    color: var(--color-neutral-600);
+    padding: 2rem;
+}
+
+.emptyState {
+    text-align: center;
+    color: var(--color-neutral-600);
+    padding: 2rem;
+}
