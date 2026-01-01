@@ -8,9 +8,19 @@ export interface LinearGradient {
     stops: GradientStop[];
 }
 
+export interface ColorSpot {
+    id: string;
+    x: number;
+    y: number;
+    color: string;
+    opacity: number;
+    size: number;
+}
+
 export interface BackgroundStyle {
     image_url?: string;
     gradient?: LinearGradient;
+    colorSpots?: ColorSpot[];
 }
 
 export interface PageMeta {

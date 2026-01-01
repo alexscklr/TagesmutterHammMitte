@@ -7,10 +7,15 @@ export async function fetchPageMeta(slug: string): Promise<PageMeta | null> {
         .from("pages")
         .select("*")
         .eq("slug", slug)
-        .single();
+        .maybeSingle();
 
-    if (error || !data) {
-        console.log(error?.message, "\n", !data ? "No data!" : "");
+    if (error) {
+        console.log("Error fetching page meta:", error.message);
+        return null;
+    }
+
+    if (!data) {
+        // No page found for this slug - this is okay, we'll use defaults
         return null;
     }
     
