@@ -15,36 +15,40 @@ export function SplitContentBlock({ block }: SplitContentBlockProps) {
 
   // In edit mode, we show the structure with add buttons
   if (isEditing) {
+    const firstChild = (
+      <div>
+        {!children[0] ? (
+          <AddBlockButton order={0} parentBlockId={block.id} />
+        ) : (
+          <div style={{ position: "relative" }}>
+            {renderPageBlock(children[0])}
+          </div>
+        )}
+      </div>
+    );
+
+    const secondChild = (
+      <div>
+        {!children[1] ? (
+          <AddBlockButton order={children[0] ? children[0].order + 1 : 1} parentBlockId={block.id} />
+        ) : (
+          <div style={{ position: "relative" }}>
+            {renderPageBlock(children[1])}
+          </div>
+        )}
+      </div>
+    );
+
     return (
-      <SplitContent firstItemWidth={firstItemWidth}>
-        <div>
-          {!children[0] ? (
-            <AddBlockButton order={0} parentBlockId={block.id} />
-          ) : (
-            <div style={{ position: "relative" }}>
-              {renderPageBlock(children[0])}
-            </div>
-          )}
-        </div>
-        
-        <div>
-          {!children[1] ? (
-            <AddBlockButton order={children[0] ? children[0].order + 1 : 1} parentBlockId={block.id} />
-          ) : (
-            <div style={{ position: "relative" }}>
-              {renderPageBlock(children[1])}
-            </div>
-          )}
-        </div>
-      </SplitContent>
+      <SplitContent firstItemWidth={firstItemWidth} children={[firstChild, secondChild]} />
     );
   }
 
   // In view mode, use the shared SplitContent component
+  const firstChild = children[0] ? renderPageBlock(children[0]) : <div />;
+  const secondChild = children[1] ? renderPageBlock(children[1]) : <div />;
+  
   return (
-    <SplitContent firstItemWidth={firstItemWidth}>
-      {children[0] ? renderPageBlock(children[0]) : <div />}
-      {children[1] ? renderPageBlock(children[1]) : <div />}
-    </SplitContent>
+    <SplitContent firstItemWidth={firstItemWidth} children={[firstChild, secondChild]} />
   );
 }
