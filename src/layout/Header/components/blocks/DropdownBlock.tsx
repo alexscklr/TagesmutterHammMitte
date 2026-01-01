@@ -1,6 +1,6 @@
 import CustomDropdown from "@/shared/components/CustomDropdown/CustomDropdown";
 import type { DropdownBlock } from "../../types/index";
-import { renderRichText } from "@/shared/utils";
+import { renderRichText } from "@/shared/components";
 import { LinkBlock } from "./LinkBlock";
 
 interface DropdownBlockProps {

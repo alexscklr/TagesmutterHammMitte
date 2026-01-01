@@ -6,6 +6,9 @@ import { useEditing } from "@/features/admin/context/hooks/useEditing";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import type { PageBlock } from "@/features/pages/types/page";
 import { RxDragHandleVertical } from "react-icons/rx";
+import { FaRegEye } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
+import { TbDeselect } from "react-icons/tb";
 // Editors are now rendered inline; sidebar reserved for page controls
 
 // Helper to render editor with proper type narrowing via switch
@@ -58,14 +61,14 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       <div>
         <section className={styles.section}>
           <div className={styles.sectionTitle}>Editing</div>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", flexDirection: "row", flexWrap: "wrap" }}>
             <button
               className={styles.button}
               onClick={() => canEdit && setEditing(!isEditing)}
               disabled={!canEdit}
               title={canEdit ? "Bearbeitungsmodus umschalten" : "Keine Berechtigung"}
             >
-              {isEditing ? "Vorschau anzeigen" : "Bearbeitungsmodus aktivieren"}
+              {isEditing ? <><FaRegEye className={styles.icon} /> Vorschau</> : <><FiEdit className={styles.icon} /> Bearbeiten</>}
             </button>
             {activeBlock && <button
               className={styles.button}
@@ -73,9 +76,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               disabled={!activeBlock}
               title={activeBlock ? "Block abwählen" : "Kein Block ausgewählt"}
             >
-              Block abwählen
+              <TbDeselect className={styles.icon} /> Block abwählen
             </button>}
-            {/* Save logic moved into inline editors via SaveBlockButton */}
           </div>
           <div style={{ marginTop: "0.5rem" }}>
             {activeBlock ? `Ausgewählt: ${activeBlock.type}` : "Kein Block ausgewählt"}
@@ -88,6 +90,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <a className={styles.link} href="/admin/header">Header bearbeiten</a>
             <a className={styles.link} href="/admin/footer">Footer bearbeiten</a>
             <a className={styles.link} href="/admin/media">Medienverwaltung</a>
+            <a className={styles.link} href="/admin/reviews">Review-Verwaltung</a>
           </div>
         </section>
       </div>

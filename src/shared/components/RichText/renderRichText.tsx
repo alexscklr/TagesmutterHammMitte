@@ -1,7 +1,8 @@
 import { calculateAge } from "@/shared/utils/dates";
 import type { JSX } from "react";
-import { InlineFunctions, type RichTextSpan, type InlineFunction } from "../types/index";
+import { InlineFunctions, type RichTextSpan, type InlineFunction } from "../../types/index";
 import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 /**
  * Resolve link href from RichTextSpan
@@ -114,8 +115,8 @@ export function renderRichText(spans: RichTextSpan[]) {
           target={isExternalLink ? "_blank" : undefined}
           rel={isExternalLink ? "noopener noreferrer" : undefined}
         >
-          {el}
-        </a>
+          {el} {isExternalLink && <FaExternalLinkAlt />}
+        </a> 
       );
     }
     const classNames = !href && span.accent ? "accent-color" : "";

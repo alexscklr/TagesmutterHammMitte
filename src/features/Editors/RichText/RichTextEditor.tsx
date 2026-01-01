@@ -4,7 +4,7 @@ import { RiFunctionAddLine } from "react-icons/ri";
 import styles from "./RichTextEditor.module.css";
 import type { RichTextSpan, LinkType } from "@/shared/types/RichTextSpan";
 import { InlineFunctions, type InlineFunction, type InlineFunctionType } from "@/shared/types/InlineFunctions";
-import { renderRichText } from "@/shared/utils";
+import { renderRichText } from "@/shared/components";
 import { PageSlugs, type PageSlug } from "@/constants/slugs";
 
 

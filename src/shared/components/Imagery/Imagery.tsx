@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Image } from "@/shared/types/index";
 import { getImageUrl } from "@/shared/lib/imageQueries";
 import styles from "./Imagery.module.css";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 interface ImageryProps {
     id?: string
@@ -55,7 +56,7 @@ export function Imagery({ id, image }: ImageryProps) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                {image.source}
+                                {image.source}<FaExternalLinkAlt />
                             </a>
                         ) : (
                             image.source

@@ -1,6 +1,6 @@
 import React from "react";
 import type { RichTextSpan } from "@/shared/types";
-import { renderRichText } from "@/shared/utils/renderRichText";
+import { renderRichText } from "@/shared/components/RichText/renderRichText";
 
 export interface QuoteProps {
   text: RichTextSpan[];

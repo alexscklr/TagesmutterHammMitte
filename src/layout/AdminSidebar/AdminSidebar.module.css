@@ -58,6 +58,15 @@
     box-shadow: 0 2px 8px rgba(124, 135, 248, 0.2);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.icon {
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .button:hover:not(:disabled) {

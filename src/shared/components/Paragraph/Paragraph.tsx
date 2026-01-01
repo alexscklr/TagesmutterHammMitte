@@ -1,6 +1,6 @@
 
 import type { RichTextSpan } from "@/shared/types";
-import { renderRichText } from "@/shared/utils";
+import { renderRichText } from "@/shared/components";
 
 interface ParagraphProps {
   text: RichTextSpan[];

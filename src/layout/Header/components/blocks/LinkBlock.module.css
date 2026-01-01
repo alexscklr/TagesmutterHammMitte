@@ -10,9 +10,9 @@
   width: fit-content;
 }
 
-
-
-.link.active {
+.link.active,
+.link.active:hover,
+.link.active:focus {
   background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-primary-light) 100%);
-  color: white !important;
+  color: white;
 }

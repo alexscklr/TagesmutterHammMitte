@@ -1,5 +1,5 @@
 import type { LinkBlock } from "../../types/index";
-import { renderRichText } from "@/shared/utils";
+import { renderRichText } from "@/shared/components";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSiteLinkData, type SiteLinkData } from "../../lib/index";
