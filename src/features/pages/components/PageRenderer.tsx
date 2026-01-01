@@ -11,7 +11,7 @@ import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import type { PageBlock } from "../types/page";
 import { AddBlockButton } from "./AddBlockButton";
-import { getDefaultContent } from "./blockDefaults";
+import { getDefaultContent } from "../types/blockDefaults";
 
 
 const PageRenderer = () => {
