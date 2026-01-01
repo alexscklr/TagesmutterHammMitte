@@ -7,10 +7,11 @@ import { Header, Main, Footer } from '@/layout/index';
 
 import { PageRenderer } from './features/pages/index';
 import Startseite from './pages/Startseite';
+import ReviewSite from './pages/Reviews';
 import Sitemap from './pages/Sitemap';
 import RichTextEditor from './features/Editors/RichText/RichTextEditor';
 import type { RichTextSpan } from './shared/types';
-import MediaAdmin from "@/pages/MediaAdmin";
+import MediaAdmin from "@/pages/MediaAdmin/MediaAdmin";
 import PageAdmin from "@/pages/PageAdmin";
 import HeaderAdmin from "@/pages/HeaderAdmin/HeaderAdmin";
 import FooterAdmin from "@/pages/FooterAdmin";
@@ -28,6 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/:slug" element={<Main><PageRenderer /></Main>} />
         <Route path="" element={<Main><Startseite /></Main>} />
+        <Route path="rezensionen" element={<Main><ReviewSite /></Main>} />
         <Route path="sitemap" element={<Main><Sitemap /></Main>} />
         <Route path="test" element={<Main><RichTextEditor value={richText} onChange={setRichText} /></Main>} />
         <Route path="admin/media" element={<Main><RequireAdmin><MediaAdmin /></RequireAdmin></Main>} />
