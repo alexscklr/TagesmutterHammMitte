@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import { PageBlocks, type PageBlockType } from "../types/page";
-import { BLOCK_TYPE_LABELS, getDefaultContent } from "./blockDefaults";
+import { BLOCK_TYPE_LABELS, getDefaultContent } from "../types/blockDefaults";
 
 interface AddBlockButtonProps {
   pageId?: string;
@@ -52,7 +52,31 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
 
   if (!isEditing) return null;
 
-  const blockTypes = Object.values(PageBlocks) as PageBlockType[];
+  const excludedTypes: PageBlockType[] = [
+    PageBlocks.Title,
+    PageBlocks.Heading,
+    PageBlocks.BouncyText,
+  ];
+
+  const containerTypes: PageBlockType[] = [
+    PageBlocks.Section,
+    PageBlocks.SplitContent,
+    PageBlocks.InfiniteSlider,
+    PageBlocks.Timeline,
+  ];
+
+  const contentTypes: PageBlockType[] = [
+    PageBlocks.Paragraph,
+    PageBlocks.Imagery,
+    PageBlocks.List,
+    PageBlocks.Quote,
+    PageBlocks.TimelineEntry,
+    PageBlocks.GoogleLocation,
+    PageBlocks.ContactForm,
+  ];
+
+  const filterAllowed = (types: PageBlockType[]) =>
+    types.filter(t => !excludedTypes.includes(t));
 
   return (
     <div
@@ -92,48 +116,84 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
               position: "absolute",
               top: "100%",
               left: 0,
-              marginTop: "0.5rem",
-              backgroundColor: "var(--color-neutral-900)",
-              border: "1px solid var(--color-accent)",
-              borderRadius: "0.4rem",
+              marginTop: "0.75rem",
+              backgroundColor: "var(--color-neutral-1000)",
+              border: "1px solid #e0e0e0",
+              borderRadius: "var(--radius-m)",
               zIndex: 1000,
-              minWidth: "200px",
-              maxHeight: "400px",
+              minWidth: "300px",
+              maxHeight: "500px",
               overflowY: "auto",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+              boxShadow: "0 10px 40px rgba(0, 0, 0, 0.12)",
+              padding: "0.5rem",
             }}
           >
-            {blockTypes.map((blockType) => (
-              <button
-                key={blockType}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleInsert(blockType);
-                }}
-                disabled={loading}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: "0.75rem 1rem",
-                  textAlign: "left",
-                  backgroundColor: "transparent",
-                  border: "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-                  color: "var(--color-neutral-100)",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  fontSize: "0.9rem",
-                  transition: "background-color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = "rgba(255, 255, 255, 0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = "transparent";
-                }}
-              >
-                {BLOCK_TYPE_LABELS[blockType]}
-              </button>
-            ))}
+            {[
+              { title: "Container", items: filterAllowed(containerTypes) },
+              { title: "Inhalte", items: filterAllowed(contentTypes) },
+            ]
+              .filter(group => group.items.length > 0)
+              .map(group => (
+                <div key={group.title} style={{ padding: "0.25rem 0 0.4rem" }}>
+                  <div
+                    style={{
+                      padding: "0.35rem 0.5rem",
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      color: "var(--color-neutral-400)",
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {group.title}
+                  </div>
+                  {group.items.map((blockType: PageBlockType) => (
+                    <button
+                      key={blockType}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleInsert(blockType);
+                      }}
+                      disabled={loading}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        padding: "1.05rem 1.35rem",
+                        textAlign: "left",
+                        backgroundColor: "var(--color-neutral-900)",
+                        border: "1px solid #f2dcb6",
+                        borderRadius: "var(--radius-m)",
+                        color: "var(--color-text)",
+                        cursor: loading ? "not-allowed" : "pointer",
+                        fontSize: "0.95rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.01em",
+                        transition: "all var(--transition-fast)",
+                        marginBottom: "0.3rem",
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!loading) {
+                          const btn = e.target as HTMLButtonElement;
+                          btn.style.background = "linear-gradient(135deg, #ffe8c7 0%, #f7ddba 100%)";
+                          btn.style.borderColor = "var(--color-accent)";
+                          btn.style.boxShadow = "0 12px 28px rgba(0,0,0,0.12)";
+                          btn.style.transform = "translateY(-2px) scale(1.01)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        const btn = e.target as HTMLButtonElement;
+                        btn.style.background = "var(--color-neutral-900)";
+                        btn.style.borderColor = "#f2dcb6";
+                        btn.style.boxShadow = "0 8px 20px rgba(0,0,0,0.08)";
+                        btn.style.transform = "translateY(0) scale(1)";
+                      }}
+                    >
+                      {BLOCK_TYPE_LABELS[blockType]}
+                    </button>
+                  ))}
+                </div>
+              ))}
           </div>
         )}
       </div>

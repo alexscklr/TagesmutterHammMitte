@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { FaCheck } from "react-icons/fa6";
+import { GiCancel } from "react-icons/gi";
 
 interface DeleteBlockButtonProps {
   blockId: string;
@@ -50,15 +53,18 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
           }}
           disabled={loading}
           style={{
-            padding: "0.25rem 0.5rem",
-            backgroundColor: "var(--color-error, #d32f2f)",
+            padding: "0.4rem",
+            background: "var(--gradient-danger)",
             color: "white",
             border: "none",
             borderRadius: "0.3rem",
             cursor: loading ? "not-allowed" : "pointer",
             opacity: loading ? 0.6 : 0.8,
-            fontSize: "0.75rem",
+            fontSize: "1rem",
             transition: "opacity 0.2s",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
           onMouseEnter={(e) => {
             (e.target as HTMLButtonElement).style.opacity = "1";
@@ -68,7 +74,7 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
           }}
           title="Block löschen"
         >
-          🗑️
+          <RiDeleteBinLine />
         </button>
       ) : (
         <div
@@ -80,7 +86,7 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
             padding: "0.25rem",
             backgroundColor: "var(--color-neutral-900)",
             borderRadius: "0.3rem",
-            border: "1px solid var(--color-error, #d32f2f)",
+            border: "1px solid var(--color-danger, #da190b)",
           }}
         >
           <button
@@ -90,16 +96,19 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
             }}
             disabled={loading}
             style={{
-              padding: "0.25rem 0.5rem",
-              backgroundColor: "var(--color-error, #d32f2f)",
+              padding: "0.4rem",
+              background: "var(--gradient-danger)",
               color: "white",
               border: "none",
               borderRadius: "0.25rem",
               cursor: loading ? "not-allowed" : "pointer",
-              fontSize: "0.7rem",
+              fontSize: "0.9rem",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            {loading ? "..." : "✓"}
+            {loading ? "..." : <FaCheck />}
           </button>
           <button
             onClick={(e) => {
@@ -108,16 +117,19 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
             }}
             disabled={loading}
             style={{
-              padding: "0.25rem 0.5rem",
+              padding: "0.4rem",
               backgroundColor: "var(--color-neutral-700)",
-              color: "white",
+              color: "var(--color-neutral-100)",
               border: "none",
               borderRadius: "0.25rem",
               cursor: "pointer",
-              fontSize: "0.7rem",
+              fontSize: "0.9rem",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            ✕
+            <GiCancel />
           </button>
         </div>
       )}

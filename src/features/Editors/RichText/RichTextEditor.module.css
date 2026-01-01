@@ -15,9 +15,14 @@
   background: #f7f7f7;
   border: none;
   border-radius: 0.4em;
-  padding: 0.3em 0.6em;
+  padding: 0.5em;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5em;
+  min-height: 2.5em;
 }
 .toolbar .active {
   background: black;
@@ -35,9 +40,19 @@
   color: #fff;
   border: none;
   border-radius: 0.4em;
-  padding: 0.5em 1em;
+  padding: 0.6em 1.2em;
   cursor: pointer;
   margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.addBtn:hover {
+  background: #f57c00;
 }
 .preview {
   margin-top: 1em;
@@ -56,7 +71,22 @@
 }
 .button {
     color: var(--color-neutral-500);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    border-radius: 0.3em;
+    transition: all 0.2s ease;
 }
+
+.button:hover {
+    background: #f0f0f0;
+}
+
 .removeBtn {
   background: transparent;
   border: none;
@@ -64,6 +94,16 @@
   font-size: 1.1em;
   cursor: pointer;
   margin-left: 0.5em;
+  padding: 0.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3em;
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover {
+  background: rgba(211, 47, 47, 0.1);
 }
 
 .linkBox {

@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 import { supabase } from "@/supabaseClient";
 import { HeaderBlocks } from "@/layout/Header/types/header";
 import type { HeaderBlock } from "@/layout/Header/types/header";
@@ -128,8 +129,8 @@ export const EditForm: React.FC<EditFormProps> = ({
                     </strong>
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem" }}>
-                    <button type="button" onClick={() => onStartEdit(childLink)} className={styles.btn} style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}>✎</button>
-                    <button type="button" onClick={() => onDeleteChild(childLink.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
+                    <button type="button" onClick={() => onStartEdit(childLink)} className={styles.btn} style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem" }} title="Bearbeiten"><FaPencil /></button>
+                    <button type="button" onClick={() => onDeleteChild(childLink.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : "Löschen"}><FaTrash /></button>
                   </div>
                 </div>
               ))

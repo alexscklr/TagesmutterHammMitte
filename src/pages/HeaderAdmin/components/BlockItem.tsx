@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 import { supabase } from "@/supabaseClient";
 import type { HeaderBlock } from "@/layout/Header/types/header";
 import { HeaderBlocks } from "@/layout/Header/types/header";
@@ -28,8 +29,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           <img src={data.publicUrl} alt="Logo" style={{ width: "60px", height: "auto" }} />
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : "Löschen"}><FaTrash /></button>
         </div>
       </div>
     );
@@ -45,8 +46,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : "Löschen"}><FaTrash /></button>
         </div>
       </div>
     );
@@ -83,8 +84,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           )}
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : undefined}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} disabled={readOnly} title={readOnly ? "Nur Lesen" : "Löschen"}><FaTrash /></button>
         </div>
       </div>
     );

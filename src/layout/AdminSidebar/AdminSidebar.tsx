@@ -5,6 +5,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useEditing } from "@/features/admin/context/hooks/useEditing";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import type { PageBlock } from "@/features/pages/types/page";
+import { RxDragHandleVertical } from "react-icons/rx";
 // Editors are now rendered inline; sidebar reserved for page controls
 
 // Helper to render editor with proper type narrowing via switch
@@ -83,10 +84,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         <section className={styles.section}>
           <div className={styles.sectionTitle}>Tools</div>
           <div className={styles.toolsList}>
-            <a className={styles.button} href="/admin/pages">Seitenverwaltung</a>
-            <a className={styles.button} href="/admin/header">Header bearbeiten</a>
-            <a className={styles.button} href="/admin/footer">Footer bearbeiten</a>
-            <a className={styles.button} href="/admin/media">Medienverwaltung</a>
+            <a className={styles.link} href="/admin/pages">Seitenverwaltung</a>
+            <a className={styles.link} href="/admin/header">Header bearbeiten</a>
+            <a className={styles.link} href="/admin/footer">Footer bearbeiten</a>
+            <a className={styles.link} href="/admin/media">Medienverwaltung</a>
           </div>
         </section>
       </div>
@@ -98,7 +99,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       <div className={styles.header}>
         <span className={styles.title}>Adminpanel {isDirty ? "• geändert" : ""}</span>
       </div>
-      <div className={styles.resizer} onMouseDown={startResize} />
+      <div className={styles.resizer} onMouseDown={startResize} title="Seitenleiste vergrößern/verkleinern">
+        <RxDragHandleVertical className={styles.resizerIcon} />
+      </div>
       <div className={styles.body}>{renderBody()}</div>
       <div className={styles.footer}></div>
     </aside>

@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPencil, FaTrash, FaPlus } from "react-icons/fa6";
 import { supabase } from "@/supabaseClient";
 import { FooterBlocks, type FooterBlock } from "@/layout/Footer/types";
 
@@ -28,8 +29,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           {data?.publicUrl && <img src={data.publicUrl} alt={content.image?.alt || "Bild"} style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 8 }} />}
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} title="Löschen"><FaTrash /></button>
         </div>
       </div>
     );
@@ -46,8 +47,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} title="Löschen"><FaTrash /></button>
         </div>
       </div>
     );
@@ -63,8 +64,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} title="Löschen"><FaTrash /></button>
         </div>
       </div>
     );
@@ -80,8 +81,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} title="Löschen"><FaTrash /></button>
         </div>
       </div>
     );
@@ -115,9 +116,9 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          {onAddChild && <button onClick={() => onAddChild(block.id)} className={styles.btn}>+ Link</button>}
-          <button onClick={() => onEdit(block)} className={styles.btn}>✎</button>
-          <button onClick={() => onDelete(block.id)} className={styles.btnDelete}>✕</button>
+          {onAddChild && <button onClick={() => onAddChild(block.id)} className={styles.btn} title="Link hinzufügen"><FaPlus /> Link</button>}
+          <button onClick={() => onEdit(block)} className={styles.btn} title="Bearbeiten"><FaPencil /></button>
+          <button onClick={() => onDelete(block.id)} className={styles.btnDelete} title="Löschen"><FaTrash /></button>
         </div>
       </div>
     );

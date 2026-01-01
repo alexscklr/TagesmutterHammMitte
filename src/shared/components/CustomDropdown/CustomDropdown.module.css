@@ -3,13 +3,42 @@
 }
 
 .selectBtn {
-    background: none;
-    color: var(--color-text);
-    white-space: nowrap;
+  background: none;
+  color: var(--color-neutral-300);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 300;
+  position: relative;
+  transition: all var(--transition-fast, 180ms ease);
 }
 
-.selectBtn:hover, .selectBtn:focus {
-    color: white;
+.selectBtn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.25em;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-accent2) 0%, var(--color-accent) 60%, var(--color-accent-primary-light) 100%);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 240ms cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+.selectBtn:hover,
+.selectBtn:focus {
+  color: var(--color-accent);
+  background-image: linear-gradient(120deg, var(--color-accent2), var(--color-accent), var(--color-accent-primary-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.selectBtn:hover::after,
+.selectBtn:focus::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .select > ul {
@@ -46,6 +75,18 @@
 
 .select > ul > li {
   white-space: nowrap;
+  color: var(--color-neutral-300);
+  font-weight: 500;
+}
+
+.select > ul > li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.select > ul > li:hover,
+.select > ul > li:focus-within {
+  color: var(--color-accent);
 }
 
 .select > ul.active {

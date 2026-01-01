@@ -1,4 +1,5 @@
 import React from "react";
+import { FaX } from "react-icons/fa6";
 
 type ImagePickerModalProps = {
   open: boolean;
@@ -16,7 +17,7 @@ export const ImagePickerModal: React.FC<ImagePickerModalProps> = ({ open, images
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <strong>Logo-Bild auswählen</strong>
-          <button onClick={onClose} className={styles.btnClose}>✕</button>
+          <button onClick={onClose} className={styles.btnClose} title="Schließen"><FaX /></button>
         </div>
         <div className={styles.imageGrid}>
           {images.map(img => (

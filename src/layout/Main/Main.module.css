@@ -2,10 +2,34 @@
     width: 100%;
     flex: 1;
     min-height: calc(100vh - 200px);
-    background-size: auto;
-    background-position: center;
-    background-repeat: repeat;
-    background-blend-mode: multiply;
+    background-size:
+        160% 160%,
+        140% 140%,
+        150% 150%,
+        cover,
+        220px 220px,
+        160px 120px;
+    background-position:
+        18% 20%,
+        78% 24%,
+        45% 80%,
+        center,
+        center,
+        center;
+    background-repeat:
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        repeat,
+        repeat;
+    background-blend-mode:
+        normal,
+        normal,
+        normal,
+        normal,
+        soft-light,
+        normal;
     padding: 7rem 2rem 2rem 2rem;
     box-sizing: border-box;
 }

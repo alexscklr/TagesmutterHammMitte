@@ -286,7 +286,7 @@
 
 .btnDelete {
   padding: 0.6rem;
-  background-color: #dc3545;
+  background: var(--gradient-danger);
   color: white;
   border: none;
   border-radius: 0.3rem;
@@ -297,7 +297,7 @@
 }
 
 .btnDelete:hover {
-  background-color: #c82333;
+  opacity: 0.9;
 }
 
 .btnClose {

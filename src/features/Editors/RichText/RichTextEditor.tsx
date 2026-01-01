@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FaBold, FaItalic, FaUnderline, FaLink, FaPencil, FaTrash, FaPlus } from "react-icons/fa6";
+import { RiFunctionAddLine } from "react-icons/ri";
 import styles from "./RichTextEditor.module.css";
 import type { RichTextSpan, LinkType } from "@/shared/types/RichTextSpan";
 import { InlineFunctions, type InlineFunction, type InlineFunctionType } from "@/shared/types/InlineFunctions";
@@ -149,22 +151,22 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         <div className={styles.editor}>
             <div className={styles.toolbar}>
                 <StyleButton active={!!current.bold} onClick={() => applyStyle("bold")} >
-                    <b>B</b>
+                    <FaBold />
                 </StyleButton>
                 <StyleButton active={!!current.italic} onClick={() => applyStyle("italic")}>
-                    <i>I</i>
+                    <FaItalic />
                 </StyleButton>
                 <StyleButton active={!!current.underline} onClick={() => applyStyle("underline")}>
-                    <u>U</u>
+                    <FaUnderline />
                 </StyleButton>
                 <StyleButton active={!!current.accent} onClick={() => applyStyle("accent")}>
                     <span style={{ color: "var(--color-accent)" }}>A</span>
                 </StyleButton>
                 <StyleButton active={!!current.linkType} onClick={() => setShowLinkInput((v) => !v)}>
-                    🔗
+                    <FaLink />
                 </StyleButton>
                 <StyleButton active={!!current.inlineFunction} onClick={() => setShowInlineFn((v) => !v)}>
-                    ⚡
+                    <RiFunctionAddLine />
                 </StyleButton>
             </div>
             <textarea
@@ -279,7 +281,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                 </div>
             )}
             <button className={styles.addBtn} type="button" onClick={commitSpan}>
-                {editingIndex === null ? "Hinzufügen" : "Aktualisieren"}
+                {editingIndex === null ? <><FaPlus /> Hinzufügen</> : "Aktualisieren"}
             </button>
             <div className={styles.preview}>
                 {renderRichText(spans)}
@@ -298,8 +300,9 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                                 setShowInlineFn(!!span.inlineFunction);
                             }}
                             aria-label="Bearbeiten"
+                            title="Bearbeiten"
                         >
-                            ✎
+                            <FaPencil />
                         </button>
                         <button
                             className={styles.removeBtn}
@@ -311,8 +314,9 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                                 setSpans(newValue);
                             }}
                             aria-label="Entfernen"
+                            title="Entfernen"
                         >
-                            ✖
+                            <FaTrash />
                         </button>
                     </div>
                 ))}
