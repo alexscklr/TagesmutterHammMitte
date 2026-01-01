@@ -38,9 +38,8 @@ export const EditingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const updated = await updatePageBlock(changedBlock);
     if (updated) {
       console.info("EditingContext.save: Update success", { id: updated.id });
-      window.dispatchEvent(
-        new CustomEvent("pageblocks:updated", { detail: { id: changedBlock.id, content: updated.content } })
-      );
+      // Trigger a full refetch instead of partial update to preserve nested children
+      window.dispatchEvent(new Event("pageblocks:updated"));
       setSelectedBlock(null);
     } else {
       console.error("EditingContext.save: Update returned null/undefined");
