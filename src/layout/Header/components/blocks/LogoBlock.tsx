@@ -28,11 +28,15 @@ export function LogoBlock({ block }: LogoBlockProps) {
     if (!logoUrl) return null;
 
     return (
-        <RouterLink to="/">
+        <RouterLink to="/" style={{display: "block", width: "fit-content"}}>
             <img
                 src={logoUrl}
                 alt={block.content.logo.alt ?? "Logo"}
-                style={{ width: block.content.logo.width ? `${block.content.logo.width}%` : "auto" }}
+                style={{ 
+                  maxWidth: block.content.logo.width ? `${block.content.logo.width}px` : "300px",
+                  height: "auto",
+                  display: "block"
+                }}
                 loading="lazy"
             />
         </RouterLink>
