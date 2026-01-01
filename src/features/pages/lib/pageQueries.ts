@@ -153,8 +153,8 @@ function sanitizeContentForSave(block: PageBlock): unknown {
       return { speed };
     }
     case PageBlocks.SplitContent: {
-      const { firstItemWidth } = block.content as any;
-      return { firstItemWidth: firstItemWidth ?? 50 };
+      const { firstItemWidth, content } = block.content as any;
+      return { firstItemWidth: firstItemWidth ?? 50, content: content ?? [] };
     }
     case PageBlocks.Timeline: {
       // Entries are represented by child rows; parent holds no inline entries
