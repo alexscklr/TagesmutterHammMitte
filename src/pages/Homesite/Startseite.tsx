@@ -1,4 +1,4 @@
-import { BouncyText } from "../shared/components/BouncyText/BouncyText";
+import { BouncyText } from "@/shared/components";
 import { Link } from "react-router-dom";
 import { GoogleLocation } from "@/shared/components/GoogleLocation/GoogleLocation";
 import styles from "./Startseite.module.css";

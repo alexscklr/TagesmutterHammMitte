@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
-import styles from "./Startseite.module.css";
+import styles from "./Homesite/Startseite.module.css";
 
 const Sitemap = () => {
   const [pages, setPages] = useState<PageMeta[]>([]);

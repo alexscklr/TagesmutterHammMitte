@@ -6,8 +6,8 @@ import { Header, Main, Footer } from '@/layout/index';
 // Site-Components
 
 import { PageRenderer } from './features/pages/index';
-import Startseite from './pages/Startseite';
-import ReviewSite from './pages/Reviews';
+import Startseite from './pages/Homesite/Startseite';
+import ReviewSite from './pages/ReviewSite/Reviews';
 import Sitemap from './pages/Sitemap';
 import RichTextEditor from './features/Editors/RichText/RichTextEditor';
 import type { RichTextSpan } from './shared/types';
