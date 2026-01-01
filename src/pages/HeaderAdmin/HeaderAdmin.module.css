@@ -68,16 +68,25 @@
 .blockRow {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
   background: var(--color-neutral-700);
   border-radius: 0.4rem;
   margin-bottom: 0.75rem;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.15s, opacity 0.15s;
+  border: 1px solid var(--color-neutral-650, rgba(255,255,255,0.08));
 }
 
 .blockRow:hover {
   background: var(--color-neutral-650, rgba(255, 255, 255, 0.03));
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.dragging {
+  opacity: 0.75;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  transform: scale(0.998);
 }
 
 .nestedBlockRow {
@@ -136,7 +145,61 @@
 
 .blockActions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
+}
+
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-500);
+  cursor: grab;
+  padding: 0.35rem 0.4rem;
+  border-radius: 0.35rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.blockRow:hover .dragHandle {
+  color: var(--color-accent);
+  background: rgba(255,255,255,0.04);
+}
+
+.ghostButton {
+  background: transparent;
+  border: none;
+  color: var(--color-neutral-450, #9ca3af);
+  opacity: 0.7;
+  padding: 0.4rem 0.45rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: color 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.ghostButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.blockRow:hover .ghostButton {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+.ghostButton:hover:not(:disabled) {
+  background: rgba(255,255,255,0.06);
+}
+
+.ghostDelete {
+  color: var(--color-neutral-500);
+}
+
+.blockRow:hover .ghostDelete {
+  color: #d25c5c;
+}
+
+.ghostDelete:hover:not(:disabled) {
+  color: #d72f2f;
+  background: rgba(215,47,47,0.1);
 }
 
 /* Nested Elements */

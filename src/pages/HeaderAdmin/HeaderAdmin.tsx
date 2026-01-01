@@ -4,6 +4,7 @@ import { listImages } from "@/features/media/lib/storage";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
 import type { HeaderBlock, HeaderBlockType } from "@/layout/Header/types/header";
 import { HeaderBlocks } from "@/layout/Header/types/header";
+import { fetchHeaderBlocks, saveHeaderBlock, deleteHeaderBlock, upsertHeaderOrder } from "./lib/api";
 import styles from "./HeaderAdmin.module.css";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { canEdit } from "@/features/auth/lib/permissions";
@@ -22,17 +23,13 @@ const HeaderAdmin: React.FC = () => {
   const [formData, setFormData] = useState<Partial<HeaderBlock>>({});
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
   const [availableImages, setAvailableImages] = useState<{ name: string; url: string }[]>([]);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   const loadBlocks = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error: fetchError } = await supabase
-        .from("header_blocks")
-        .select("*")
-        .order("order", { ascending: true });
-
-      if (fetchError) throw fetchError;
+      const data = await fetchHeaderBlocks();
       setBlocks(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Fehler beim Laden der Header-Blöcke");
@@ -95,13 +92,7 @@ const HeaderAdmin: React.FC = () => {
         content: formData.content,
       };
 
-      if (isNew) {
-        const { error: err } = await supabase.from("header_blocks").insert([payload]);
-        if (err) throw err;
-      } else {
-        const { error: err } = await supabase.from("header_blocks").update(payload).eq("id", editingId);
-        if (err) throw err;
-      }
+      await saveHeaderBlock(payload as Partial<HeaderBlock>, isNew ? undefined : editingId || undefined);
 
       await loadBlocks();
       cancelEdit();
@@ -115,12 +106,7 @@ const HeaderAdmin: React.FC = () => {
     if (!confirm("Möchten Sie diesen Block wirklich löschen?")) return;
 
     try {
-      const { error: deleteError } = await supabase
-        .from("header_blocks")
-        .delete()
-        .eq("id", id);
-
-      if (deleteError) throw deleteError;
+      await deleteHeaderBlock(id);
       await loadBlocks();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Fehler beim Löschen");
@@ -161,6 +147,75 @@ const HeaderAdmin: React.FC = () => {
       await loadBlocks();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Fehler beim Löschen");
+    }
+  };
+
+  const reorderBlocks = (
+    list: HeaderBlock[],
+    sourceId: string,
+    targetId: string
+  ): { next: HeaderBlock[]; changed: boolean; updates: Array<{ id: string; order: number }> } => {
+    const source = list.find((b) => b.id === sourceId);
+    const target = list.find((b) => b.id === targetId);
+
+    // Verhindert das Verschieben zwischen verschiedenen Ebenen (z.B. Child in Top-Level)
+    if (!source || !target || source.parent_block_id !== target.parent_block_id) {
+      return { next: list, changed: false, updates: [] };
+    }
+
+    // 1. Alle Geschwister finden und sortieren
+    const siblings = list
+      .filter((b) => b.parent_block_id === source.parent_block_id)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const oldIndex = siblings.findIndex((b) => b.id === sourceId);
+    const newIndex = siblings.findIndex((b) => b.id === targetId);
+
+    if (oldIndex === newIndex) return { next: list, changed: false, updates: [] };
+
+    // 2. Array-Reihenfolge ändern
+    const newSiblings = [...siblings];
+    const [movedItem] = newSiblings.splice(oldIndex, 1);
+    newSiblings.splice(newIndex, 0, movedItem);
+
+    // 3. Neue Order-Werte berechnen
+    const updates = newSiblings.map((b, idx) => ({
+      id: b.id,
+      order: idx
+    }));
+
+    // 4. Den globalen State aktualisieren
+    const updateMap = new Map(updates.map((u) => [u.id, u.order]));
+    const next = list.map((b) =>
+      updateMap.has(b.id) ? { ...b, order: updateMap.get(b.id)! } : b
+    );
+
+    return { next, changed: true, updates };
+  };
+
+  const persistOrder = async (updates: Array<{ id: string; order: number }>) => {
+    if (updates.length === 0) return;
+
+    console.log("Sende Updates an DB:", updates);
+
+    const data = await upsertHeaderOrder(updates);
+    if (data) console.log("DB Update erfolgreich. Rückgabe:", data);
+  };
+
+  const handleReorder = async (sourceId: string, targetId: string) => {
+    const { next, changed, updates } = reorderBlocks(blocks, sourceId, targetId);
+
+    if (!changed) return;
+
+    // Optimistic UI
+    setBlocks(next);
+
+    try {
+      await persistOrder(updates);
+    } catch (err) {
+      console.error("Reorder failed, lade Originalzustand...", err);
+      setError("Fehler beim Speichern der Reihenfolge");
+      await loadBlocks();
     }
   };
 
@@ -213,6 +268,9 @@ const HeaderAdmin: React.FC = () => {
                 onEdit={startEdit}
                 onDelete={deleteBlock}
                 readOnly={readOnly}
+                draggingId={draggingId}
+                setDraggingId={setDraggingId}
+                onReorder={handleReorder}
               />
             ) : (
               <p style={{ color: "var(--color-neutral-400)" }}>Kein Logo vorhanden</p>
@@ -246,6 +304,9 @@ const HeaderAdmin: React.FC = () => {
                       onEdit={startEdit}
                       onDelete={deleteBlock}
                       readOnly={readOnly}
+                      draggingId={draggingId}
+                      setDraggingId={setDraggingId}
+                      onReorder={handleReorder}
                     />
                   ))}
               </div>

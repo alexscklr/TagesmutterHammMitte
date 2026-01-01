@@ -7,6 +7,7 @@ import { BlockItem } from "./components/BlockItem";
 import { EditForm } from "./components/EditForm";
 import { ImagePickerModal } from "./components/ImagePickerModal";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
+import { fetchFooterBlocks, saveFooterBlock, deleteFooterBlock, upsertFooterOrder } from "./lib/api";
 
 const FooterAdmin: React.FC = () => {
   const [blocks, setBlocks] = useState<FooterBlock[]>([]);
@@ -17,18 +18,14 @@ const FooterAdmin: React.FC = () => {
   const [formData, setFormData] = useState<Partial<FooterBlock>>({});
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
   const [availableImages, setAvailableImages] = useState<{ name: string; url: string }[]>([]);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   const loadBlocks = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error: fetchError } = await supabase
-        .from("footer_blocks")
-        .select("id, parent_block_id, target_site_id, type, order, content")
-        .order("order", { ascending: true });
-
-      if (fetchError) throw fetchError;
-      setBlocks((data || []) as FooterBlock[]);
+      const data = await fetchFooterBlocks();
+      setBlocks(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Fehler beim Laden der Footer-Blöcke");
     } finally {
@@ -94,15 +91,9 @@ const FooterAdmin: React.FC = () => {
         parent_block_id: formData.parent_block_id,
         target_site_id: formData.target_site_id,
         content: formData.content,
-      };
+      } as Partial<FooterBlock>;
 
-      if (isNew) {
-        const { error: err } = await supabase.from("footer_blocks").insert([payload]);
-        if (err) throw err;
-      } else if (editingId) {
-        const { error: err } = await supabase.from("footer_blocks").update(payload).eq("id", editingId);
-        if (err) throw err;
-      }
+      await saveFooterBlock(payload, isNew ? undefined : (editingId ?? undefined));
 
       await loadBlocks();
       cancelEdit();
@@ -115,8 +106,7 @@ const FooterAdmin: React.FC = () => {
     if (!confirm("Möchten Sie diesen Block wirklich löschen?")) return;
 
     try {
-      const { error: deleteError } = await supabase.from("footer_blocks").delete().eq("id", id);
-      if (deleteError) throw deleteError;
+      await deleteFooterBlock(id);
       await loadBlocks();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Fehler beim Löschen");
@@ -147,6 +137,65 @@ const FooterAdmin: React.FC = () => {
       ...prev,
       content: { ...(prev.content as any), ...updates }
     }));
+  };
+
+  const reorderBlocks = (
+    list: FooterBlock[],
+    sourceId: string,
+    targetId: string
+  ): { next: FooterBlock[]; changed: boolean; updates: Array<{ id: string; order: number }> } => {
+    const source = list.find((b) => b.id === sourceId);
+    const target = list.find((b) => b.id === targetId);
+
+    // Nur innerhalb derselben Parent-Gruppe verschieben
+    if (!source || !target || source.parent_block_id !== target.parent_block_id) {
+      return { next: list, changed: false, updates: [] };
+    }
+
+    const siblings = list
+      .filter((b) => b.parent_block_id === source.parent_block_id)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const oldIndex = siblings.findIndex((b) => b.id === sourceId);
+    const newIndex = siblings.findIndex((b) => b.id === targetId);
+
+    if (oldIndex === newIndex) return { next: list, changed: false, updates: [] };
+
+    const newSiblings = [...siblings];
+    const [movedItem] = newSiblings.splice(oldIndex, 1);
+    newSiblings.splice(newIndex, 0, movedItem);
+
+    const updates = newSiblings.map((b, idx) => ({ id: b.id, order: idx }));
+    const updateMap = new Map(updates.map((u) => [u.id, u.order]));
+
+    const next = list.map((b) => (updateMap.has(b.id) ? { ...b, order: updateMap.get(b.id)! } : b));
+
+    return { next, changed: true, updates };
+  };
+
+  const persistOrder = async (updates: Array<{ id: string; order: number }>) => {
+    if (updates.length === 0) return;
+
+    console.log("Sende Updates an DB:", updates);
+
+    const data = await upsertFooterOrder(updates);
+    if (data) console.log("DB Update erfolgreich. Rückgabe:", data);
+  };
+
+  const handleReorder = async (sourceId: string, targetId: string) => {
+    const { next, changed, updates } = reorderBlocks(blocks, sourceId, targetId);
+
+    if (!changed) return;
+
+    setBlocks(next);
+
+    try {
+      await persistOrder(updates);
+    } catch (err) {
+      console.error("Reorder failed, lade Originalzustand...", err);
+      setError("Fehler beim Speichern der Reihenfolge");
+      await loadBlocks();
+    }
   };
 
   const getPageTitle = (pageId: string) => pages.find(p => p.id === pageId)?.title || pageId;
@@ -209,6 +258,9 @@ const FooterAdmin: React.FC = () => {
                       onEdit={startEdit}
                       onDelete={deleteBlock}
                       onAddChild={block.type === FooterBlocks.List ? startCreateChildLink : undefined}
+                      draggingId={draggingId}
+                      setDraggingId={setDraggingId}
+                      onReorder={handleReorder}
                     />
                   ))}
               </div>
