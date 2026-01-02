@@ -31,8 +31,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({
   const content = block.content as any;
   const noopDrag = () => { /* no-op */ };
   const isDragging = drag?.draggingId === block.id;
-  const handleProps = drag ? drag.getHandleProps(block.id) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined, onPointerDown: noopDrag };
-  const dropProps = drag ? drag.getDropProps(block.id) : { onDragOver: noopDrag, onDrop: noopDrag, "data-drop-id": block.id };
+  const handleProps = drag ? drag.getHandleProps(block.id, block.parent_block_id ?? null) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined, onPointerDown: noopDrag };
+  const dropProps = drag ? drag.getDropProps(block.id, block.parent_block_id ?? null) : { onDragOver: noopDrag, onDrop: noopDrag, "data-drop-id": block.id, "data-parent-id": block.parent_block_id ?? "" };
 
   const commonRowProps = {
     className: `${styles.blockRow} ${isNested ? styles.nestedBlockRow : ""} ${isDragging ? styles.dragging : ""}`,

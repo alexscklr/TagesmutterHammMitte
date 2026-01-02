@@ -1,0 +1,242 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0;
+  color: var(--color-text);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-neutral-400);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.speedControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-neutral-300), var(--color-accent));
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: grab;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.speedValue {
+  min-width: 45px;
+  padding: 0.4rem 0.8rem;
+  background: var(--color-neutral-900);
+  border: 1px solid var(--color-neutral-700);
+  border-radius: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-neutral-400);
+}
+
+.contentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-neutral-900);
+  border: 1px solid var(--color-neutral-700);
+  border-radius: 0.6rem;
+}
+
+.infoBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.infoValue {
+  padding: 0.35rem 0.75rem;
+  background: var(--color-accent);
+  color: var(--color-neutral-1000);
+  border-radius: 0.4rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.infoText {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-neutral-300);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.buttonPrimary,
+.buttonSecondary,
+.buttonDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buttonPrimary {
+  background: var(--color-accent);
+  color: var(--color-neutral-1000);
+}
+
+.buttonPrimary:hover {
+  background: var(--color-accent-primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.buttonSecondary {
+  background: var(--color-neutral-700);
+  color: var(--color-text);
+}
+
+.buttonSecondary:hover {
+  background: var(--color-neutral-600);
+  transform: translateY(-1px);
+}
+
+.buttonDanger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.buttonDanger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.deleteSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.6rem;
+}
+
+.confirmDialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.confirmText {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.confirmButtons button {
+  flex: 1;
+}
+
+.note {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--color-neutral-900);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-neutral-300);
+  line-height: 1.5;
+}

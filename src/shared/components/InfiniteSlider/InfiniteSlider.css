@@ -14,15 +14,20 @@
 
 .sliderItem {
     flex: 0 0 auto;
+    width: 40vh;
+    height: 30vh;
     position: relative;
     user-select: none;
     border-radius: 10px;
     transition: all 0.3s ease;
     will-change: transform;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    overflow: visible;
+    overflow: hidden;
     margin-bottom: 5%;
     margin-top: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .sliderItem:hover,
@@ -37,10 +42,6 @@
 .sliderItem:has(~ .sliderItem:hover),
 .sliderItem:has(~ .sliderItem:focus) {
     filter: brightness(0.5);
-}
-
-.sliderItem * {
-    height: 30vh;
 }
 
 @media (max-width: 767px) {

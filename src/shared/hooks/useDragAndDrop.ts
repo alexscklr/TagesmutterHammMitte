@@ -2,16 +2,17 @@ import React, { useCallback, useRef, useState } from "react";
 
 export type DragControls = {
     draggingId: string | null;
-    getHandleProps: (id: string) => {
+    getHandleProps: (id: string, parentId?: string | null) => {
         draggable: boolean;
         onDragStart: (e: React.DragEvent) => void;
         onDragEnd: () => void;
         onPointerDown: (e: React.PointerEvent) => void;
     };
-    getDropProps: (id: string) => {
+    getDropProps: (id: string, parentId?: string | null) => {
         onDragOver: (e: React.DragEvent) => void;
         onDrop: (e: React.DragEvent) => void;
         "data-drop-id": string;
+        "data-parent-id": string;
     };
     clearDragging: () => void;
 };
@@ -24,19 +25,22 @@ type UseDragAndDropOptions = {
 export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOptions): DragControls => {
     const [draggingId, setDraggingId] = useState<string | null>(null);
     const pointerDraggingId = useRef<string | null>(null);
+    const pointerParentId = useRef<string | null>(null);
 
     const clearDragging = useCallback(() => {
         pointerDraggingId.current = null;
+        pointerParentId.current = null;
         setDraggingId(null);
     }, []);
 
     const endPointerDrag = useCallback(() => {
         pointerDraggingId.current = null;
+        pointerParentId.current = null;
         setDraggingId(null);
     }, []);
 
     const getHandleProps = useCallback(
-        (id: string) => ({
+        (id: string, parentId: string | null = null) => ({
             draggable: !disabled,
             onDragStart: (e: React.DragEvent) => {
                 if (disabled) return;
@@ -55,6 +59,7 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
                 e.stopPropagation();
 
                 pointerDraggingId.current = id;
+                pointerParentId.current = parentId;
                 setDraggingId(id);
 
                 const handleEl = e.currentTarget as HTMLElement | null;
@@ -72,7 +77,10 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
                     if (!target) return;
                     const dropNode = target.closest<HTMLElement>('[data-drop-id]');
                     const dropId = dropNode?.dataset.dropId;
+                    const dropParentIdRaw = dropNode?.dataset.parentId;
+                    const dropParentId = dropParentIdRaw === "" ? null : dropParentIdRaw ?? null;
                     if (!dropId || dropId === pointerDraggingId.current) return;
+                    if (dropParentId !== pointerParentId.current) return;
 
                     onReorder(pointerDraggingId.current, dropId);
                     pointerDraggingId.current = dropId;
@@ -98,7 +106,7 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
     );
 
     const getDropProps = useCallback(
-        (id: string) => ({
+        (id: string, parentId: string | null = null) => ({
             onDragOver: (e: React.DragEvent) => {
                 if (disabled || draggingId === id) return;
                 e.preventDefault();
@@ -113,6 +121,7 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
                 setDraggingId(null);
             },
             "data-drop-id": id,
+            "data-parent-id": parentId ?? "",
         }),
         [disabled, draggingId, onReorder]
     );

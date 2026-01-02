@@ -20,8 +20,8 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
   const content = block.content as any;
   const noopDrag = () => { /* no-op */ };
   const isDragging = drag?.draggingId === block.id;
-  const handleProps = drag ? drag.getHandleProps(block.id) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined, onPointerDown: noopDrag };
-  const dropProps = drag ? drag.getDropProps(block.id) : { onDragOver: noopDrag, onDrop: noopDrag, "data-drop-id": block.id };
+  const handleProps = drag ? drag.getHandleProps(block.id, block.parent_block_id ?? null) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined, onPointerDown: noopDrag };
+  const dropProps = drag ? drag.getDropProps(block.id, block.parent_block_id ?? null) : { onDragOver: noopDrag, onDrop: noopDrag, "data-drop-id": block.id, "data-parent-id": block.parent_block_id ?? "" };
 
   const commonRowProps = {
     className: `${styles.blockRow} ${isNested ? styles.nestedBlockRow : ""} ${isDragging ? styles.dragging : ""}`,
@@ -163,7 +163,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
           </div>
         </div>
         <div className={styles.blockActions}>
-          {onAddChild && <button onClick={() => onAddChild(block.id)} className={styles.btn} title="Link hinzufügen"><FaPlus /> Link</button>}
+          {onAddChild && <button onClick={() => onAddChild(block.id)} className={styles.btn} title="Eintrag hinzufügen"><FaPlus /> Eintrag</button>}
           <button onClick={() => onEdit(block)} className={styles.ghostButton} title="Bearbeiten"><FaPencil /></button>
           <button onClick={() => onDelete(block.id)} className={`${styles.ghostButton} ${styles.ghostDelete}`} title="Löschen"><FaTrash /></button>
         </div>

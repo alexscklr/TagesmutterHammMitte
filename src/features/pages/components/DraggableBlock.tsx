@@ -11,8 +11,8 @@ export const DraggableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
     const { selectedBlock, setSelectedBlock } = useSelection();
 
     const isDragging = drag?.draggingId === block.id;
-    const handleProps = drag ? drag.getHandleProps(block.id) : { draggable: false, onDragStart: () => undefined, onDragEnd: () => undefined, onPointerDown: () => undefined };
-    const dropProps = drag ? drag.getDropProps(block.id) : { onDragOver: () => undefined, onDrop: () => undefined, "data-drop-id": block.id };
+    const handleProps = drag ? drag.getHandleProps(block.id, block.parent_block_id ?? null) : { draggable: false, onDragStart: () => undefined, onDragEnd: () => undefined, onPointerDown: () => undefined };
+    const dropProps = drag ? drag.getDropProps(block.id, block.parent_block_id ?? null) : { onDragOver: () => undefined, onDrop: () => undefined, "data-drop-id": block.id, "data-parent-id": block.parent_block_id ?? "" };
     const isSelected = selectedBlock?.id === block.id;
 
     return (

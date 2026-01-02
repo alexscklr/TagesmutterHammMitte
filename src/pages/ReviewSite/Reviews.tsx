@@ -97,7 +97,7 @@ const ReviewSite = () => {
 
     return (
         <section className="page">
-            <h1>Rezensionen der Eltern</h1>
+            <h1 style={{marginTop: "0"}}>Rezensionen der Eltern</h1>
 
             {reviews.length > 0 && (
                 <section className={styles.summarySection}>

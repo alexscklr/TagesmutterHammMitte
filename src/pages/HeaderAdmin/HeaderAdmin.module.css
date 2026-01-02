@@ -448,3 +448,129 @@
   text-align: center;
   word-break: break-word;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .sectionHeader h2 {
+    font-size: 1.1rem;
+  }
+
+  .sectionHeader > div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .sectionHeader button {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .blockRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .blockInfo {
+    width: 100%;
+  }
+
+  .blockTitleRow {
+    flex-wrap: wrap;
+  }
+
+  .blockActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nestedBlockRow {
+    margin-left: 0.75rem;
+    padding-left: 0.5rem;
+  }
+
+  .childList {
+    padding-left: 0.5rem;
+  }
+
+  .dragHandle {
+    padding: 0.5rem;
+  }
+
+  .editForm {
+    padding: 1rem;
+  }
+
+  .editForm h2 {
+    font-size: 1.25rem;
+  }
+
+  .nestedBlock {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .formActions button {
+    width: 100%;
+  }
+
+  .btn,
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .modalContent {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .imageGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .imageCard {
+    padding: 0.5rem;
+  }
+
+  .imageCard img {
+    height: 80px;
+  }
+}

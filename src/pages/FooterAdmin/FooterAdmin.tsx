@@ -66,15 +66,17 @@ const FooterAdmin: React.FC = () => {
     setEditingId("new-" + blockType);
     setFormData({
       type: blockType,
-      order: parentBlockId ? 0 : blocks.length,
+      order: parentBlockId
+        ? Math.max(0, ...blocks.filter(b => b.parent_block_id === parentBlockId).map(b => b.order ?? 0)) + 1
+        : blocks.filter(b => b.parent_block_id === null).length,
       parent_block_id: parentBlockId || null,
       target_site_id: null,
       content: defaults[blockType],
     } as Partial<FooterBlock>);
   };
 
-  const startCreateChildLink = (parentId: string) => {
-    startCreate(FooterBlocks.Link, parentId);
+  const startCreateChildLink = (parentId: string, blockType: FooterBlockType = FooterBlocks.Link) => {
+    startCreate(blockType, parentId);
   };
 
   const cancelEdit = () => {
@@ -225,7 +227,7 @@ const FooterAdmin: React.FC = () => {
                       getPageTitle={getPageTitle}
                       onEdit={startEdit}
                       onDelete={deleteBlock}
-                      onAddChild={block.type === FooterBlocks.List ? startCreateChildLink : undefined}
+                      onAddChild={block.type === FooterBlocks.List ? (id) => startCreateChildLink(id) : undefined}
                       drag={drag}
                     />
                   ))}

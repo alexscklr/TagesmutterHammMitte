@@ -31,6 +31,7 @@ import {
   EditableGoogleLocation,
   EditableContactForm,
   EditableSplitContent,
+  EditableInfiniteSlider,
 } from "@/features/Editors";
 
 import {
@@ -194,6 +195,15 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
           <EditableBlockWrapper blockId={blockId}>
             <EditableSplitContent
               value={blockContent as SplitContentBlockType["content"]}
+              onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
+            />
+          </EditableBlockWrapper>
+        );
+      case PageBlocks.InfiniteSlider:
+        return (
+          <EditableBlockWrapper blockId={blockId}>
+            <EditableInfiniteSlider
+              value={blockContent as InfiniteSliderBlockType["content"]}
               onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
             />
           </EditableBlockWrapper>

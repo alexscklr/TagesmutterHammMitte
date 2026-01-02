@@ -45,8 +45,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
     if (e.button !== 0 && e.pointerType === "mouse") return;
 
     // Keep events flowing even if pointer leaves the handle
-    if (e.currentTarget.setPointerCapture) {
-      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+    const resizerEl = e.currentTarget;
+    const pointerId = e.pointerId;
+
+    if (resizerEl?.setPointerCapture) {
+      try { resizerEl.setPointerCapture(pointerId); } catch (_) { /* ignore */ }
     }
 
     const startX = e.clientX;
@@ -63,8 +66,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       window.removeEventListener("pointerup", handleUp);
       window.removeEventListener("pointercancel", handleUp);
 
-      if (e.currentTarget.releasePointerCapture) {
-        try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+      if (resizerEl?.releasePointerCapture) {
+        try { resizerEl.releasePointerCapture(pointerId); } catch (_) { /* ignore */ }
       }
     };
 
