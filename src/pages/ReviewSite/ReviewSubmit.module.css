@@ -1,16 +1,4 @@
-.page {
-    min-height: 100vh;
-    width: 100%;
-    max-width: var(--max-width, 1100px);
-    margin: 1rem auto;
-    padding: clamp(1.25rem, 2vw + 1rem, 4rem) clamp(1rem, 2vw, 2rem);
-    background-color: var(--color-neutral-1000, #0f172a);
-    backdrop-filter: blur(6px);
-    border-radius: 1.2rem;
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
+.pageCentered {
     justify-content: center;
 }
 

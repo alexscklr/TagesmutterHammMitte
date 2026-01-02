@@ -96,7 +96,7 @@ const ReviewSite = () => {
     };
 
     return (
-        <section className={styles.page}>
+        <section className="page">
             <h1>Rezensionen der Eltern</h1>
 
             {reviews.length > 0 && (
@@ -135,8 +135,8 @@ const ReviewSite = () => {
                 </section>
             )}
 
-            <section className={styles.section}>
-                <div className={styles.sectionContent}>
+            <section className="page-section">
+                <div className="page-sectionContent">
                     {reviews.length === 0 ? (
                         <p className={styles.emptyState}>Es liegen noch keine Rezensionen vor.</p>
                     ) : (

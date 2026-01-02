@@ -1,6 +1,5 @@
 import { supabase } from "@/supabaseClient";
 import { PageBlocks, type PageBlock, type TimelineEntry } from "../types";
-import type { OrderableWithParent } from "@/shared/utils/reorder";
 
 
 export interface PageMeta {

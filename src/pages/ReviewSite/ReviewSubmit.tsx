@@ -51,7 +51,7 @@ const ReviewSubmit: React.FC = () => {
     };
 
     return (
-        <section className={styles.page}>
+        <section className={`page ${styles.pageCentered}`}>
             <div className={styles.card}>
                 <h1>Bewertung abgeben</h1>
                 {!token && (

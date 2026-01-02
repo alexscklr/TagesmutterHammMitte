@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
-import styles from "./Homesite/Startseite.module.css";
 
 const Sitemap = () => {
   const [pages, setPages] = useState<PageMeta[]>([]);
@@ -20,14 +19,14 @@ const Sitemap = () => {
   }, []);
 
   return (
-    <section className={styles.page}>
+    <section className="page">
       <h1>Sitemap</h1>
 
       {loading ? (
         <p>Lade Seiten...</p>
       ) : (
-        <section className={styles.section}>
-          <div className={styles.sectionContent}>
+        <section className="page-section">
+          <div className="page-sectionContent">
             <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {pages.map((page) => (
                 <li key={page.id}>

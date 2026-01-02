@@ -35,24 +35,42 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { isDirty } = useEditing();
   const visible = open ?? isEditing;
   const [width, setWidth] = React.useState<number>(300);
-  const minWidth = 240;
+  const minWidth = 20;
   const maxWidth = 580;
 
-  const startResize = (e: React.MouseEvent<HTMLDivElement>) => {
+  const startResize = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    // Only react to primary pointer (finger/left mouse)
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+
+    // Keep events flowing even if pointer leaves the handle
+    if (e.currentTarget.setPointerCapture) {
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+    }
+
     const startX = e.clientX;
     const startWidth = width;
-    const onMouseMove = (ev: MouseEvent) => {
+
+    const handleMove = (ev: PointerEvent) => {
       const delta = ev.clientX - startX;
       const next = Math.min(maxWidth, Math.max(minWidth, startWidth + delta));
       setWidth(next);
     };
-    const onMouseUp = () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
+
+    const handleUp = () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", handleUp);
+      window.removeEventListener("pointercancel", handleUp);
+
+      if (e.currentTarget.releasePointerCapture) {
+        try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+      }
     };
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", handleUp);
+    window.addEventListener("pointercancel", handleUp);
   };
 
   if (!visible) return null;
@@ -104,7 +122,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       <div className={styles.header}>
         <span className={styles.title}>Adminpanel {isDirty ? "• geändert" : ""}</span>
       </div>
-      <div className={styles.resizer} onMouseDown={startResize} title="Seitenleiste vergrößern/verkleinern">
+      <div className={styles.resizer} onPointerDown={startResize} title="Seitenleiste vergrößern/verkleinern">
         <RxDragHandleVertical className={styles.resizerIcon} />
       </div>
       <div className={styles.body}>{renderBody()}</div>

@@ -41,7 +41,7 @@ const Startseite = () => {
 
 
   return (
-    <section className={styles.page}>
+    <section className="page">
       <h1>Maxi – Kids</h1>
       <p style={{ color: "var(--color-accent2)", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Motto" aria-description="Das Motto der Tagesmutter">
         <span style={{ color: "var(--color-neutral-400)" }}>♫♪</span>
@@ -58,10 +58,10 @@ const Startseite = () => {
         <span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span>
       </p>
 
-      <section className={styles.section} aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
-        <div className={styles.sectionContent}>
+      <section className="page-section" aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
+        <div className="page-sectionContent">
           <div className={styles.portraitSection}>
-            {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
+              {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
             <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
             <div className={styles.portraitText}>
               <List listStyle="none" ordered={false} margin="left">
@@ -72,13 +72,13 @@ const Startseite = () => {
             </div>
           </div>
         </div>
-        <div className={styles.sectionLinks}>
+        <div className="page-sectionLinks">
           <Link to="/ueber-mich" aria-label={"Mehr über mich"} aria-description="Link zur Unterseite mit weiteren Informationen über Kerstin Sickler">Mehr über mich</Link>
         </div>
       </section>
 
-      <section className={styles.section} aria-label={"Standort und Kontakt"} aria-description="Adresse und Kontaktinformationen der Tagesmutter">
-        <div className={styles.sectionContent}>
+      <section className="page-section" aria-label={"Standort und Kontakt"} aria-description="Adresse und Kontaktinformationen der Tagesmutter">
+        <div className="page-sectionContent">
           <h2>Kontakt & Standort</h2>
           <div className={styles.location}>
             <List listStyle="none" ordered={false}>
@@ -93,14 +93,14 @@ const Startseite = () => {
             />
           </div>
         </div>
-        <div className={styles.sectionLinks}>
+        <div className="page-sectionLinks">
           <Link to="/kontakt">Zur Kontaktseite</Link>
         </div>
       </section>
 
       {currentEntry ? (
-        <section className={styles.section} aria-label={"Aktueller Tagesablauf"} aria-description="Anzeige des aktuell aktiven Tagesabschnitts">
-          <div className={styles.sectionContent}>
+        <section className="page-section" aria-label={"Aktueller Tagesablauf"} aria-description="Anzeige des aktuell aktiven Tagesabschnitts">
+          <div className="page-sectionContent">
             <div className={styles.timelineEntrySection}>
               <div className={styles.timelineHeader}>
                 <div className={styles.liveCircle}>
@@ -118,14 +118,14 @@ const Startseite = () => {
               </div>
             </div>
           </div>
-          <div className={styles.sectionLinks}>
+          <div className="page-sectionLinks">
             <Link to="/tagesablauf">Zum Tagesablauf</Link>
           </div>
         </section>
       ) : <></>}
 
-      <section className={styles.section} aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
-        <div className={styles.sectionContent}>
+      <section className="page-section" aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
+        <div className="page-sectionContent">
           <h2>Pädagogische Schwerpunkte</h2>
           <List listStyle="disc" ordered={false} margin="left">
             <li>Musikalische Früherziehung</li>
@@ -135,7 +135,7 @@ const Startseite = () => {
             <li>Soziale Kompetenz und Gemeinschaftserfahrung</li>
           </List>
         </div>
-        <div className={styles.sectionLinks}>
+        <div className="page-sectionLinks">
           <Link to="/musik">Mehr über "Hier spielt die Musik"</Link>
           <Link to="/fortbildungen">Mehr über meine Qualifizierung</Link>
         </div>

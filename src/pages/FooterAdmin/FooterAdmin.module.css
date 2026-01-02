@@ -23,7 +23,7 @@
 .badgeCopyright{background:#444;color:#fff;}
 .childList{margin-top:.5rem;padding-left:.75rem;border-left:2px dashed var(--color-neutral-600);display:flex;flex-direction:column;gap:.5rem;}
 .blockActions{display:flex;gap:.25rem;}
-.dragHandle{display:inline-flex;align-items:center;justify-content:center;color:var(--color-neutral-500);cursor:grab;padding:.35rem .4rem;border-radius:.35rem;transition:color .15s ease, background-color .15s ease;}
+.dragHandle{display:inline-flex;align-items:center;justify-content:center;color:var(--color-neutral-500);cursor:grab;padding:.35rem .4rem;border-radius:.35rem;transition:color .15s ease, background-color .15s ease;touch-action:none;}
 .blockRow:hover .dragHandle{color:var(--color-accent);background:rgba(255,255,255,.04);}
 .ghostButton{background:transparent;border:none;color:var(--color-neutral-450, #9ca3af);opacity:.7;padding:.4rem .45rem;border-radius:.35rem;cursor:pointer;transition:color .15s ease, opacity .15s ease, background-color .15s ease;}
 .ghostButton:disabled{opacity:.4;cursor:not-allowed;}

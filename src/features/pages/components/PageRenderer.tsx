@@ -82,14 +82,9 @@ interface PageRendererContentProps {
 
 const PageRendererContent: React.FC<PageRendererContentProps> = ({
   blocks,
-  setBlocks,
-  slug,
   pageId,
-  user,
-  selectedBlock,
   setSelectedBlock,
 }) => {
-  const { isEditing } = useEditMode();
 
   // Select newly created blocks when notified
   useEffect(() => {
