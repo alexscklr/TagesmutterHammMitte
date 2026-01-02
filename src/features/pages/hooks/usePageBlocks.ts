@@ -133,5 +133,5 @@ export function usePageBlocks(slug: string) {
     };
   }, [pageId]);
 
-  return { blocks, loading };
+  return { blocks, loading, pageId, setBlocks };
 }

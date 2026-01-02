@@ -339,7 +339,8 @@
     font-size: 0.9rem;
 }
 
-.deleteButton:hover {
+.deleteButton:hover,
+.deleteButton:focus {
     background: rgba(211, 47, 47, 0.1);
     color: #b71c1c;
 }
@@ -377,11 +378,11 @@
 
 .cancelButton {
     background: var(--color-neutral-200);
-    color: var(--color-neutral-500);
+    color: var(--color-neutral-300);
 }
 
 .cancelButton:hover {
-    filter: brightness(0.97);
+    filter: brightness(0.5);
 }
 
 .loading {

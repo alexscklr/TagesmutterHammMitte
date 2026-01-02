@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { renderPageBlock } from ".";
 import { usePageBlocks } from "../hooks";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { Loading } from "@/shared/components/index";
 import { Error } from "@/shared/components/index";
 import styles from "./PageRenderer.module.css";
@@ -12,14 +12,38 @@ import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import type { PageBlock } from "../types/page";
 import { AddBlockButton } from "./AddBlockButton";
 import { getDefaultContent } from "../types/blockDefaults";
+import { useDragAndDrop } from "@/shared/hooks/useDragAndDrop";
+import { applyOrderUpdatesToBlocks, reorderPageBlocks } from "../utils/reorder";
+import { updatePageBlockOrders } from "../lib/pageQueries";
+import { PageDragProvider } from "./PageDragContext";
 
 
 const PageRenderer = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { blocks, loading } = usePageBlocks(slug || "");
+  const { blocks, loading, pageId, setBlocks } = usePageBlocks(slug || "");
 
   const { user } = useContext(AuthContext);
   const { selectedBlock, setSelectedBlock } = useSelection();
+  const { isEditing } = useEditMode();
+
+  const handleReorder = useCallback(async (sourceId: string, targetId: string) => {
+    if (!pageId) return;
+
+    const { changed, updates } = reorderPageBlocks(blocks, sourceId, targetId);
+    if (!changed) return;
+
+    const next = applyOrderUpdatesToBlocks(blocks, updates);
+    setBlocks(next);
+
+    try {
+      await updatePageBlockOrders(pageId, updates);
+    } catch (err) {
+      console.error("Reorder failed, refetch", err);
+      window.dispatchEvent(new Event("pageblocks:updated"));
+    }
+  }, [blocks, pageId, setBlocks]);
+
+  const drag = useDragAndDrop({ onReorder: handleReorder, disabled: !isEditing });
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -30,21 +54,27 @@ const PageRenderer = () => {
   if (blocks.length === 0) return <Error message="Seite nicht gefunden" />;
 
   return (
-    <div className={styles.page}>
-      <PageRendererContent 
-        blocks={blocks} 
-        slug={slug}
-        user={user}
-        selectedBlock={selectedBlock}
-        setSelectedBlock={setSelectedBlock}
-      />
-    </div>
+    <PageDragProvider value={{ drag, isEditing }}>
+      <div className={styles.page}>
+        <PageRendererContent 
+          blocks={blocks} 
+          setBlocks={setBlocks}
+          slug={slug}
+          pageId={pageId}
+          user={user}
+          selectedBlock={selectedBlock}
+          setSelectedBlock={setSelectedBlock}
+        />
+      </div>
+    </PageDragProvider>
   );
 };
 
 interface PageRendererContentProps {
   blocks: PageBlock[];
+  setBlocks: React.Dispatch<React.SetStateAction<PageBlock[]>>;
   slug: string;
+  pageId: string | null;
   user: any;
   selectedBlock: PageBlock | null;
   setSelectedBlock: (block: PageBlock) => void;
@@ -52,22 +82,14 @@ interface PageRendererContentProps {
 
 const PageRendererContent: React.FC<PageRendererContentProps> = ({
   blocks,
+  setBlocks,
   slug,
+  pageId,
   user,
   selectedBlock,
   setSelectedBlock,
 }) => {
-  const [pageId, setPageId] = useState<string | null>(null);
   const { isEditing } = useEditMode();
-
-  useEffect(() => {
-    const fetchPageId = async () => {
-      const { getPageIdBySlug } = await import("../lib/pageQueries");
-      const id = await getPageIdBySlug(slug);
-      setPageId(id);
-    };
-    fetchPageId();
-  }, [slug]);
 
   // Select newly created blocks when notified
   useEffect(() => {
@@ -142,21 +164,7 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
 
   // Blöcke mit AddBlockButton dazwischen
   blocks.forEach((block) => {
-    content.push(
-      <div
-        key={block.id}
-        className={`${styles.blockWrapper} ${selectedBlock?.id === block.id ? styles.selected : ""}`}
-        onClick={() => user && setSelectedBlock(block)}
-        style={{
-          minHeight: isEditing ? "48px" : undefined,
-          padding: isEditing ? "4px 0" : undefined,
-          cursor: isEditing ? "pointer" : undefined,
-          position: "relative",
-        }}
-      >
-        {renderPageBlock(block)}
-      </div>
-    );
+    content.push(renderPageBlock(block));
 
     // AddBlockButton nach jedem Block
     if (pageId) {

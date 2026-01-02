@@ -17,9 +17,60 @@
 
 .blockWrapper {
   width: 100%;
+  position: relative;
+  padding-left: 2.25rem;
 }
 
 .blockWrapper.selected {
   outline: 2px solid var(--color-accent);
   border-radius: 0.8rem;
+}
+
+.blockWrapper.dragging {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.blockInner {
+  width: 100%;
+}
+
+.dragHandle {
+  position: absolute;
+  left: 0.35rem;
+  top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  border: 1px solid var(--color-neutral-700);
+  border-radius: 0.4rem;
+  background: var(--color-neutral-700);
+  color: var(--color-neutral-50);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: grab;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.dragHandle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  
+  flex-shrink: 0;
+  display: block;
+}
+
+.dragHandle:hover {
+  background: var(--color-neutral-800);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
 }

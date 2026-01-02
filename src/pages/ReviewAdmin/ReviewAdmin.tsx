@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import styles from "./ReviewAdmin.module.css";
 import { CreateLinkSection } from "./components/CreateLinkSection";
 import { TokensTableSection } from "./components/TokensTableSection";
+import { ReviewImageGenerator } from "./components/ReviewImageGenerator";
 import {
     fetchTokens,
     createReviewToken,
@@ -130,6 +131,13 @@ const ReviewAdmin: React.FC = () => {
                     copied={copied}
                     onCopy={copyToClipboard}
                 />
+
+                {reviewLink && (
+                    <ReviewImageGenerator
+                        reviewLink={reviewLink}
+                        onDownload={() => console.log("Bild heruntergeladen")}
+                    />
+                )}
 
                 <TokensTableSection
                     tokensLoading={tokensLoading}

@@ -2,6 +2,7 @@ import React from "react";
 import { FaPencil, FaTrash, FaPlus, FaGripVertical } from "react-icons/fa6";
 import { supabase } from "@/supabaseClient";
 import { FooterBlocks, type FooterBlock } from "@/layout/Footer/types";
+import type { DragControls } from "@/shared/hooks/useDragAndDrop";
 
 export type BlockItemProps = {
   block: FooterBlock;
@@ -12,45 +13,19 @@ export type BlockItemProps = {
   onEdit: (block: FooterBlock) => void;
   onDelete: (id: string) => void;
   onAddChild?: (parentId: string) => void;
-  draggingId?: string | null;
-  setDraggingId?: (id: string | null) => void;
-  onReorder?: (sourceId: string, targetId: string) => void;
+  drag?: DragControls;
 };
 
-export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = false, styles, getPageTitle, onEdit, onDelete, onAddChild, draggingId, setDraggingId, onReorder }) => {
+export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = false, styles, getPageTitle, onEdit, onDelete, onAddChild, drag }) => {
   const content = block.content as any;
-  const isDragging = draggingId === block.id;
-
-  const handleDragStart = (e: React.DragEvent) => {
-    e.stopPropagation();
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", block.id);
-    setDraggingId?.(block.id);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    if (draggingId === block.id) return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = "move";
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (!draggingId) return;
-    e.preventDefault();
-    e.stopPropagation();
-    onReorder?.(draggingId, block.id);
-    setDraggingId?.(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggingId?.(null);
-  };
+  const noopDrag = (e: React.DragEvent) => { /* no-op */ };
+  const isDragging = drag?.draggingId === block.id;
+  const handleProps = drag ? drag.getHandleProps(block.id) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined };
+  const dropProps = drag ? drag.getDropProps(block.id) : { onDragOver: noopDrag, onDrop: noopDrag };
 
   const commonRowProps = {
     className: `${styles.blockRow} ${isNested ? styles.nestedBlockRow : ""} ${isDragging ? styles.dragging : ""}`,
-    onDragOver: handleDragOver,
-    onDrop: handleDrop,
+    ...dropProps,
   };
 
   if (block.type === FooterBlocks.Portrait) {
@@ -60,9 +35,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -88,9 +61,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -114,9 +85,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -140,9 +109,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -170,9 +137,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -192,9 +157,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({ block, blocks, isNested = 
                 getPageTitle={getPageTitle}
                 onEdit={onEdit}
                 onDelete={onDelete}
-                draggingId={draggingId}
-                setDraggingId={setDraggingId}
-                onReorder={onReorder}
+                drag={drag}
               />
             ))}
           </div>

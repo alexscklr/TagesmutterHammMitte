@@ -3,6 +3,7 @@ import { FaPencil, FaTrash, FaGripVertical } from "react-icons/fa6";
 import { supabase } from "@/supabaseClient";
 import type { HeaderBlock } from "@/layout/Header/types/header";
 import { HeaderBlocks } from "@/layout/Header/types/header";
+import type { DragControls } from "@/shared/hooks/useDragAndDrop";
 
 export type BlockItemProps = {
   block: HeaderBlock;
@@ -13,9 +14,7 @@ export type BlockItemProps = {
   onEdit: (block: HeaderBlock) => void;
   onDelete: (id: string) => void;
   readOnly?: boolean;
-  draggingId?: string | null;
-  setDraggingId?: (id: string | null) => void;
-  onReorder?: (sourceId: string, targetId: string) => void;
+  drag?: DragControls;
 };
 
 export const BlockItem: React.FC<BlockItemProps> = ({
@@ -27,44 +26,17 @@ export const BlockItem: React.FC<BlockItemProps> = ({
   onEdit,
   onDelete,
   readOnly = false,
-  draggingId,
-  setDraggingId,
-  onReorder,
+  drag,
 }) => {
   const content = block.content as any;
-  const isDragging = draggingId === block.id;
-
-  const handleDragStart = (e: React.DragEvent) => {
-    if (readOnly) return;
-    e.stopPropagation();
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", block.id);
-    setDraggingId?.(block.id);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    if (readOnly || draggingId === block.id) return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = "move";
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (readOnly || !draggingId) return;
-    e.preventDefault();
-    e.stopPropagation();
-    onReorder?.(draggingId, block.id);
-    setDraggingId?.(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggingId?.(null);
-  };
+  const noopDrag = (e: React.DragEvent) => { /* no-op */ };
+  const isDragging = drag?.draggingId === block.id;
+  const handleProps = drag ? drag.getHandleProps(block.id) : { draggable: false, onDragStart: noopDrag, onDragEnd: () => undefined };
+  const dropProps = drag ? drag.getDropProps(block.id) : { onDragOver: noopDrag, onDrop: noopDrag };
 
   const commonRowProps = {
     className: `${styles.blockRow} ${isNested ? styles.nestedBlockRow : ""} ${isDragging ? styles.dragging : ""}`,
-    onDragOver: handleDragOver,
-    onDrop: handleDrop,
+    ...dropProps,
   };
 
   const Actions = () => (
@@ -81,9 +53,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable={!readOnly}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -104,16 +74,14 @@ export const BlockItem: React.FC<BlockItemProps> = ({
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable={!readOnly}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
         <div className={styles.blockInfo}>
           <div className={styles.blockTitleRow}>
-            <span className={`${styles.badge} ${styles.badgeLink}`}>Link</span>
-            <strong>{block.target_site_id ? `(Link zu) "${getPageTitle(block.target_site_id)}"` : content.url || "Nicht gesetzt"}</strong>
+            <span className={`${styles.badge} ${styles.badgeLink}`}>Link zu</span>
+            <strong>{block.target_site_id ? `"${getPageTitle(block.target_site_id)}"` : content.url || "Nicht gesetzt"}</strong>
           </div>
         </div>
         <Actions />
@@ -131,9 +99,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({
         <span
           className={styles.dragHandle}
           aria-label="Verschieben"
-          draggable={!readOnly}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+          {...handleProps}
         >
           <FaGripVertical />
         </span>
@@ -155,9 +121,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({
                   onEdit={onEdit}
                   onDelete={onDelete}
                   readOnly={readOnly}
-                  draggingId={draggingId}
-                  setDraggingId={setDraggingId}
-                  onReorder={onReorder}
+                  drag={drag}
                 />
               ))}
             </div>

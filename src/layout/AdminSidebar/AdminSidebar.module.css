@@ -94,6 +94,11 @@
     color: var(--color-text);
 }
 
+.link:hover svg,
+.link:hover svg {
+    color: var(--color-accent2);
+}
+
 .toggle {
     margin-left: auto
 }

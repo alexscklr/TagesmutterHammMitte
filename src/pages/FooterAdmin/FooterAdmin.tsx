@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/supabaseClient";
 import { listImages } from "@/features/media/lib/storage";
 import styles from "./FooterAdmin.module.css";
@@ -8,6 +8,8 @@ import { EditForm } from "./components/EditForm";
 import { ImagePickerModal } from "./components/ImagePickerModal";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
 import { fetchFooterBlocks, saveFooterBlock, deleteFooterBlock, upsertFooterOrder } from "./lib/api";
+import { useDragAndDrop } from "@/shared/hooks/useDragAndDrop";
+import { reorderWithinParent } from "@/shared/utils/reorder";
 
 const FooterAdmin: React.FC = () => {
   const [blocks, setBlocks] = useState<FooterBlock[]>([]);
@@ -18,9 +20,7 @@ const FooterAdmin: React.FC = () => {
   const [formData, setFormData] = useState<Partial<FooterBlock>>({});
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
   const [availableImages, setAvailableImages] = useState<{ name: string; url: string }[]>([]);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
-
-  const loadBlocks = async () => {
+  const loadBlocks = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -31,17 +31,17 @@ const FooterAdmin: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const loadPages = async () => {
+  const loadPages = useCallback(async () => {
     const allPages = await fetchAllPages();
     setPages(allPages);
-  };
+  }, []);
 
   useEffect(() => {
     loadBlocks();
     loadPages();
-  }, []);
+  }, [loadBlocks, loadPages]);
 
   const startEdit = (block: FooterBlock) => {
     setEditingId(block.id);
@@ -139,51 +139,17 @@ const FooterAdmin: React.FC = () => {
     }));
   };
 
-  const reorderBlocks = (
-    list: FooterBlock[],
-    sourceId: string,
-    targetId: string
-  ): { next: FooterBlock[]; changed: boolean; updates: Array<{ id: string; order: number }> } => {
-    const source = list.find((b) => b.id === sourceId);
-    const target = list.find((b) => b.id === targetId);
-
-    // Nur innerhalb derselben Parent-Gruppe verschieben
-    if (!source || !target || source.parent_block_id !== target.parent_block_id) {
-      return { next: list, changed: false, updates: [] };
-    }
-
-    const siblings = list
-      .filter((b) => b.parent_block_id === source.parent_block_id)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-    const oldIndex = siblings.findIndex((b) => b.id === sourceId);
-    const newIndex = siblings.findIndex((b) => b.id === targetId);
-
-    if (oldIndex === newIndex) return { next: list, changed: false, updates: [] };
-
-    const newSiblings = [...siblings];
-    const [movedItem] = newSiblings.splice(oldIndex, 1);
-    newSiblings.splice(newIndex, 0, movedItem);
-
-    const updates = newSiblings.map((b, idx) => ({ id: b.id, order: idx }));
-    const updateMap = new Map(updates.map((u) => [u.id, u.order]));
-
-    const next = list.map((b) => (updateMap.has(b.id) ? { ...b, order: updateMap.get(b.id)! } : b));
-
-    return { next, changed: true, updates };
-  };
-
-  const persistOrder = async (updates: Array<{ id: string; order: number }>) => {
+  const persistOrder = useCallback(async (updates: Array<{ id: string; order: number }>) => {
     if (updates.length === 0) return;
 
     console.log("Sende Updates an DB:", updates);
 
     const data = await upsertFooterOrder(updates);
     if (data) console.log("DB Update erfolgreich. Rückgabe:", data);
-  };
+  }, []);
 
-  const handleReorder = async (sourceId: string, targetId: string) => {
-    const { next, changed, updates } = reorderBlocks(blocks, sourceId, targetId);
+  const handleReorder = useCallback(async (sourceId: string, targetId: string) => {
+    const { next, changed, updates } = reorderWithinParent(blocks, sourceId, targetId);
 
     if (!changed) return;
 
@@ -196,7 +162,9 @@ const FooterAdmin: React.FC = () => {
       setError("Fehler beim Speichern der Reihenfolge");
       await loadBlocks();
     }
-  };
+  }, [blocks, persistOrder, loadBlocks]);
+
+  const drag = useDragAndDrop({ onReorder: handleReorder });
 
   const getPageTitle = (pageId: string) => pages.find(p => p.id === pageId)?.title || pageId;
 
@@ -258,9 +226,7 @@ const FooterAdmin: React.FC = () => {
                       onEdit={startEdit}
                       onDelete={deleteBlock}
                       onAddChild={block.type === FooterBlocks.List ? startCreateChildLink : undefined}
-                      draggingId={draggingId}
-                      setDraggingId={setDraggingId}
-                      onReorder={handleReorder}
+                      drag={drag}
                     />
                   ))}
               </div>

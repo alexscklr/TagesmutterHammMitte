@@ -1,5 +1,6 @@
 import { supabase } from "@/supabaseClient";
 import { PageBlocks, type PageBlock, type TimelineEntry } from "../types";
+import type { OrderableWithParent } from "@/shared/utils/reorder";
 
 
 export interface PageMeta {
@@ -192,4 +193,18 @@ export async function updatePageBlock(block: PageBlock): Promise<UpdatedPageBloc
   }
   console.info("Supabase updated page_block", { id: block.id, content });
   return (data as UpdatedPageBlockRow) ?? null;
+}
+
+export async function updatePageBlockOrders(
+  pageId: string,
+  updates: Array<{ id: string; order: number }>
+): Promise<void> {
+  if (!updates.length) return;
+
+  const payload = updates.map((u) => ({ id: u.id, order: u.order, page_id: pageId }));
+  const { error } = await supabase.from("page_blocks").upsert(payload);
+  if (error) {
+    console.error("updatePageBlockOrders failed", error);
+    throw error;
+  }
 }

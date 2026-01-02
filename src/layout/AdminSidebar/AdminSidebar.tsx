@@ -8,7 +8,9 @@ import type { PageBlock } from "@/features/pages/types/page";
 import { RxDragHandleVertical } from "react-icons/rx";
 import { FaRegEye } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-import { TbDeselect } from "react-icons/tb";
+import { CgWebsite } from "react-icons/cg";
+import { TbLayoutNavbarCollapseFilled, TbLayoutBottombarCollapseFilled, TbDeselect } from "react-icons/tb";
+import { MdOutlinePermMedia, MdOutlineReviews } from "react-icons/md";
 // Editors are now rendered inline; sidebar reserved for page controls
 
 // Helper to render editor with proper type narrowing via switch
@@ -86,11 +88,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         <section className={styles.section}>
           <div className={styles.sectionTitle}>Tools</div>
           <div className={styles.toolsList}>
-            <a className={styles.link} href="/admin/pages">Seitenverwaltung</a>
-            <a className={styles.link} href="/admin/header">Header bearbeiten</a>
-            <a className={styles.link} href="/admin/footer">Footer bearbeiten</a>
-            <a className={styles.link} href="/admin/media">Medienverwaltung</a>
-            <a className={styles.link} href="/admin/reviews">Review-Verwaltung</a>
+            <a className={styles.link} href="/admin/pages"><CgWebsite /> Seitenverwaltung</a>
+            <a className={styles.link} href="/admin/header"><TbLayoutNavbarCollapseFilled /> Header bearbeiten</a>
+            <a className={styles.link} href="/admin/footer"><TbLayoutBottombarCollapseFilled /> Footer bearbeiten</a>
+            <a className={styles.link} href="/admin/media"><MdOutlinePermMedia /> Medienverwaltung</a>
+            <a className={styles.link} href="/admin/reviews"><MdOutlineReviews /> Rezensionverwaltung</a>
           </div>
         </section>
       </div>
