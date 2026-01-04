@@ -17,3 +17,9 @@ li  p {
   width: 100%;
   margin: 0;
 }
+
+@media (max-width: 786px) {
+  .ul, .ol {
+    width: stretch;
+  }
+}

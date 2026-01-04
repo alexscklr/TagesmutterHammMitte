@@ -1,4 +1,4 @@
-import "./Footer.css";
+import styles from "./Footer.module.css";
 import { useEffect, useState } from "react";
 import { getFooterBlocks } from "../Footer/lib";
 import { FooterBlocks, type FooterBlock } from "./types";
@@ -17,8 +17,8 @@ const Footer = () => {
   const copyright = footerBlocks.find(b => b.type === FooterBlocks.CopyrightNotice);
 
   return (
-    <footer className="footer" style={{ backgroundImage: `url(${redoxBg})` }}>
-      <div className="main-content">
+    <footer className={styles.footer} style={{ backgroundImage: `url(${redoxBg})` }}>
+      <div className={styles.mainContent}>
         {topBlocks.map(renderFooterBlock)}
       </div>
 

@@ -11,7 +11,7 @@ import { FiEdit } from "react-icons/fi";
 import { CgWebsite } from "react-icons/cg";
 import { TbLayoutNavbarCollapseFilled, TbLayoutBottombarCollapseFilled, TbDeselect } from "react-icons/tb";
 import { MdOutlinePermMedia, MdOutlineReviews } from "react-icons/md";
-// Editors are now rendered inline; sidebar reserved for page controls
+import { Link } from "@/shared/components";
 
 // Helper to render editor with proper type narrowing via switch
 // Inline editors are handled in PageBlockRenderer; keep sidebar minimal
@@ -34,7 +34,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { selectedBlock: ctxSelected, setSelectedBlock } = useSelection();
   const { isDirty } = useEditing();
   const visible = open ?? isEditing;
-  const [width, setWidth] = React.useState<number>(300);
+  const [width, setWidth] = React.useState<number>(Math.min(300,window.screen.width * 0.8));
   const minWidth = 20;
   const maxWidth = 580;
 
@@ -109,11 +109,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         <section className={styles.section}>
           <div className={styles.sectionTitle}>Tools</div>
           <div className={styles.toolsList}>
-            <a className={styles.link} href="/admin/pages"><CgWebsite /> Seitenverwaltung</a>
-            <a className={styles.link} href="/admin/header"><TbLayoutNavbarCollapseFilled /> Header bearbeiten</a>
-            <a className={styles.link} href="/admin/footer"><TbLayoutBottombarCollapseFilled /> Footer bearbeiten</a>
-            <a className={styles.link} href="/admin/media"><MdOutlinePermMedia /> Medienverwaltung</a>
-            <a className={styles.link} href="/admin/reviews"><MdOutlineReviews /> Rezensionverwaltung</a>
+            <Link href={"/admin/pages"} isExternal={false} ariaLabel={"Verwaltung der Seiten"} ariaDescription={"Link zur Verwaltung der Seiten im Adminpanel"} ><CgWebsite /> Seitenverwaltung</Link>
+            <Link href={"/admin/header"} isExternal={false} ariaLabel={"Verwaltung der Headerinhalte"} ariaDescription={"Link zur Verwaltung der Headerinhalte im Adminpanel"} ><TbLayoutNavbarCollapseFilled /> Header bearbeiten</Link>
+            <Link href={"/admin/footer"} isExternal={false} ariaLabel={"Verwaltung der Footerinhalte"} ariaDescription={"Link zur Verwaltung der Footerinhalte im Adminpanel"} ><TbLayoutBottombarCollapseFilled /> Footer bearbeiten</Link>
+            <Link href={"/admin/media"} isExternal={false} ariaLabel={"Verwaltung der Medieninhalte"} ariaDescription={"Link zur Verwaltung der Medieninhalte im Adminpanel"} ><MdOutlinePermMedia /> Medienverwaltung</Link>
+            <Link href={"/admin/reviews"} isExternal={false} ariaLabel={"Verwaltung der Rezensionen"} ariaDescription={"Link zur Verwaltung der Rezensionen im Adminpanel"} ><MdOutlineReviews /> Rezensionverwaltung</Link>
           </div>
         </section>
       </div>

@@ -1,5 +1,5 @@
-import { BouncyText } from "@/shared/components";
-import { Link } from "react-router-dom";
+import { BouncyText, Link } from "@/shared/components";
+//import { Link } from "react-router-dom";
 import { GoogleLocation } from "@/shared/components/GoogleLocation/GoogleLocation";
 import styles from "./Startseite.module.css";
 import { getImageUrl } from "@/shared/lib/imageQueries";
@@ -48,9 +48,9 @@ const Startseite = () => {
         <span style={{ color: "var(--color-accent2)", margin: "0 8px" }}>
           <BouncyText
             text="- Hier spielt die Musik -"
-            amplitude={8}
-            duration={1000}
-            pauseDuration={2000}
+            amplitude={4}
+            duration={800}
+            pauseDuration={2500}
             characterDelay={50}
             frequency={1}
           />
@@ -64,7 +64,7 @@ const Startseite = () => {
               {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
             <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
             <div className={styles.portraitText}>
-              <List listStyle="none" ordered={false} margin="left">
+              <List listStyle="none" ordered={false} margin="left" width="full">
                 <li>Tagesmutter seit 2009</li>
                 <li>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</li>
                 <li>Mutter von drei Söhnen</li>
@@ -72,8 +72,25 @@ const Startseite = () => {
             </div>
           </div>
         </div>
-        <div className="page-sectionLinks">
-          <Link to="/ueber-mich" aria-label={"Mehr über mich"} aria-description="Link zur Unterseite mit weiteren Informationen über Kerstin Sickler">Mehr über mich</Link>
+        <div className={styles.pageSectionLinks}>
+          <Link href="/ueber-mich" isExternal={false} ariaLabel={"Mehr über mich"} ariaDescription={"Link zur Unterseite mit weiteren Informationen über Kerstin Sickler"}>Mehr über mich</Link>
+        </div>
+      </section>
+
+      <section className="page-section" aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
+        <div className="page-sectionContent">
+          <h2>Pädagogische Schwerpunkte</h2>
+          <List listStyle="disc" ordered={false} margin="left" width="full">
+            <li>Musikalische Früherziehung</li>
+            <li>Bewegungsförderung</li>
+            <li>Gesundheitsförderung</li>
+            <li>Individuelle Entwicklungsbegleitung</li>
+            <li>Soziale Kompetenz und Gemeinschaftserfahrung</li>
+          </List>
+        </div>
+        <div className={styles.pageSectionLinks}>
+          <Link href="/musik" isExternal={false} ariaLabel={"Hier spielt die Musik"} ariaDescription={"Link zur Unterseite mit Informationen zur musikalischen Früherziehung"}>Hier spielt die Musik</Link>
+          <Link href="/fortbildungen" isExternal={false}>Mehr über meine Qualifizierungen</Link>
         </div>
       </section>
 
@@ -85,7 +102,7 @@ const Startseite = () => {
               <li>Weißdornweg 14</li>
               <li>59063 Hamm</li>
               <li>Tel.: 02381/31366</li>
-              <li>E-Mail.: <a href="mailto:kerstin.sickler@web.de">kerstin.sickler@web.de</a></li>
+              <li>E-Mail: <Link href="mailto:maxi-kids.hamm@web.de" isExternal={true} ariaLabel={"E-Mail an Kerstin Sickler"} ariaDescription={"Link zum Versenden einer E-Mail an Kerstin Sickler"}>maxi-kids.hamm@web.de</Link></li>
             </List>
             
             <GoogleLocation
@@ -93,8 +110,8 @@ const Startseite = () => {
             />
           </div>
         </div>
-        <div className="page-sectionLinks">
-          <Link to="/kontakt">Zur Kontaktseite</Link>
+        <div className={styles.pageSectionLinks}>
+          <Link href="/kontakt" isExternal={false} ariaLabel={"Kontaktieren Sie mich"} ariaDescription={"Link zur Unterseite mit Kontaktinformationen"}>Kontaktieren Sie mich</Link>
         </div>
       </section>
 
@@ -108,7 +125,7 @@ const Startseite = () => {
                   <div className={styles.liveCircleOuter1}></div>
                   <div className={styles.liveCircleOuter2}></div>
                 </div>
-                <h2>Was wir gerade machen</h2>
+                <h2>Jetzt in unserem Tag</h2>
               </div>
               <div className={styles.currentTimelineEntry}>
                 <h3>{currentEntry.title}</h3>
@@ -118,31 +135,11 @@ const Startseite = () => {
               </div>
             </div>
           </div>
-          <div className="page-sectionLinks">
-            <Link to="/tagesablauf">Zum Tagesablauf</Link>
+          <div className={styles.pageSectionLinks}>
+            <Link href="/tagesablauf" isExternal={false} ariaLabel={"Zum Tagesablauf"} ariaDescription={"Link zur Unterseite mit Informationen zum Tagesablauf"}>Zum Tagesablauf</Link>
           </div>
         </section>
       ) : <></>}
-
-      <section className="page-section" aria-label={"Pädagogischer Schwerpunkt"} aria-description="Kurze Einführung in den pädagogischen Schwerpunkt der Tagesmutter">
-        <div className="page-sectionContent">
-          <h2>Pädagogische Schwerpunkte</h2>
-          <List listStyle="disc" ordered={false} margin="left">
-            <li>Musikalische Früherziehung</li>
-            <li>Bewegungsförderung</li>
-            <li>Gesundheitsförderung</li>
-            <li>Individuelle Entwicklungsbegleitung</li>
-            <li>Soziale Kompetenz und Gemeinschaftserfahrung</li>
-          </List>
-        </div>
-        <div className="page-sectionLinks">
-          <Link to="/musik">Mehr über "Hier spielt die Musik"</Link>
-          <Link to="/fortbildungen">Mehr über meine Qualifizierung</Link>
-        </div>
-      </section>
-
-
-
 
     </section>
   );

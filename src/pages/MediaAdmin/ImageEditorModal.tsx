@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaX, FaCropSimple, FaFillDrip, FaRotateLeft, FaTrash, FaCheck, FaCopy } from "react-icons/fa6";
+import { RiImageAiLine } from "react-icons/ri";
 import styles from "./ImageEditorModal.module.css";
 
 export type BlurRect = {
@@ -48,6 +49,8 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
   const [displaySize, setDisplaySize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
   const [saving, setSaving] = useState(false);
   const [blurStrength, setBlurStrength] = useState(14);
+  const [isWebP, setIsWebP] = useState(false);
+  const [isSVG, setIsSVG] = useState(false);
 
   // Load image when url changes
   useEffect(() => {
@@ -55,8 +58,29 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
       setImg(null);
       setCrop(null);
       setBlurs([]);
+      setIsWebP(false);
+      setIsSVG(false);
       return;
     }
+    
+    // Check if image is WebP or SVG based on Content-Type header
+    const checkImageFormat = async () => {
+      try {
+        const response = await fetch(imageUrl, { method: "HEAD" });
+        const contentType = response.headers.get("content-type")?.toLowerCase() || "";
+        setIsWebP(contentType.includes("webp"));
+        setIsSVG(contentType.includes("svg"));
+      } catch {
+        // Fallback: check filename if fetch fails
+        const isWebPFallback = imageName?.toLowerCase().endsWith(".webp") || imageUrl.toLowerCase().includes(".webp");
+        const isSVGFallback = imageName?.toLowerCase().endsWith(".svg") || imageUrl.toLowerCase().includes(".svg");
+        setIsWebP(isWebPFallback);
+        setIsSVG(isSVGFallback);
+      }
+    };
+    
+    checkImageFormat();
+    
     const i = new Image();
     i.crossOrigin = "anonymous";
     i.onload = () => {
@@ -70,7 +94,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     };
     i.onerror = () => setImg(null);
     i.src = imageUrl;
-  }, [imageUrl, open]);
+  }, [imageUrl, open, imageName]);
 
   const bounds = useMemo<Rect | null>(() => {
     if (!img) return null;
@@ -132,13 +156,30 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     ctx.restore();
   }, [img, crop, blurs, draft, scale, displaySize, bounds, mode]);
 
-  const pointFromEvent = (e: React.MouseEvent<HTMLCanvasElement>): { x: number; y: number } | null => {
+  const pointFromEvent = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ): { x: number; y: number } | null => {
     const canvas = e.currentTarget;
     const rect = canvas.getBoundingClientRect();
     
-    // Calculate mouse position relative to canvas display size
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    // Get coordinates from mouse or touch event
+    let clientX: number;
+    let clientY: number;
+    
+    if ('touches' in e) {
+      // Touch event
+      if (e.touches.length === 0) return null;
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      // Mouse event
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    
+    // Calculate position relative to canvas display size
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
     
     // Convert to image natural coordinates using display size ratio
     const scaleX = canvas.width / rect.width;
@@ -154,7 +195,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     };
   };
 
-  const handleDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleDown = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!bounds) return;
     const pt = pointFromEvent(e);
     if (!pt) return;
@@ -162,7 +203,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     setDraft({ x: pt.x, y: pt.y, width: 0, height: 0 });
   };
 
-  const handleMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleMove = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!dragStart) return;
     const pt = pointFromEvent(e);
     if (!pt) return;
@@ -200,7 +241,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
 
   const deleteBlur = (id: string) => setBlurs(prev => prev.filter(b => b.id !== id));
 
-  const exportBlob = async (): Promise<Blob | null> => {
+  const exportBlob = async (format: "jpeg" | "webp" = "jpeg"): Promise<Blob | null> => {
     if (!img || !crop) return null;
     const maxOut = 2200;
     const scaleOut = Math.min(maxOut / crop.width, maxOut / crop.height, 1);
@@ -241,14 +282,16 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
       ctx.drawImage(temp, dx, dy, dw, dh);
     }
 
-    return await new Promise<Blob | null>(resolve => out.toBlob(blob => resolve(blob), "image/jpeg", 0.9));
+    const mimeType = format === "webp" ? "image/webp" : "image/jpeg";
+    const quality = format === "webp" ? 0.85 : 0.9;
+    return await new Promise<Blob | null>(resolve => out.toBlob(blob => resolve(blob), mimeType, quality));
   };
 
-  const handleSave = async (mode: "replace" | "copy") => {
+  const handleSave = async (mode: "replace" | "copy", format: "jpeg" | "webp" = "jpeg") => {
     if (saving) return;
     setSaving(true);
     try {
-      const blob = await exportBlob();
+      const blob = await exportBlob(format);
       if (!blob) throw new Error("Konnte kein Bild rendern");
       await onSave(blob, mode);
     } catch (e) {
@@ -283,6 +326,10 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
                   onMouseMove={handleMove}
                   onMouseUp={handleUp}
                   onMouseLeave={handleUp}
+                  onTouchStart={handleDown}
+                  onTouchMove={handleMove}
+                  onTouchEnd={handleUp}
+                  onTouchCancel={handleUp}
                 />
               </>
             )}
@@ -336,6 +383,11 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
           </div>
           <div className={styles.footerActions}>
             <button className={styles.secondaryBtn} onClick={onClose}><FaX /> Abbrechen</button>
+            {!isWebP && !isSVG && (
+              <button className={styles.primaryBtn} disabled={saving} onClick={() => handleSave("replace", "webp")} title="Bild zu WebP konvertieren und Original ersetzen">
+                <RiImageAiLine /> Optimieren & Ersetzen
+              </button>
+            )}
             <button className={styles.primaryBtn} disabled={saving} onClick={() => handleSave("copy")}>
               <FaCopy /> Als Kopie speichern
             </button>

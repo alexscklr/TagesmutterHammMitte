@@ -34,14 +34,11 @@
     box-sizing: border-box;
 }
 
-/* Add left sidebar offset when visible */
-.withSidebar {
-    padding-left: 300px;
-}
+
 
 @media (max-width: 786px) {
     .main {
         width: 100%;
-        padding: 8rem 0.2rem 0.2rem 0.2rem;
+        padding: 10svh 0.2rem 0.2rem 0.2rem;
     }
 }

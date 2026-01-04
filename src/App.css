@@ -112,16 +112,6 @@ h1 {
   margin: auto;
 }
 
-p {
-  margin: 0 10% 0 10%;
-  text-align: left;
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  white-space: pre-line;
-}
-
-
-
-
 button {
   position: relative;
   padding: 0.55em 1.15em;
@@ -173,84 +163,6 @@ button:focus::before {
 }
 .btn-ghost::before { display: none; }
 .btn-ghost:hover { color: var(--color-accent); transform: translateY(-1px); }
-
-/* Base link reset */
-a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--color-accent2);
-  text-decoration: none;
-  background: transparent;
-  padding: 0;
-  font-weight: 600;
-  transition: color var(--transition-fast);
-}
-
-a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.15em;
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--color-accent2) 0%, var(--color-accent) 50%, var(--color-accent-primary-light) 100%);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 260ms cubic-bezier(.68,-0.55,.27,1.55);
-}
-
-a:hover,
-a:focus {
-  color: transparent;
-  background-image: linear-gradient(120deg, var(--color-accent2), var(--color-accent), var(--color-accent-primary-light));
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-a:hover::after,
-a:focus::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-/* Pill link (old look): white bg, accent2 text, gradient on hover */
-.link-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45em 1.1em;
-  border-radius: var(--radius-m);
-  background: #fff;
-  color: var(--color-accent2);
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-  position: relative;
-  overflow: hidden;
-}
-
-.link-pill::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, var(--color-accent2) 0%, #ff7a3d 100%);
-  transform: translateX(-100%);
-  transition: transform 320ms cubic-bezier(.68,-0.55,.27,1.55);
-  z-index: -1;
-  border-radius: inherit;
-}
-
-.link-pill:hover,
-.link-pill:focus {
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-}
-
-.link-pill:hover::before,
-.link-pill:focus::before {
-  transform: translateX(0);
-}
 
 /* Glassy surfaces for modals/dialogs/navbars */
 .glass-panel {
@@ -379,7 +291,7 @@ a:focus::after {
 @media (max-width: 800px) {
   .page {
     width: stretch;
-    margin: 10svh auto 1rem;
+    margin: 0 auto 1rem;
     padding: clamp(0, 3vw + 0.5rem, 2rem);
     gap: clamp(0.75rem, 2vw + 0.25rem, 2rem);
   }

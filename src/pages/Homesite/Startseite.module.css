@@ -142,6 +142,12 @@
   block-size: auto;
 }
 
+.pageSectionLinks {
+  display: flex;
+  justify-content: flex-end;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
 @media (max-width: 800px) {
   /* Optional: slightly smaller portrait on very small screens */
   .portraitImg {
@@ -167,5 +173,9 @@
   .portraitText {
     grid-column: 1;
     grid-row: 3; /* text third */
+  }
+  .pageSectionLinks {
+    flex-direction: column;
+    align-items: flex-end;
   }
 }

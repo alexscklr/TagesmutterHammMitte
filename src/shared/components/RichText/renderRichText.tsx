@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import { InlineFunctions, type RichTextSpan, type InlineFunction } from "../../types/index";
 import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import Link from "../Link/Link";
 
 /**
  * Resolve link href from RichTextSpan
@@ -109,14 +110,9 @@ export function renderRichText(spans: RichTextSpan[]) {
       const anchorClass = span.accent ? "accent-color" : undefined;
       const isExternalLink = span.linkType === "external" || (!span.linkType && span.link?.startsWith("http"));
       el = (
-        <a 
-          className={anchorClass} 
-          href={href} 
-          target={isExternalLink ? "_blank" : undefined}
-          rel={isExternalLink ? "noopener noreferrer" : undefined}
-        >
-          {el} {isExternalLink && <FaExternalLinkAlt />}
-        </a> 
+        <Link href={href} isExternal={isExternalLink} anchorClass={anchorClass}>
+          {el}
+        </Link>
       );
     }
     const classNames = !href && span.accent ? "accent-color" : "";

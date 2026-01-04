@@ -1,6 +1,5 @@
 import type { LinkBlock } from "../../types/index";
-import { renderRichText } from "@/shared/components";
-import { Link as RouterLink } from "react-router-dom";
+import { Link, renderRichText } from "@/shared/components";
 import { useEffect, useState } from "react";
 import { getSiteLinkData, type SiteLinkData } from "../../lib/index";
 
@@ -20,18 +19,15 @@ export function LinkBlock({ block }: LinkBlockProps) {
     // Interner Link über target_site_id
     if (block.target_site_id && siteData) {
         return (
-            <RouterLink to={`/${siteData.slug}`} tabIndex={0} >
-                {siteData.title}
-            </RouterLink>
+            
+            <Link href={`/${siteData.slug}`} isExternal={false}> <span style={{color: 'white'}}>{siteData.title}</span></Link>
         );
     }
 
     // Externer Link oder individueller Label
     if (block.content.url) {
         return (
-            <a href={block.content.url} target="_blank" rel="noopener noreferrer" tabIndex={0}>
-                {block.content.label ? renderRichText(block.content.label) : block.content.url}
-            </a>
+            <Link href={block.content.url} isExternal={true}> {block.content.label ? renderRichText(block.content.label) : block.content.url}</Link>
         );
     }
 

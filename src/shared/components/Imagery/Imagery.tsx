@@ -3,6 +3,7 @@ import type { Image } from "@/shared/types/index";
 import { getImageUrl } from "@/shared/lib/imageQueries";
 import styles from "./Imagery.module.css";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import Link from "../Link/Link";
 
 interface ImageryProps {
     id?: string
@@ -51,13 +52,9 @@ export function Imagery({ id, image }: ImageryProps) {
                     <small className={styles.imageSource}>
                         Bild:{" "}
                         {image.sourceUrl ? (
-                            <a
-                                href={image.sourceUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {image.source}<FaExternalLinkAlt />
-                            </a>
+                            <Link href={image.sourceUrl} isExternal={true}>
+                                {image.source}
+                            </Link>
                         ) : (
                             image.source
                         )}

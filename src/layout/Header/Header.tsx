@@ -8,14 +8,12 @@ import { DropdownBlock } from './components/blocks/DropdownBlock';
 import type { HeaderBlock } from './types';
 import { LoginPopup as AuthLoginPopup } from '@/features/auth/components/LoginPopup/LoginPopup';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const scrollDir = useScrollDirection();
   const [active, setActive] = useState<boolean>(true);
   const [headerBlocks, setHeaderBlocks] = useState<HeaderBlock[]>([]);
   const { user, logout } = useAuth();
-  const location = useLocation();
   const loginPopoverId = "login-popover";
 
 
@@ -45,12 +43,6 @@ const Header = () => {
       onResize();
     }
   }, [scrollDir]);
-
-  useEffect(() => {
-    setActive(false);
-  }, [location]);
-
-
 
   return (
     <header className={`${styles.siteHeader} ${scrollDir === 'up' ? '' : styles.inactive}`}>

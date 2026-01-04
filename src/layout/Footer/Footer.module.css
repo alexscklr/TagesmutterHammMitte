@@ -1,8 +1,5 @@
-
-
-/* ...existing code... */
 .footer {
-  width: 100%;
+  width: stretch;
   min-height: 20vh;
   background-color: var(--color-accent);
   color: var(--color-bg);
@@ -16,14 +13,15 @@
   row-gap: 0.5rem;
 }
 
-.footer > .main-content {
+.mainContent {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   column-gap: 1.5rem;
   row-gap: 1.5rem;
   align-items: stretch;
   justify-items: stretch;
-  width: min(1100px, 100%);
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 2% 5%;
 }
@@ -34,33 +32,23 @@
   height: 100%;
   min-height: 0;
   box-sizing: border-box;
-  padding: 1rem;              /* einheitlicher Innenabstand */
+  padding: 1rem;
 }
 
-/* erste/letzte Kind-Margins neutralisieren */
-.footerBlock > :first-child { margin-top: 0; }
-.footerBlock > :last-child  { margin-bottom: 0; }
-
-/* Listen-Defaults zurücksetzen */
-.footerBlock ul,
-.footerBlock ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.portrait {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: auto;
 }
 
-/* optionale einheitliche Item-Abstände (horizontal nicht relevant, aber konsistent) */
-.footerBlock li + li {
-  margin-top: 0.25rem;
-}
-
-.footerBlock--portrait .imageWrap {
+.imageWrap {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
 }
 
-.footerBlock--portrait img {
+.portrait img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -68,23 +56,7 @@
   display: block;
 }
 
-.footer .footerBlock ul {
-  font-size: 1.2rem;
-}
-
-.footer .footerBlock ul li a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  color: #fff;
-  text-decoration: none;
-  padding: 0;
-  font-weight: 600;
-  transition: color var(--transition-fast, 180ms ease);
-}
-
-.footer .footerBlock ul li a::after {
+.footerBlock ul li a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -97,21 +69,21 @@
   transition: transform 260ms cubic-bezier(.68,-0.55,.27,1.55);
 }
 
-.footer .footerBlock ul li a:hover,
-.footer .footerBlock ul li a:focus {
+.footerBlock ul li a:hover,
+.footerBlock ul li a:focus {
   color: transparent;
   background-image: linear-gradient(120deg, #ffffff, #e9fff2, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
 }
 
-.footer .footerBlock ul li a:hover::after,
-.footer .footerBlock ul li a:focus::after {
+.footerBlock ul li a:hover::after,
+.footerBlock ul li a:focus::after {
   transform: scaleX(1);
   transform-origin: left;
 }
 
-.footer .copyright-notice {
+.copyrightNotice {
   grid-row: 2;
   grid-column: 1;
   justify-self: start;
@@ -119,16 +91,20 @@
   padding: 0 0 1rem 2%;
 }
 
-.footer .copyright-notice p {
+.copyrightNotice p {
   margin: 0;
   font-size: 1rem;
 }
 
 @media (max-width: 600px) {
-  .footer > .main-content {
+  .mainContent {
     grid-template-columns: 1fr;
     column-gap: 1rem;
     row-gap: 1rem;
     padding: 6% 5%;
+  }
+
+  .portrait {
+    max-width: 61%;
   }
 }

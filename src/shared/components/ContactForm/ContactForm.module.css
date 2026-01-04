@@ -36,3 +36,19 @@
     width: 90%;
     margin: auto;
 }
+
+@media (max-width: 786px) {
+    .contactForm {
+        width: 90%;
+        padding: 4%;
+    }
+
+    .emailInput {
+        width: 90%;
+    }
+
+    .submitButton {
+        width: 90%;
+    }
+    
+}

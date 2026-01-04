@@ -1,6 +1,7 @@
 import type { PortraitBlock } from "../../types/index";
 import { getImageUrl } from "@/shared/lib/imageQueries";
 import { useEffect, useState } from "react";
+import styles from "../../Footer.module.css";
 
 interface PortraitBlockProps {
     block: PortraitBlock;
@@ -27,8 +28,8 @@ export function PortraitBlock({ block }: PortraitBlockProps) {
     if (!portraitUrl) return null;
 
     return (
-        <div className="footerBlock footerBlock--portrait">
-            <div className="imageWrap">
+        <div className={styles.portrait}>
+            <div className={styles.imageWrap}>
                 <img src={portraitUrl} alt={block.content.image.alt ?? ""} />
             </div>
         </div>
