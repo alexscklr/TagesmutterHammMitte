@@ -53,14 +53,16 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
           }}
           disabled={loading}
           style={{
-            padding: "0.4rem",
+            padding: "0.5rem",
+            width: "2.75rem",
+            height: "2.75rem",
             background: "var(--gradient-danger)",
             color: "white",
             border: "none",
-            borderRadius: "0.3rem",
+            borderRadius: "0.5rem",
             cursor: loading ? "not-allowed" : "pointer",
             opacity: loading ? 0.6 : 0.8,
-            fontSize: "1rem",
+            fontSize: "1.2rem",
             transition: "opacity 0.2s",
             display: "inline-flex",
             alignItems: "center",
@@ -96,13 +98,15 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
             }}
             disabled={loading}
             style={{
-              padding: "0.4rem",
+              padding: "0.5rem",
+              width: "2.4rem",
+              height: "2.4rem",
               background: "var(--gradient-danger)",
               color: "white",
               border: "none",
-              borderRadius: "0.25rem",
+              borderRadius: "0.4rem",
               cursor: loading ? "not-allowed" : "pointer",
-              fontSize: "0.9rem",
+              fontSize: "1.1rem",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -117,13 +121,15 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
             }}
             disabled={loading}
             style={{
-              padding: "0.4rem",
+              padding: "0.5rem",
+              width: "2.4rem",
+              height: "2.4rem",
               backgroundColor: "var(--color-neutral-700)",
               color: "var(--color-neutral-100)",
               border: "none",
-              borderRadius: "0.25rem",
+              borderRadius: "0.4rem",
               cursor: "pointer",
-              fontSize: "0.9rem",
+              fontSize: "1.1rem",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",

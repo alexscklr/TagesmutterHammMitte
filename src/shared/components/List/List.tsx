@@ -1,6 +1,6 @@
 // ...existing code...
 import styles from "./List.module.css";
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 
 interface ListProps {
   children: ReactNode;
@@ -11,9 +11,10 @@ interface ListProps {
   ordered?: boolean;
   margin?: "left" | "center" | "right";
   width?: "full" | "default";
+  style?: CSSProperties;
 }
 
-export function List({ children, listStyle, ordered, margin, width }: ListProps) {
+export function List({ children, listStyle, ordered, margin, width, style }: ListProps) {
   const withMarkers = listStyle && listStyle !== "none";
 
   const marginStyle = margin === "left" ? { marginLeft: 0 }
@@ -24,16 +25,18 @@ export function List({ children, listStyle, ordered, margin, width }: ListProps)
   const widthStyle = width === "full" ? { width: "100%" }
     : width === "default" ? { width: "80%" } : {};
 
+  const baseStyle = { listStyleType: listStyle, ...marginStyle, ...widthStyle, ...style };
+
   if (ordered) {
     return (
-      <ol className={`${styles.ol} ${withMarkers ? styles.withMarkers : ""}`} style={{ listStyleType: listStyle, ...marginStyle, ...widthStyle }}>
+      <ol className={`${styles.ol} ${withMarkers ? styles.withMarkers : ""}`} style={baseStyle}>
         {children}
       </ol>
     );
   }
 
   return (
-    <ul className={`${styles.ul} ${withMarkers ? styles.withMarkers : ""}`} style={{ listStyleType: listStyle, ...marginStyle, ...widthStyle }}>
+    <ul className={`${styles.ul} ${withMarkers ? styles.withMarkers : ""}`} style={baseStyle}>
       {children}
     </ul>
   );

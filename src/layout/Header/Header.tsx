@@ -52,12 +52,12 @@ const Header = () => {
           .map(b => <LogoBlock key={b.id} block={b} />)}
       </div>
       <div className={styles.headerContent}>
-        <button className={`${styles.hamburgerBtn} ${active ? styles.active : ''}`} onClick={toggleHamburger}>
+        <button className={`${styles.hamburgerBtn} ${active ? styles.active : ''}`} onClick={toggleHamburger} aria-label="Navigation umschalten" aria-expanded={active} aria-controls="main-navigation">
           <hr />
           <hr />
           <hr />
         </button>
-        <nav className={`${styles.mainNav} ${active ? styles.visible : ''}`}>
+        <nav id="main-navigation" className={`${styles.mainNav} ${active ? styles.visible : ''}`}>
           <ul>
             {headerBlocks
               .filter(b => b.parent_block_id === null && b.type !== "logo")

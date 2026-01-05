@@ -20,6 +20,7 @@ import { AuthContext } from "@/features/auth/context/AuthContext";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 import { useEditing } from "@/features/admin/context/hooks/useEditing";
 import { DeleteBlockButton } from "./DeleteBlockButton";
+import { BlockEditorModal } from "./BlockEditorModal";
 import {
   EditableParagraph,
   EditableHeading,
@@ -82,12 +83,9 @@ const blockMap: BlockComponentMap = {
   [PageBlocks.SplitContent]: (block) => <SplitContentBlock block={block} />,
 };
 
-// Wrapper für editierbare Blöcke mit DeleteButton
+// Wrapper für editierbare Blöcke; delete stays with the modal header actions
 const EditableBlockWrapper: React.FC<{ blockId: string; children: React.ReactNode }> = ({ blockId, children }) => (
-  <div className="editable-inline" style={{ position: "relative" }}>
-    <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
-      <DeleteBlockButton blockId={blockId} />
-    </div>
+  <div className="editable-inline" style={{ position: "relative", width: "100%", boxSizing: "border-box" }}>
     {children}
   </div>
 );
@@ -100,6 +98,20 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
   const render = block.type in blockMap ? (blockMap[block.type as keyof typeof blockMap] as ((block: PageBlock) => JSX.Element | null)) : undefined;
   const isSelected = selectedBlock?.id === block.id;
   const activeBlock = isSelected && changedBlock?.id === block.id ? changedBlock : block;
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isSelected) {
+      setIsModalOpen(false);
+    }
+  }, [isSelected]);
+
+  const handleCloseModal = React.useCallback(() => {
+    setIsModalOpen(false);
+    // Deselect after a brief delay to allow modal close animation
+    setTimeout(() => setSelectedBlock(null), 0);
+  }, [setSelectedBlock]);
 
   const renderEditable = () => {
     if (!isEditing || !isSelected) return null;
@@ -229,10 +241,21 @@ export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        if (user) setSelectedBlock(block);
+        if (user) {
+          setSelectedBlock(block);
+          if (isEditing) setIsModalOpen(true);
+        }
       }}
     >
-      {renderEditable() ?? (render ? render(activeBlock) : null)}
+      {render ? render(activeBlock) : null}
+      <BlockEditorModal
+        open={isEditing && isSelected && isModalOpen}
+        title="Block bearbeiten"
+        onClose={handleCloseModal}
+        actions={<DeleteBlockButton blockId={activeBlock.id} />}
+      >
+        {renderEditable() ?? <p style={{ margin: 0 }}>Für diesen Block ist kein Editor verfügbar.</p>}
+      </BlockEditorModal>
     </div>
   );
 };

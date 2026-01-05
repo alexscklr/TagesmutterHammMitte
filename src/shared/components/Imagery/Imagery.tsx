@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import type { Image } from "@/shared/types/index";
 import { getImageUrl } from "@/shared/lib/imageQueries";
 import styles from "./Imagery.module.css";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "../Link/Link";
 
 interface ImageryProps {

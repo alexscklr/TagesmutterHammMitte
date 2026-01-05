@@ -11,7 +11,7 @@ export interface EditableParagraphProps {
 const EditableParagraph: React.FC<EditableParagraphProps> = ({ value, onChange }) => {
   return (
     <div>
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 8, width: 'stretch' }}>
         <label>
           Textausrichtung:
           <select

@@ -2,7 +2,6 @@ import { calculateAge } from "@/shared/utils/dates";
 import type { JSX } from "react";
 import { InlineFunctions, type RichTextSpan, type InlineFunction } from "../../types/index";
 import { BouncyText } from "@/shared/components/BouncyText/BouncyText";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "../Link/Link";
 
 /**
