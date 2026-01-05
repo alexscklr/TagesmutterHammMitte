@@ -1,9 +1,9 @@
 import styles from "./Paragraph.module.css";
-import type { RichTextSpan } from "@/shared/types";
+import type { RichTextContent } from "@/shared/types";
 import { renderRichText } from "@/shared/components";
 
 interface ParagraphProps {
-  text: RichTextSpan[];
+  text: RichTextContent;
   align?: "left" | "center" | "right";
 }
 

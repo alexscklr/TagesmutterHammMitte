@@ -85,7 +85,7 @@ const blockMap: BlockComponentMap = {
 
 // Wrapper für editierbare Blöcke; delete stays with the modal header actions
 const EditableBlockWrapper: React.FC<{ blockId: string; children: React.ReactNode }> = ({ blockId, children }) => (
-  <div className="editable-inline" style={{ position: "relative", width: "100%", boxSizing: "border-box" }}>
+  <div className="editable-inline" style={{ position: "relative", width: "100%", boxSizing: "border-box" }} key={blockId}>
     {children}
   </div>
 );
