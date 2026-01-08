@@ -106,7 +106,7 @@ export const BlockItem: React.FC<BlockItemProps> = ({
         <div className={styles.blockInfo}>
           <div className={styles.blockTitleRow}>
             <span className={`${styles.badge} ${styles.badgeDropdown}`}>Dropdown</span>
-            <strong>{content.title?.[0]?.text || "Dropdown"}</strong>
+            <strong>{content.title.text || "Dropdown"}</strong>
           </div>
           {childBlocks.length > 0 && (
             <div className={styles.childList}>

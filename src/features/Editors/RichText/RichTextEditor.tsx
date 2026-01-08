@@ -7,7 +7,6 @@ import type {
   RichTextContent,
   RichTextDocument,
   RichTextRange,
-  RichTextSpan,
   LinkRange,
   InlineFunctionRange,
 } from "@/shared/types/RichTextSpan";
@@ -73,40 +72,9 @@ const clampRanges = <T extends RichTextRange>(ranges: T[] | undefined, textLengt
     .filter((r) => r.start <= textLength && r.end >= r.start) as T[];
 };
 
-const spansToDoc = (spans: RichTextSpan[]): RichTextDocument => {
-  let offset = 0;
-  const doc: RichTextDocument = { text: "", bold: [], italic: [], underline: [], accent: [], links: [], functions: [] };
-
-  for (const span of spans) {
-    const length = span.text.length;
-    const start = offset;
-    const end = offset + length;
-    doc.text += span.text;
-
-    if (span.bold) doc.bold = addRange(doc.bold, start, end);
-    if (span.italic) doc.italic = addRange(doc.italic, start, end);
-    if (span.underline) doc.underline = addRange(doc.underline, start, end);
-    if (span.accent) doc.accent = addRange(doc.accent, start, end);
-    if (span.linkType || span.linkUrl || span.linkSlug) {
-      doc.links = [...(doc.links || []), { start, end, linkType: span.linkType || "external", linkUrl: span.linkUrl, linkSlug: span.linkSlug }];
-    }
-    if (span.inlineFunction) {
-      const hasLength = end > start;
-      const fnStart = hasLength ? start : offset;
-      const fnEnd = hasLength ? end : offset;
-      doc.functions = [...(doc.functions || []), { start: fnStart, end: fnEnd, inlineFunction: span.inlineFunction }];
-    }
-
-    offset = end;
-  }
-
-  return doc;
-};
-
 const normalizeContent = (content: RichTextContent): RichTextDocument => {
   if (!content) return { text: "" };
   if (isDoc(content)) return content;
-  if (Array.isArray(content)) return spansToDoc(content);
   return { text: String(content) };
 };
 

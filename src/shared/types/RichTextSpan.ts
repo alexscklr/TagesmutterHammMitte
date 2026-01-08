@@ -34,30 +34,4 @@ export interface RichTextDocument {
     functions?: InlineFunctionRange[];
 }
 
-/**
- * Legacy span-based representation (kept for backward compatibility)
- */
-export interface RichTextSpan {
-    /** Content */
-    text: string;
-
-    /** Inline Functions */
-    inlineFunction?: InlineFunction;
-
-    /** Styles */
-    bold?: boolean;
-    italic?: boolean;
-    underline?: boolean;
-
-    /** Link configuration */
-    linkType?: LinkType;
-    linkSlug?: PageSlug;
-    linkUrl?: string;
-
-    /** Legacy: direct link (will be replaced by linkUrl) */
-    link?: string;
-
-    accent?: boolean;
-}
-
-export type RichTextContent = RichTextSpan[] | RichTextDocument | string;
+export type RichTextContent = RichTextDocument | string;

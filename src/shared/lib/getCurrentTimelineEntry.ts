@@ -29,20 +29,38 @@ export async function getCurrentTimelineEntry(
   }
   const entry = rpcRows[0] as TimelineEntryBlock;
 
-  // 2) alle Blocks der Seite holen und darunter verschachteln
-  const { data: allBlocks, error: blocksError } = await supabase
-    .from("page_blocks")
-    .select("id, parent_block_id, type, content, order")
-    .eq("page_id", pageId)
-    .order("order", { ascending: true });
+  // 2) Nur die Blöcke laden, die zum Entry gehören (rekursiver Fetch)
+  // Anstatt alle Blöcke der Seite zu laden, holen wir hier nur die Children level-by-level.
+  let descendants: PageBlock[] = [];
+  let currentParentIds = [entry.id];
 
-  if (blocksError || !allBlocks) {
-    if (blocksError) console.error("load page_blocks failed:", blocksError);
-    return { entryBlock: entry, children: [] };
+  // Solange wir Eltern haben, laden wir deren Kinder.
+  // Wir gehen davon aus, dass die Struktur baumartig ist (keine Zyklen).
+  while (currentParentIds.length > 0) {
+    const { data: levelBlocks, error: levelError } = await supabase
+      .from("page_blocks")
+      .select("id, parent_block_id, type, content, order")
+      .in("parent_block_id", currentParentIds)
+      .order("order", { ascending: true });
+
+    if (levelError) {
+      console.error("fetchDescendants failed", levelError);
+      break;
+    }
+
+    if (!levelBlocks || levelBlocks.length === 0) {
+      break;
+    }
+
+    const newBlocks = levelBlocks as PageBlock[];
+    descendants = [...descendants, ...newBlocks];
+    
+    // IDs für die nächste Ebene sammeln
+    currentParentIds = newBlocks.map((b) => b.id);
   }
 
   // 3) Nur die Kinder des ermittelten Entries aufbauen
-  const children = buildNestedBlocks(allBlocks as PageBlock[], entry.id);
+  const children = buildNestedBlocks(descendants, entry.id);
 
   return { entryBlock: entry, children };
 }
