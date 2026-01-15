@@ -15,7 +15,7 @@ export function InfiniteSliderBlock({ block }: InfiniteSliderBlockProps) {
         items={children}
         speed={block.content.speed}
         keyExtractor={(b: PageBlock) => b.id}
-        renderItem={(b: PageBlock) => renderPageBlock(b)}
+        renderItem={(b: PageBlock) => renderPageBlock(b, false)}
       />
     );
 };

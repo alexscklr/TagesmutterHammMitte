@@ -5,89 +5,110 @@ import { renderPageBlock } from "@/features/pages/components";
 import React from "react";
 
 export interface TimelineProps {
-  data: TimelineEntry[];
+  data?: TimelineEntry[];
+  children?: React.ReactNode;
 }
 
-export const Timeline = ({ data }: TimelineProps) => {
+export const TimelineItem = ({
+  label,
+  title,
+  children,
+  className,
+  isActive = false,
+  isAdjacent = false,
+  ...props
+}: {
+  label: string;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+  isActive?: boolean;
+  isAdjacent?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      className={`${styles.timelineItem} ${isActive
+        ? styles.active
+        : isAdjacent
+          ? styles.adjacent
+          : styles.inactive
+        } ${className || ""}`}
+      {...props}
+    >
+      <div className={styles.content}>
+        <div className={`${styles.timeBox}`}>
+          {label}
+        </div>
+        <h3>{title}</h3>
+
+        <div className={styles.timelineEntryContent}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const Timeline = ({ data, children }: TimelineProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
 
   useEffect(() => {
     if (!containerRef.current) return;
+    
+    const options = {
+      root: null, // viewport
+      rootMargin: '-45% 0px -45% 0px', // Trigger when element is near the middle (45-55% range)
+      threshold: 0
+    };
 
-    const handleScroll = () => {
-      const items = Array.from(containerRef.current!.children);
-      const viewportCenter = window.innerHeight / 2;
-
-      let closestIndex = 0;
-      let closestDistance = Infinity;
-
-      items.forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-
-        let distance: number;
-        if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
-          // Das Element schneidet die Mitte des Viewports
-          distance = 0;
-        } else {
-          distance = Math.min(
-            Math.abs(rect.top - viewportCenter),
-            Math.abs(rect.bottom - viewportCenter)
-          );
-        }
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = Number((entry.target as HTMLElement).dataset.index);
+          // Only update if changed to avoid unnecessary re-renders
+          setActiveIndex((prev) => (prev !== index ? index : prev));
         }
       });
+    }, options);
 
-      setActiveIndex(closestIndex);
-    };
+    const childElements = Array.from(containerRef.current.children);
+    // Observe all timelineItems (excluding the line div at the end if it's a child)
+    childElements.forEach((child, index) => {
+        if (child.classList.contains(styles.timelineItem)) {
+            (child as HTMLElement).dataset.index = index.toString();
+            observer.observe(child);
+        }
+    });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial beim Laden berechnen
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [data]);
-
-  const checkIfInCurrent = (entry: TimelineEntry) => {
-    const now = new Date();
-    // Clock time within today
-    if (entry.timeSpan) {
-      const [[hours1, minutes1], [hours2, minutes2]] = [
-        entry.timeSpan[0].split(":").map(Number),
-        entry.timeSpan[1].split(":").map(Number),
-      ];
-
-      const start = new Date();
-      start.setHours(hours1, minutes1, 0, 0);
-
-      const end = new Date();
-      end.setHours(hours2, minutes2, 0, 0);
-
-      return now >= start && now < end;
-    }
-
-    const currentYear = now.getFullYear();
-    // Exact year match
-    if (typeof entry.year === "number") {
-      return currentYear === entry.year;
-    }
-    // Year range match (inclusive)
-    if (entry.yearSpan && entry.yearSpan.length === 2) {
-      const [from, to] = entry.yearSpan;
-      return currentYear >= from && currentYear <= to;
-    }
-    return false;
-  };
+    return () => observer.disconnect();
+  }, [data, children]);
+  
+  const checkCurrent = (entry: TimelineEntry) => {
+      const now = new Date();
+      if (entry.timeSpan) {
+        const [[hours1, minutes1], [hours2, minutes2]] = [
+          entry.timeSpan[0].split(":").map(Number),
+          entry.timeSpan[1].split(":").map(Number),
+        ];
+        const start = new Date(); start.setHours(hours1, minutes1, 0, 0);
+        const end = new Date(); end.setHours(hours2, minutes2, 0, 0);
+        return now >= start && now < end;
+      }
+      const currentYear = now.getFullYear();
+      if (typeof entry.year === "number") return currentYear === entry.year;
+      if (entry.yearSpan && entry.yearSpan.length === 2) {
+        const [from, to] = entry.yearSpan;
+        return currentYear >= from && currentYear <= to;
+      }
+      return false;
+  }
 
   return (
     <div className={styles.timelineContainer} ref={containerRef}>
-      {data.map((item, index) => (
+      {/* Render Data if provided */}
+      {data && data.map((item, index) => (
         <div
           key={index}
           className={`${styles.timelineItem} ${index === activeIndex
@@ -99,7 +120,7 @@ export const Timeline = ({ data }: TimelineProps) => {
         >
           <div className={styles.content}>
             <div
-              className={`${styles.timeBox} ${checkIfInCurrent(item) ? styles.current : ""}`}
+              className={`${styles.timeBox} ${checkCurrent(item) ? styles.current : ""}`}
             >
               {item.label}
             </div>
@@ -107,13 +128,28 @@ export const Timeline = ({ data }: TimelineProps) => {
 
             <div className={styles.timelineEntryContent}>
               {item.content.map((block, i) => (
-                <React.Fragment key={i}>{renderPageBlock(block)}</React.Fragment>
+                <React.Fragment key={i}>{renderPageBlock(block, false)}</React.Fragment>
               ))}
             </div>
 
           </div>
         </div>
       ))}
+      
+      {/* Render Children if provided (Edit Mode usually) */}
+      {!data && children && React.Children.map(children, (child, index) => {
+          if (React.isValidElement(child)) {
+             const isActive = index === activeIndex;
+             const isAdjacent = index === activeIndex - 1 || index === activeIndex + 1;
+             
+             return React.cloneElement(child as React.ReactElement<any>, { 
+                 isActive,
+                 isAdjacent
+             });
+          }
+          return child;
+      })}
+
       <div className={styles.timelineLine} />
     </div>
   );

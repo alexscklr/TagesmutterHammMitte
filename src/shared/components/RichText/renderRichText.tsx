@@ -2,9 +2,6 @@ import { calculateAge } from "@/shared/utils/dates";
 import type { JSX } from "react";
 import {
   InlineFunctions,
-  type InlineFunction,
-  type InlineFunctionRange,
-  type LinkRange,
   type RichTextContent,
   type RichTextDocument,
   type RichTextRange,

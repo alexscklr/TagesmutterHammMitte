@@ -1,1 +1,1 @@
-export {default as PageRenderer } from "./components/PageRenderer"
+export { PageRenderer } from "./components"

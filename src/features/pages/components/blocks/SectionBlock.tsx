@@ -4,7 +4,7 @@ import { SectionAppearance } from "../../types/blocks/Section";
 import { Section } from "@/shared/components/Section/Section";
 import styles from "@/shared/components/Section/Section.module.css";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-import { AddBlockButton } from "../AddBlockButton";
+import { AddBlockButton } from "../editor/AddBlockButton";
 import { renderPageBlock } from "../index";
 
 interface SectionBlockProps {
@@ -22,9 +22,10 @@ export function SectionBlock({ block }: SectionBlockProps) {
                 id={block.id}
                 heading_level={block.content.heading.level}
                 heading_text={block.content.heading.text}
-                content={block.content.content}
                 appearance={appearance}
-            />
+            >
+                {(block.content.content || []).map(child => renderPageBlock(child, false))}
+            </Section>
         );
     }
 
@@ -49,7 +50,7 @@ export function SectionBlock({ block }: SectionBlockProps) {
             {children.map((child) => (
                 <React.Fragment key={child.id}>
                     <div style={{ position: "relative" }}>
-                        {renderPageBlock(child)}
+                        {renderPageBlock(child, true)}
                     </div>
                     <AddBlockButton order={child.order + 1} parentBlockId={block.id} />
                 </React.Fragment>

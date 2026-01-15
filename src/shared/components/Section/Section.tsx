@@ -1,7 +1,5 @@
-import { renderPageBlock } from "@/features/pages/components";
-import type { PageBlock } from "@/features/pages/types";
 import { SectionAppearance } from "@/features/pages/types/blocks/Section";
-import React from "react";
+import React, { type ReactNode } from "react";
 import styles from "./Section.module.css";
 
 
@@ -9,7 +7,7 @@ export interface SectionProps {
     id: string;
     heading_level: number;
     heading_text: string;
-    content: PageBlock[];
+    children: ReactNode;
     appearance?: SectionAppearance;
 }
 
@@ -29,7 +27,7 @@ export const Section = (props : SectionProps) => {
                     { id: `section-heading-${props.id}` },
                     props.heading_text
                 )}
-            {props.content.map(renderPageBlock)}
+            {props.children}
         </section>
     )
 }

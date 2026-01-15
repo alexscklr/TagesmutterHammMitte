@@ -1,10 +1,9 @@
-import { Timeline, TimelineEntry } from "@/shared/components";
+import { Timeline, TimelineItem } from "@/shared/components/Timeline/Timeline";
 import type { TimelineBlock as TimelineBlockType, TimelineEntryBlock } from "../../types/index";
 import { renderPageBlock } from "..";
 import React from "react";
-import { AddBlockButton } from "../AddBlockButton";
+import { AddBlockButton } from "../editor/AddBlockButton";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-import { useSelection } from "@/features/admin/context/hooks/useSelection";
 
 interface TimelineBlockProps {
   block: TimelineBlockType;
@@ -16,9 +15,9 @@ export function TimelineBlock({ block }: TimelineBlockProps) {
   const entries = block.content.entries || [];
 
   if (isEditing) {
-    // In edit mode, render entry blocks as selectable blocks
+    // In edit mode, wrap in Timeline container to keep the look
     return (
-      <div style={{ width: "100%" }}>
+      <Timeline>
         <AddBlockButton order={0} parentBlockId={block.id} />
         {entryBlocks.map((entryBlock) => (
           <React.Fragment key={entryBlock.id}>
@@ -27,12 +26,12 @@ export function TimelineBlock({ block }: TimelineBlockProps) {
                 position: "relative",
               }}
             >
-              {renderPageBlock(entryBlock)}
+              {renderPageBlock(entryBlock, true)}
             </div>
             <AddBlockButton order={entryBlock.order + 1} parentBlockId={block.id} />
           </React.Fragment>
         ))}
-      </div>
+      </Timeline>
     );
   }
 
@@ -52,38 +51,45 @@ interface TimelineEntryBlockProps {
 
 export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
   const { isEditing } = useEditMode();
-  const { selectedBlock } = useSelection();
   const children = block.content.content || [];
-  const isSelected = selectedBlock?.id === block.id;
 
-  if (isEditing && !isSelected) {
-    // Edit mode but this TimelineEntry is not selected
-    // Show content using shared TimelineEntry with add/delete buttons for children
+  if (isEditing) {
+    // In edit mode (whether selected or not), use TimelineItem layout
     return (
-      <TimelineEntry label={block.content.label} title={block.content.title}>
+      <TimelineItem
+        label={block.content.label}
+        title={block.content.title}
+        isActive={true} // In edit mode, maybe force active or let Timeline handle it? 
+        // For now force active so it's fully visible
+      >
         <div style={{ marginTop: "0.5rem" }}>
           <AddBlockButton order={0} parentBlockId={block.id} />
           {children.map((child) => (
             <React.Fragment key={child.id}>
               <div style={{ position: "relative", marginBottom: "0.5rem" }}>
-                {renderPageBlock(child)}
+                {renderPageBlock(child, true)}
               </div>
               <AddBlockButton order={child.order + 1} parentBlockId={block.id} />
             </React.Fragment>
           ))}
         </div>
-      </TimelineEntry>
+      </TimelineItem>
     );
   }
 
-  // Normal rendering (non-edit mode or when selected - EditableTimelineEntry is shown by SelectableBlock)
+  // Normal rendering should theoretically happen via Timeline data prop, 
+  // but if this component is rendered directly (e.g. by direct renderPageBlock call),
+  // we use TimelineItem.
   return (
-    <TimelineEntry label={block.content.label} title={block.content.title}>
+    <TimelineItem
+        label={block.content.label}
+        title={block.content.title}
+    >
       {children.map((child) => (
-        <div key={child.id}>
+        <React.Fragment key={child.id}>
           {renderPageBlock(child)}
-        </div>
+        </React.Fragment>
       ))}
-    </TimelineEntry>
+    </TimelineItem>
   );
 }

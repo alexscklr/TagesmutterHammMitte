@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { renderPageBlock } from ".";
-import { usePageBlocks } from "../hooks";
+import { renderPageBlock } from "./renderPageBlock";
+import { usePageBlocks } from "../../hooks";
 import { useContext, useEffect, useCallback } from "react";
 import { Loading } from "@/shared/components/index";
 import { Error } from "@/shared/components/index";
@@ -9,13 +9,13 @@ import { supabase } from "@/supabaseClient";
 import { AuthContext } from "@/features/auth/context/AuthContext";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-import type { PageBlock } from "../types/page";
-import { AddBlockButton } from "./AddBlockButton";
-import { getDefaultContent } from "../types/blockDefaults";
+import type { PageBlock } from "../../types/page";
+import { AddBlockButton } from "../editor/AddBlockButton";
+import { getDefaultContent } from "../../types/blockDefaults";
 import { useDragAndDrop } from "@/shared/hooks/useDragAndDrop";
-import { applyOrderUpdatesToBlocks, reorderPageBlocks } from "../utils/reorder";
-import { updatePageBlockOrders } from "../lib/pageQueries";
-import { PageDragProvider } from "./PageDragContext";
+import { applyOrderUpdatesToBlocks, reorderPageBlocks } from "../../utils/reorder";
+import { updatePageBlockOrders } from "../../lib/pageQueries";
+import { PageDragProvider } from "../editor/PageDragContext";
 
 
 const PageRenderer = () => {
@@ -85,6 +85,7 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
   pageId,
   setSelectedBlock,
 }) => {
+  const { isEditing } = useEditMode();
 
   // Select newly created blocks when notified
   useEffect(() => {
@@ -153,21 +154,21 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
   const content = [];
 
   // Vor dem ersten Block
-  if (pageId) {
+  if (pageId && isEditing) {
     content.push(renderAddButton(0, null));
   }
 
   // Blöcke mit AddBlockButton dazwischen
   blocks.forEach((block) => {
-    content.push(renderPageBlock(block));
+    content.push(renderPageBlock(block, isEditing));
 
     // AddBlockButton nach jedem Block
-    if (pageId) {
+    if (pageId && isEditing) {
       content.push(renderAddButton(block.order + 1, null));
     }
   });
 
-  return content;
+  return <>{content}</>;
 };
 
 export default PageRenderer;

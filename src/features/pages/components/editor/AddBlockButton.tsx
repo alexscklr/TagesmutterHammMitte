@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-import { PageBlocks, type PageBlockType } from "../types/page";
-import { BLOCK_TYPE_LABELS, getDefaultContent } from "../types/blockDefaults";
+import { PageBlocks, type PageBlockType } from "../../types/page";
+import { BLOCK_TYPE_LABELS, getDefaultContent } from "../../types/blockDefaults";
 
 interface AddBlockButtonProps {
   pageId?: string;

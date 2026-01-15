@@ -1,5 +1,4 @@
 import { BouncyText, Link } from "@/shared/components";
-//import { Link } from "react-router-dom";
 import { GoogleLocation } from "@/shared/components/GoogleLocation/GoogleLocation";
 import styles from "./Startseite.module.css";
 import { getImageUrl } from "@/shared/lib/imageQueries";
@@ -18,7 +17,6 @@ const Startseite = () => {
   const [portraitURL, setPortraitURL] = useState<string | null>(null);
   const [currentEntry, setCurrentEntry] = useState<TimelineEntry | null>(null);
   const [currentEntryChildren, setCurrentEntryChildren] = useState<PageBlock[]>([]);
-
 
   useEffect(() => {
     const fetchImageUrl = async () => {
@@ -61,7 +59,16 @@ const Startseite = () => {
       <section className="page-section" aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
         <div className="page-sectionContent">
           <div className={styles.portraitSection}>
-              {portraitURL && <img src={Portrait} className={styles.portraitImg} alt="Portrait von Kerstin Sickler mit einem Tageskind" fetchPriority="high"/>}
+            <img 
+              src={portraitURL || Portrait} 
+              className={styles.portraitImg} 
+              alt="Portrait von Kerstin Sickler mit einem Tageskind" 
+              fetchPriority="high"
+              onError={(e) => {
+                e.currentTarget.onerror = null; 
+                e.currentTarget.src = Portrait;
+              }}
+            />
             <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
             <div className={styles.portraitText}>
               <List listStyle="none" ordered={false} margin="left" width="full">

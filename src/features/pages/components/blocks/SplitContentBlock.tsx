@@ -1,7 +1,7 @@
 import type { SplitContentBlock as TSplitContentBlock } from "../../types/blocks";
 import { renderPageBlock } from "..";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-import { AddBlockButton } from "../AddBlockButton";
+import { AddBlockButton } from "../editor/AddBlockButton";
 import { SplitContent } from "@/shared/components";
 
 interface SplitContentBlockProps {
@@ -21,7 +21,7 @@ export function SplitContentBlock({ block }: SplitContentBlockProps) {
           <AddBlockButton order={0} parentBlockId={block.id} />
         ) : (
           <div style={{ position: "relative" }}>
-            {renderPageBlock(children[0])}
+            {renderPageBlock(children[0], true)}
           </div>
         )}
       </div>
@@ -33,7 +33,7 @@ export function SplitContentBlock({ block }: SplitContentBlockProps) {
           <AddBlockButton order={children[0] ? children[0].order + 1 : 1} parentBlockId={block.id} />
         ) : (
           <div style={{ position: "relative" }}>
-            {renderPageBlock(children[1])}
+            {renderPageBlock(children[1], true)}
           </div>
         )}
       </div>

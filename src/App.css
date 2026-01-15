@@ -241,7 +241,6 @@ button:focus::before {
   margin: 1rem auto;
   padding: clamp(1.25rem, 2vw + 1rem, 5rem) clamp(1rem, 2vw, 2rem);
   background-color: var(--color-neutral-1000);
-  backdrop-filter: blur(6px);
   border-radius: 1.2rem;
   box-sizing: border-box;
 
@@ -255,10 +254,9 @@ button:focus::before {
 .page-section {
   width: min(100%, 80%);
   padding: clamp(1rem, 2vw + 0.5rem, 2rem);
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 1.2rem;
-  box-shadow: 0 8px 2rem var(--color-neutral-600);
+  box-shadow: 0 4px 1rem var(--color-neutral-600);
   box-sizing: border-box;
 }
 

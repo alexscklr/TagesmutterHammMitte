@@ -1,7 +1,7 @@
 .timelineContainer {
   position: relative;
   width: 90%;
-  padding: 5rem 3.2rem;
+  padding: 5rem 3.2rem 5rem 10rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,6 +14,7 @@
   flex-direction: row;
   align-items: flex-start;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1;
 }
 
 .timelineItem .timeBox {
@@ -58,15 +59,15 @@
 .timelineLine {
   position: absolute;
   top: 0;
-  left: 0.5rem;
-  width: 0.2rem;
+  left: 6rem;
+  width: 4px;
   height: 100%;
   background-image: repeating-linear-gradient(to bottom,
       var(--color-accent-primary-light),
-      var(--color-accent-primary-light) 0.5rem,
-      transparent 0.5rem, 
-      transparent 1rem);
-  z-index: -1;
+      var(--color-accent-primary-light) 0.8rem,
+      transparent 0.8rem, 
+      transparent 1.6rem);
+  z-index: 0;
 }
 
 /* Zustand Styling */

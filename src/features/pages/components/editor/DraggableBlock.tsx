@@ -1,10 +1,10 @@
 import React from "react";
 import { RxDragHandleHorizontal } from "react-icons/rx";
-import type { PageBlock } from "../types/page";
+import type { PageBlock } from "../../types/page";
 import SelectableBlock from "./SelectableBlock";
 import { usePageDrag } from "./PageDragContext";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
-import styles from "./PageRenderer.module.css";
+import styles from "../renderer/PageRenderer.module.css";
 
 export const DraggableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
     const { drag, isEditing } = usePageDrag();
