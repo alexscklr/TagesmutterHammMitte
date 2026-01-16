@@ -12,6 +12,9 @@ import { useSelection } from "@/features/admin/context/hooks/useSelection";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
 // save logic is now provided by EditingContext
 
+import { BackgroundContext } from "./context/BackgroundContext";
+import { type BackgroundStyle } from "./types/types";
+
 // Map routes to page slugs for static pages
 const getSlugFromPath = (pathname: string): string | null => {
   if (pathname === "/" || pathname === "") return "";
@@ -25,19 +28,27 @@ const Main = ({ children }: { children: ReactNode }) => {
   const { slug: paramSlug } = useParams<{ slug: string }>();
   const location = useLocation();
   const [meta, setMeta] = useState<PageMeta | null>(null);
-  const [backgroundStyle, setBackgroundStyle] = useState<string>(
-    "radial-gradient(at 20% 25%, rgba(200, 240, 248, 0.45) 0%, rgba(200, 240, 248, 0) 35%)," +
+  const [backgroundStyle, setBackgroundStyle] = useState<string>("");
+  const [useDefaultBackground, setUseDefaultBackground] = useState(true);
+  const { user, canEdit } = useAuth();
+  const { setEditing } = useEditMode();
+  const [previewBackground, setPreviewBackground] = useState<BackgroundStyle | null | undefined>(null);
+
+  const defaultBg = "radial-gradient(at 20% 25%, rgba(200, 240, 248, 0.45) 0%, rgba(200, 240, 248, 0) 35%)," +
     "radial-gradient(at 75% 30%, rgba(220, 245, 220, 0.40) 0%, rgba(220, 245, 220, 0) 38%)," +
     "radial-gradient(at 40% 75%, rgba(255, 235, 205, 0.50) 0%, rgba(255, 235, 205, 0) 38%)," +
     "linear-gradient(135deg, #f5f1e8 0%, #f0f5f3 35%, #e8f4f0 100%)," +
     "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'><g fill='none' stroke='rgba(100,100,100,0.08)' stroke-width='1'><circle cx='20' cy='18' r='1'/><circle cx='120' cy='90' r='1'/><circle cx='180' cy='40' r='1'/><circle cx='60' cy='150' r='1'/><circle cx='200' cy='180' r='1'/><circle cx='30' cy='200' r='1'/><circle cx='140' cy='200' r='1'/></g></svg>\")," +
-    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'><g fill='none' stroke='rgba(100,100,100,0.12)' stroke-width='4' stroke-linecap='round'><path d='M20 40c16 18 32 18 48 0'/><path d='M92 30c18 22 36 22 54 0'/><path d='M24 86c14 14 28 14 42 0'/></g></svg>\")"
-  );
-  const { user, canEdit } = useAuth();
-  const { setEditing } = useEditMode();
+    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'><g fill='none' stroke='rgba(100,100,100,0.12)' stroke-width='4' stroke-linecap='round'><path d='M20 40c16 18 32 18 48 0'/><path d='M92 30c18 22 36 22 54 0'/><path d='M24 86c14 14 28 14 42 0'/></g></svg>\")";
 
   // Determine which slug to use: static page mapping or dynamic param
   const effectiveSlug = getSlugFromPath(location.pathname) ?? paramSlug;
+
+  // Initialize background with default on mount
+  useEffect(() => {
+    setBackgroundStyle(defaultBg);
+    setUseDefaultBackground(true);
+  }, []);
 
   useEffect(() => {
     // Reset meta immediately when route changes
@@ -70,34 +81,48 @@ const Main = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let active = true;
-    if (meta && meta.background) {
-      backgroundStyleToCSS(meta.background).then(style => {
-        if (active) setBackgroundStyle(style);
+    
+    // Use preview if available (explicitly check for null, unrelated undefined means default)
+    const activeBgData = previewBackground !== null ? previewBackground : (meta ? meta.background : undefined);
+
+    if (activeBgData) {
+      backgroundStyleToCSS(activeBgData).then(style => {
+        if (active) {
+            setBackgroundStyle(style);
+            setUseDefaultBackground(false);
+        }
       });
     } else {
-      setBackgroundStyle(
-        "radial-gradient(at 20% 25%, rgba(200, 240, 248, 0.45) 0%, rgba(200, 240, 248, 0) 35%)," +
-        "radial-gradient(at 75% 30%, rgba(220, 245, 220, 0.40) 0%, rgba(220, 245, 220, 0) 38%)," +
-        "radial-gradient(at 40% 75%, rgba(255, 235, 205, 0.50) 0%, rgba(255, 235, 205, 0) 38%)," +
-        "linear-gradient(135deg, #f5f1e8 0%, #f0f5f3 35%, #e8f4f0 100%)," +
-        "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'><g fill='none' stroke='rgba(100,100,100,0.08)' stroke-width='1'><circle cx='20' cy='18' r='1'/><circle cx='120' cy='90' r='1'/><circle cx='180' cy='40' r='1'/><circle cx='60' cy='150' r='1'/><circle cx='200' cy='180' r='1'/><circle cx='30' cy='200' r='1'/><circle cx='140' cy='200' r='1'/></g></svg>\")," +
-        "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'><g fill='none' stroke='rgba(100,100,100,0.12)' stroke-width='4' stroke-linecap='round'><path d='M20 40c16 18 32 18 48 0'/><path d='M92 30c18 22 36 22 54 0'/><path d='M24 86c14 14 28 14 42 0'/></g></svg>\")"
-      );
+      setBackgroundStyle(defaultBg);
+      setUseDefaultBackground(true);
     }
     return () => { active = false; };
-  }, [meta]);
+  }, [meta, defaultBg, previewBackground]); // Add previewBackground dependency
+
+  // Specific styles for custom backgrounds to ensure they cover the area
+  const customBackgroundStyles = !useDefaultBackground ? {
+      backgroundSize: "auto",
+      backgroundPosition: "top left",
+      backgroundRepeat: "repeat",
+      backgroundAttachment: "fixed", // Keeps background stable on scroll
+  } : {};
 
   return (
     <SelectionProvider>
       <EditingProvider>
-      {/* Sidebar für Benutzer mit Bearbeitungsrechten */}
-      {user && canEdit && <SidebarWithSave />}
-      <main
-        className={`${styles.main} ${user && canEdit ? styles.withSidebar : ""}`}
-        style={{ backgroundImage: backgroundStyle }}
-      >
-        {children}
-      </main>
+        <BackgroundContext.Provider value={{ setPreviewBackground }}>
+          {/* Sidebar für Benutzer mit Bearbeitungsrechten */}
+          {user && canEdit && <SidebarWithSave />}
+          <main
+            className={`${styles.main} ${user && canEdit ? styles.withSidebar : ""}`}
+            style={{ 
+                backgroundImage: backgroundStyle,
+                ...customBackgroundStyles
+            }}
+          >
+            {children}
+          </main>
+        </BackgroundContext.Provider>
       </EditingProvider>
     </SelectionProvider>
   );

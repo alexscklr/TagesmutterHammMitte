@@ -21,7 +21,7 @@ export async function backgroundStyleToCSS(bg: BackgroundStyle): Promise<string>
           .join(", ")})`
       : "";
 
-  const image = bg.image_url ? `url(${await getImageUrl(bg.image_url, "public_images", 60)})` : "";
+  const image = bg.image_url ? `url('${await getImageUrl(bg.image_url, "public_images")}')` : "";
 
   // Build color spots gradients
   const colorSpots = bg.colorSpots
@@ -31,8 +31,8 @@ export async function backgroundStyleToCSS(bg: BackgroundStyle): Promise<string>
       })
     : [];
 
-  // Combine all layers
-  const layers = [...colorSpots, gradient, image].filter(Boolean);
+  // Combine all layers - Image über Gradient, aber unter Color Spots
+  const layers = [...colorSpots, image, gradient].filter(Boolean);
 
   // Wenn alles leer, Fallback
   if (layers.length === 0) {

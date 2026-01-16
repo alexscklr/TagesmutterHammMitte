@@ -17,7 +17,7 @@ export const PageList: React.FC<PageListProps> = ({ pages, styles, gradientToCss
           <tr>
             <th>Slug</th>
             <th>Titel</th>
-            <th>Site-Titel</th>
+            <th>Status</th>
             <th>Hintergrund</th>
             <th>Erstellt</th>
             <th>Aktionen</th>
@@ -25,16 +25,22 @@ export const PageList: React.FC<PageListProps> = ({ pages, styles, gradientToCss
         </thead>
         <tbody>
           {pages.map(page => (
-            <tr key={page.id}>
+            <tr key={page.id} className={page.is_public === false ? styles.privateRow : ""}>
               <td><code>{page.slug}</code></td>
               <td>{page.title}</td>
-              <td>{page.sitetitle}</td>
+              <td>
+                 {page.is_public === false ? (
+                    <span className={styles.badgePrivate}>Privat</span>
+                 ) : (
+                    <span className={styles.badgePublic}>Öffentlich</span>
+                 )}
+              </td>
               <td>
                 <div className={styles.backgroundPreview}>
                   {page.background?.gradient ? (
                     <div className={styles.previewItem}>
                       <span className={styles.label}>Gradient:</span>
-                      <div className={styles.gradientPreview} style={{ background: gradientToCss(page.background.gradient) }} />
+                      <div className={styles.listGradientPreview} style={{ background: gradientToCss(page.background.gradient) }} />
                     </div>
                   ) : null}
                   {page.background?.image_url ? (

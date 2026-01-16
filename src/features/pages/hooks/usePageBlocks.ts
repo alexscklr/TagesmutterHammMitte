@@ -46,8 +46,33 @@ export function usePageBlocks(slug: string) {
     const init = async () => {
       setLoading(true);
       setBlocks([]);
-      const pid = await getPageIdBySlug(slug);
+      
+      // Fetch Page ID and visibility
+      const { data: pageData, error } = await supabase
+        .from("pages")
+        .select("id, is_public")
+        .eq("slug", slug)
+        .maybeSingle();
+
       if (cancelled) return;
+
+      if (error || !pageData) {
+        setLoading(false);
+        return;
+      }
+
+      // Check visibility
+      if (pageData.is_public === false) {
+        // Check if user is authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          // Private page and not logged in -> treat as not found
+          setLoading(false);
+          return;
+        }
+      }
+
+      const pid = pageData.id;
       setPageId(pid);
 
       if (!pid) {

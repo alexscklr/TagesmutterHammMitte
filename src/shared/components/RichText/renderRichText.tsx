@@ -68,6 +68,9 @@ const renderDoc = (doc: RichTextDocument) => {
             frequency={settings.frequency}
           />
         );
+      } else if (inlineFn.type === InlineFunctions.Age) {
+        const dateStr = (inlineFn.value as { date: string }).date;
+        el = calculateAge(dateStr);
       }
     }
 

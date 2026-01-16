@@ -29,12 +29,54 @@
   background: black;
   color: #fff;
 }
-.input {
+.textAreaWrapper {
+  display: grid;
+  position: relative;
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+.backdrop {
+  grid-area: 1 / 1;
   width: 100%;
   padding: 0.5em;
-  margin-bottom: 0.5em;
-  border-radius: 0.4em;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background: #fff;
+  color: #333;
   border: 1px solid #ddd;
+  border-radius: 0.4em;
+  pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-align: left;
+}
+.input {
+  grid-area: 1 / 1;
+  width: 100%;
+  padding: 0.5em; /* Match backdrop */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background: transparent;
+  color: transparent;
+  caret-color: #333;
+  border: 1px solid transparent;
+  border-radius: 0.4em;
+  resize: vertical;
+  overflow: auto;
+  z-index: 1;
+  box-sizing: border-box;
+  border: 1px solid var(--color-neutral-600);
+}
+.input::selection {
+  background: rgba(33, 150, 243, 0.3);
 }
 .addBtn {
   background: #ff9800;
@@ -144,4 +186,7 @@
   padding: 0.75em;
   margin-bottom: 0.5em;
   background: #f9f9f9;
+}
+.inlineFnBox > .input {
+  color: var(--color-text);
 }

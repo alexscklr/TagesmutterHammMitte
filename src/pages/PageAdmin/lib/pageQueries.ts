@@ -21,6 +21,7 @@ export const pageQueries = {
           title: pageData.title,
           sitetitle: pageData.sitetitle,
           background: pageData.background || null,
+          is_public: pageData.is_public,
         })
         .eq("id", editingId);
 
@@ -34,6 +35,7 @@ export const pageQueries = {
             title: pageData.title,
             sitetitle: pageData.sitetitle,
             background: pageData.background || null,
+            is_public: pageData.is_public ?? true, // Default true for new pages
           },
         ]);
 

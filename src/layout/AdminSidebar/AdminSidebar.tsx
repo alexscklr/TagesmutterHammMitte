@@ -35,7 +35,21 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { isDirty } = useEditing();
   const visible = open ?? isEditing;
   const [width, setWidth] = React.useState<number>(Math.min(300,window.screen.width * 0.8));
-  const minWidth = 20;
+  const [scrollRatio, setScrollRatio] = React.useState<number | null>(null);
+
+  // Restore scroll position after edit mode toggle
+  React.useLayoutEffect(() => {
+    if (scrollRatio !== null) {
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (scrollHeight > 0) {
+        window.scrollTo({ top: scrollRatio * scrollHeight, behavior: "instant" });
+      }
+      // Reset after restoring
+      setScrollRatio(null);
+    }
+  }, [isEditing, scrollRatio]);
+
+  const minWidth = 30;
   const maxWidth = 580;
 
   const startResize = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -87,7 +101,17 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           <div style={{ display: "flex", gap: "0.5rem", flexDirection: "row", flexWrap: "wrap" }}>
             <button
               className={styles.button}
-              onClick={() => canEdit && setEditing(!isEditing)}
+              onClick={() => {
+                if (canEdit) {
+                  // Save current scroll percentage
+                  const scrollTop = window.scrollY;
+                  const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                  if (docHeight > 0) {
+                    setScrollRatio(scrollTop / docHeight);
+                  }
+                  setEditing(!isEditing);
+                }
+              }}
               disabled={!canEdit}
               title={canEdit ? "Bearbeitungsmodus umschalten" : "Keine Berechtigung"}
             >

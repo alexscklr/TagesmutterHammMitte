@@ -95,6 +95,64 @@ const adjustRangesForTextChange = <T extends RichTextRange>(ranges: T[] | undefi
   return clampRanges(adjusted, newLength);
 };
 
+const renderHighlights = (doc: RichTextDocument) => {
+  const text = doc.text;
+  const points = new Set<number>([0, text.length]);
+  const addRanges = (ranges?: RichTextRange[]) =>
+    ranges?.forEach((r) => {
+      points.add(Math.max(0, Math.min(r.start, text.length)));
+      points.add(Math.max(0, Math.min(r.end, text.length)));
+    });
+
+  addRanges(doc.bold);
+  addRanges(doc.italic);
+  addRanges(doc.underline);
+  addRanges(doc.accent);
+  addRanges(doc.links);
+  addRanges(doc.functions);
+
+  const sortedPoints = Array.from(points).sort((a, b) => a - b);
+  const elements = [];
+
+  for (let i = 0; i < sortedPoints.length - 1; i++) {
+    const start = sortedPoints[i];
+    const end = sortedPoints[i + 1];
+    const segment = text.slice(start, end);
+    if (!segment) continue;
+
+    const style: React.CSSProperties = {};
+    
+    // Base Check for overlapping styles
+    if (doc.bold?.some((r) => r.start <= start && r.end >= end)) style.fontWeight = "bold";
+    if (doc.italic?.some((r) => r.start <= start && r.end >= end)) style.fontStyle = "italic";
+    if (doc.underline?.some((r) => r.start <= start && r.end >= end)) style.textDecoration = (style.textDecoration ? style.textDecoration + " " : "") + "underline";
+    if (doc.accent?.some((r) => r.start <= start && r.end >= end)) style.color = "var(--color-accent)";
+
+    if (doc.links?.some((r) => r.start <= start && r.end >= end)) {
+      style.color = "#1E88E5";
+      style.textDecoration = (style.textDecoration ? style.textDecoration + " " : "") + "underline";
+    }
+
+    if (doc.functions?.some((r) => r.start <= start && r.end >= end)) {
+      style.backgroundColor = "rgba(255, 152, 0, 0.15)";
+      style.borderRadius = "2px";
+    }
+
+    elements.push(
+      <span key={`${start}-${end}`} style={style}>
+        {segment}
+      </span>
+    );
+  }
+
+  // Handle trailing newline for visual consistency
+  if (text.endsWith("\n")) {
+    elements.push(<br key="trailing-br" />);
+  }
+
+  return elements;
+};
+
 interface RichTextEditorProps {
   value: RichTextContent;
   onChange: (value: RichTextDocument) => void;
@@ -104,6 +162,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
   const [doc, setDoc] = useState<RichTextDocument>(() => normalizeContent(value));
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
   const skipNotifyRef = useRef(false);
   const onChangeRef = useRef(onChange);
   const [linkType, setLinkType] = useState<LinkType>("external");
@@ -128,6 +187,12 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
   const updateDoc = (updater: (prev: RichTextDocument) => RichTextDocument) => {
     setDoc((prev) => updater(prev));
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+    if (backdropRef.current) {
+      backdropRef.current.scrollTop = e.currentTarget.scrollTop;
+    }
   };
 
   useEffect(() => {
@@ -314,16 +379,23 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         </div>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        className={styles.input}
-        value={doc.text}
-        onChange={handleTextChange}
-        onSelect={handleSelect}
-        placeholder="Text eingeben..."
-        rows={4}
-        style={{ width: "100%" }}
-      />
+      <div className={styles.textAreaWrapper}>
+        <div className={styles.backdrop} ref={backdropRef}>
+          {renderHighlights(doc)}
+        </div>
+        <textarea
+          ref={textareaRef}
+          className={styles.input}
+          value={doc.text}
+          onChange={handleTextChange}
+          onSelect={handleSelect}
+          onScroll={handleScroll}
+          placeholder="Text eingeben..."
+          rows={4}
+          spellCheck={false}
+        />
+      </div>
+
       <div style={{ fontSize: "0.85em", color: "#666", marginTop: 4 }}>
         Auswahl: {selection.start}–{selection.end} ({selectionLength} Zeichen)
       </div>
@@ -362,9 +434,9 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
       <div className={styles.inlineFnBox} style={{ marginTop: 12 }}>
         <select value={fnType} onChange={(e) => setFnType(e.target.value as InlineFunctionType | "")} className={styles.input}>
-          <option value="">Keine Inline Function</option>
+          <option value="">Keine Inline Funktion</option>
           <option value={InlineFunctions.Age}>Alter berechnen</option>
-          <option value={InlineFunctions.BouncyText}>BouncyText</option>
+          <option value={InlineFunctions.BouncyText}>Springender Text</option>
         </select>
 
         {fnType === InlineFunctions.Age && (
@@ -383,10 +455,10 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
         <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
           <button type="button" className={styles.button} onClick={applyInlineFunction}>
-            <RiFunctionAddLine /> Function setzen
+            <RiFunctionAddLine /> Funktion setzen
           </button>
           <button type="button" className={styles.button} onClick={clearInlineFunctionInSelection}>
-            <FaTrash /> Function entfernen
+            <FaTrash /> Funktion entfernen
           </button>
         </div>
       </div>
@@ -412,7 +484,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
       {(doc.functions?.length ?? 0) > 0 && (
         <div style={{ marginTop: 16 }}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Functions</div>
+          <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Funktionen</div>
           {(doc.functions || []).map((fn, idx) => (
             <div key={`fn-${idx}`} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4, fontSize: "0.9em" }}>
               <div style={{ flex: 1 }}>

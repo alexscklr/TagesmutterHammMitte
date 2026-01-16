@@ -23,6 +23,7 @@ export interface PageData {
   sitetitle: string;
   created_at: string;
   is_static?: boolean;
+  is_public?: boolean;
   background: {
     gradient?: Gradient;
     image_url?: string;

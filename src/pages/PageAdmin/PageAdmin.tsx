@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import styles from "./PageAdmin.module.css";
 import { PageList } from "./components/PageList";
 import { ImagePickerModal } from "./components/ImagePickerModal";
 import { GradientEditor } from "./components/GradientEditor";
 import { ColorSpotsEditor } from "./components/ColorSpotsEditor";
 import { gradientToCss } from "./utils";
+import { backgroundStyleToCSS } from "../../layout/Main/utils/translations";
+import { useBackgroundPreview } from "../../layout/Main/context/BackgroundContext";
 import { usePageManagement } from "./hooks/usePageManagement";
 import { useGradientEditor } from "./hooks/useGradientEditor";
 import { useColorSpotEditor } from "./hooks/useColorSpotEditor";
@@ -17,6 +20,76 @@ const PageAdmin: React.FC = () => {
   const gradientEditor = useGradientEditor(pageManagement.formData, pageManagement.setFormData);
   const colorSpotEditor = useColorSpotEditor(pageManagement.formData, pageManagement.setFormData);
   const imagePicker = useImagePicker();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [previewStyle, setPreviewStyle] = React.useState<string>("");
+  const { setPreviewBackground } = useBackgroundPreview();
+
+  // Live update of the main page background
+  useEffect(() => {
+    // Only update if we are editing or creating
+    if (pageManagement.isCreating || pageManagement.editingId) {
+       setPreviewBackground(pageManagement.formData.background as any);
+    } else {
+       setPreviewBackground(null);
+    }
+
+    // Cleanup when component unmounts or we leave edit mode
+    return () => setPreviewBackground(null); 
+  }, [pageManagement.formData.background, pageManagement.isCreating, pageManagement.editingId, setPreviewBackground]);
+
+  // Sync URL with State
+  useEffect(() => {
+    if (pageManagement.loading) return;
+
+    const editId = searchParams.get("edit");
+    const createMode = searchParams.get("create");
+
+    if (editId) {
+      const page = pageManagement.pages.find((p) => p.id === editId);
+      if (page) {
+        if (pageManagement.editingId !== editId) {
+          pageManagement.setEditingId(editId);
+          pageManagement.setFormData(JSON.parse(JSON.stringify(page)));
+          pageManagement.setIsCreating(false);
+          pageManagement.setError(null);
+        }
+      } else {
+        // Page not found (e.g. deleted or invalid ID), return to list
+        setSearchParams({});
+      }
+    } else if (createMode) {
+      if (!pageManagement.isCreating) {
+        pageManagement.setIsCreating(true);
+        pageManagement.setEditingId(null);
+        pageManagement.setFormData({
+          slug: "",
+          title: "",
+          sitetitle: "",
+          background: {
+            gradient: gradientEditor.DEFAULT_GRADIENT,
+            image_url: "",
+          },
+        });
+        pageManagement.setError(null);
+      }
+    } else {
+      // List Mode
+      if (pageManagement.editingId || pageManagement.isCreating) {
+        pageManagement.setEditingId(null);
+        pageManagement.setIsCreating(false);
+        pageManagement.setFormData({});
+        pageManagement.setError(null);
+      }
+    }
+  }, [
+    searchParams,
+    pageManagement.loading,
+    pageManagement.pages,
+    pageManagement.editingId,
+    pageManagement.isCreating,
+    // Note: We deliberately exclude pageManagement methods and gradientEditor.DEFAULT_GRADIENT 
+    // to avoid unnecessary re-runs, assuming they are stable or don't change meaningfully.
+  ]);
 
   useEffect(() => {
     const load = async () => {
@@ -37,32 +110,15 @@ const PageAdmin: React.FC = () => {
   }, []);
 
   const startEdit = (page: PageData) => {
-    pageManagement.setEditingId(page.id);
-    pageManagement.setFormData(page);
-    pageManagement.setIsCreating(false);
-    pageManagement.setError(null);
+    setSearchParams({ edit: page.id });
   };
 
   const startCreate = () => {
-    pageManagement.setIsCreating(true);
-    pageManagement.setEditingId(null);
-    pageManagement.setFormData({
-      slug: "",
-      title: "",
-      sitetitle: "",
-      background: {
-        gradient: gradientEditor.DEFAULT_GRADIENT,
-        image_url: "",
-      },
-    });
-    pageManagement.setError(null);
+    setSearchParams({ create: "true" });
   };
 
   const cancelEdit = () => {
-    pageManagement.setEditingId(null);
-    pageManagement.setIsCreating(false);
-    pageManagement.setFormData({});
-    pageManagement.setError(null);
+    setSearchParams({});
   };
 
   const savePage = async () => {
@@ -163,6 +219,7 @@ const PageAdmin: React.FC = () => {
             onAddStop={gradientEditor.addGradientStop}
             onRemoveStop={gradientEditor.removeGradientStop}
             defaultGradient={gradientEditor.DEFAULT_GRADIENT}
+            previewStyle={previewStyle}
           />
 
           <ColorSpotsEditor
@@ -206,6 +263,20 @@ const PageAdmin: React.FC = () => {
                   Bild entfernen
                 </button>
               )}
+            </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={pageManagement.formData.is_public ?? true} // Default true
+                onChange={e => pageManagement.updateFormField("is_public", e.target.checked)}
+              />
+              Öffentlich sichtbar
+            </label>
+            <div className={styles.helpText}>
+              Private Seiten sind nur für eingeloggte Administratoren sichtbar.
             </div>
           </div>
 

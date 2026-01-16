@@ -12,6 +12,7 @@ interface GradientEditorProps {
   onAddStop: () => void;
   onRemoveStop: (index: number) => void;
   defaultGradient: { stops: Array<{ color: string }>; direction: string };
+  previewStyle?: string;
 }
 
 export const GradientEditor: React.FC<GradientEditorProps> = ({
@@ -22,6 +23,7 @@ export const GradientEditor: React.FC<GradientEditorProps> = ({
   onAddStop,
   onRemoveStop,
   defaultGradient,
+  previewStyle,
 }) => {
   const gradient = formData.background?.gradient || defaultGradient;
   const stops = gradient.stops || defaultGradient.stops;
@@ -77,12 +79,17 @@ export const GradientEditor: React.FC<GradientEditorProps> = ({
           </button>
         </div>
         <div className={styles.gradientPreview}>
-          {formData.background?.gradient && (
-            <div
-              className={styles.gradientPreviewBox}
-              style={{ background: gradientToCss(formData.background.gradient) }}
-            />
-          )}
+          <div
+            className={styles.gradientPreviewBox}
+            style={{ 
+              background: previewStyle || (formData.background?.gradient ? gradientToCss(formData.background.gradient) : "#fff"),
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "relative"
+            }}
+          >
+           {!previewStyle && !formData.background?.gradient && <span style={{position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", color:"#ccc"}}>Vorschau</span>}
+          </div>
         </div>
       </div>
     </div>
