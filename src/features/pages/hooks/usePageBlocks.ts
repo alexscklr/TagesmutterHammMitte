@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
-import { getPageIdBySlug, getPageBlocks } from "../lib";
+import { getPageBlocks } from "../lib";
 import { PageBlocks, type PageBlock } from "@/features/pages/types/page";
 
 export function usePageBlocks(slug: string) {

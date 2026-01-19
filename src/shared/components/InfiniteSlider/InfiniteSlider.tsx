@@ -12,19 +12,40 @@ function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteS
   const duplicatedItems = [...items, ...items];
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  
+  // Cache layout values specifically to avoid thrashing
+  const layoutCache = useRef({ halfScrollWidth: 0 });
 
   useEffect(() => {
-  if (containerRef.current) {
     const container = containerRef.current;
-    container.scrollLeft = container.scrollWidth / 2 - container.offsetWidth / 2;
-  }
-}, []);
-
-
+    if (container) {
+        // Initial positioning
+        container.scrollLeft = container.scrollWidth / 2 - container.offsetWidth / 2;
+        
+        // Setup cache
+        const updateCache = () => {
+             layoutCache.current.halfScrollWidth = container.scrollWidth / 2;
+        };
+        updateCache();
+        
+        const resizeObserver = new ResizeObserver(() => {
+            updateCache();
+        });
+        resizeObserver.observe(container);
+        
+        return () => resizeObserver.disconnect();
+    }
+  }, [items]); // Re-calculate when items change
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    
+    // Ensure cache is populated if the previous effect hasn't run yet or if something is out of sync,
+    // though the dependency overlap usually handles it.
+    if (layoutCache.current.halfScrollWidth === 0) {
+        layoutCache.current.halfScrollWidth = container.scrollWidth / 2;
+    }
 
     let animationFrameId: number;
     let lastTimestamp: number | null = null;
@@ -40,7 +61,8 @@ function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteS
       lastTimestamp = timestamp;
 
       if (!isFocused) {
-        const halfScrollWidth = container.scrollWidth / 2;
+        // Use cached value instead of reading layout property
+        const halfScrollWidth = layoutCache.current.halfScrollWidth || container.scrollWidth / 2;
         const nextScrollLeft = container.scrollLeft + speed * delta;
 
         if (nextScrollLeft >= halfScrollWidth) {
@@ -57,7 +79,7 @@ function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteS
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const halfScrollWidth = container.scrollWidth / 2;
+      const halfScrollWidth = layoutCache.current.halfScrollWidth || container.scrollWidth / 2;
       container.scrollLeft =
         ((container.scrollLeft + e.deltaY) % halfScrollWidth + halfScrollWidth) % halfScrollWidth;
     };

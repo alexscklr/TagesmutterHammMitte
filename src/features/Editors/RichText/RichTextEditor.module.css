@@ -11,10 +11,13 @@
   display: flex;
   gap: 0.5em;
   margin-bottom: 0.5em;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .toolbar button {
-  background: #f7f7f7;
-  border: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #666;
   border-radius: 0.4em;
   padding: 0.5em;
   cursor: pointer;
@@ -24,10 +27,18 @@
   justify-content: center;
   min-width: 2.5em;
   min-height: 2.5em;
+  transition: all 0.2s ease;
 }
-.toolbar .active {
-  background: black;
+.toolbar button:hover {
+  background: #eee;
+  color: #000;
+  border-color: #ddd;
+}
+.toolbar .active,
+.toolbar .active:hover {
+  background: #222;
   color: #fff;
+  border-color: #222;
 }
 .textAreaWrapper {
   display: grid;
@@ -189,4 +200,20 @@
 }
 .inlineFnBox > .input {
   color: var(--color-text);
+}
+
+.divider {
+    width: 1px;
+    height: 1.5em;
+    background-color: #e0e0e0;
+    margin: 0 0.25em;
+}
+
+.toolPanel {
+  border: 1px solid #ddd;
+  border-radius: 0.4em;
+  padding: 1em;
+  margin-bottom: 1em;
+  background: #fefefe;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }

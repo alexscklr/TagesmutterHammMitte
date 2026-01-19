@@ -19,7 +19,7 @@
     position: relative;
     user-select: none;
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
     will-change: transform;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -30,18 +30,16 @@
     justify-content: center;
 }
 
-.sliderItem:hover,
-.sliderItem:focus {
+.sliderContainer:hover .sliderItem {
+    filter: brightness(0.5);
+}
+
+.sliderContainer .sliderItem:hover,
+.sliderContainer .sliderItem:focus {
     transform: scale(1.15);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
     z-index: 2;
-}
-
-.sliderItem:hover ~ *,
-.sliderItem:focus ~ *,
-.sliderItem:has(~ .sliderItem:hover),
-.sliderItem:has(~ .sliderItem:focus) {
-    filter: brightness(0.5);
+    filter: brightness(1);
 }
 
 @media (max-width: 767px) {

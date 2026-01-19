@@ -6,7 +6,6 @@ import { ImagePickerModal } from "./components/ImagePickerModal";
 import { GradientEditor } from "./components/GradientEditor";
 import { ColorSpotsEditor } from "./components/ColorSpotsEditor";
 import { gradientToCss } from "./utils";
-import { backgroundStyleToCSS } from "../../layout/Main/utils/translations";
 import { useBackgroundPreview } from "../../layout/Main/context/BackgroundContext";
 import { usePageManagement } from "./hooks/usePageManagement";
 import { useGradientEditor } from "./hooks/useGradientEditor";
@@ -21,7 +20,7 @@ const PageAdmin: React.FC = () => {
   const colorSpotEditor = useColorSpotEditor(pageManagement.formData, pageManagement.setFormData);
   const imagePicker = useImagePicker();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [previewStyle, setPreviewStyle] = React.useState<string>("");
+  const [previewStyle] = React.useState<string>("");
   const { setPreviewBackground } = useBackgroundPreview();
 
   // Live update of the main page background

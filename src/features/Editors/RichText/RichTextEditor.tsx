@@ -160,6 +160,7 @@ interface RichTextEditorProps {
 
 export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
   const [doc, setDoc] = useState<RichTextDocument>(() => normalizeContent(value));
+  const [activeTool, setActiveTool] = useState<"none" | "link" | "function">("none");
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -370,6 +371,15 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
           <span style={{ color: "var(--color-accent)" }}>A</span>
         </StyleButton>
 
+        <div className={styles.divider} />
+
+        <StyleButton active={activeTool === "link"} onClick={() => setActiveTool(activeTool === "link" ? "none" : "link")}>
+          <FaLink />
+        </StyleButton>
+        <StyleButton active={activeTool === "function"} onClick={() => setActiveTool(activeTool === "function" ? "none" : "function")}>
+          <RiFunctionAddLine />
+        </StyleButton>
+
         <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
           {selectionLength > 0 && (
             <button type="button" className={styles.button} onClick={removeFormatting}>
@@ -400,104 +410,108 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         Auswahl: {selection.start}–{selection.end} ({selectionLength} Zeichen)
       </div>
 
-      <div className={styles.linkBox} style={{ marginTop: 12 }}>
-        <div className={styles.linkTypeToggle}>
-          <button type="button" className={`${styles.button} ${linkType === "internal" ? styles.active : ""}`} onClick={() => setLinkType("internal")}>
-            Unterseite
-          </button>
-          <button type="button" className={`${styles.button} ${linkType === "external" ? styles.active : ""}`} onClick={() => setLinkType("external")}>
-            Externe Seite
-          </button>
-        </div>
-        {linkType === "internal" && (
-          <select value={linkSlug} onChange={(e) => setLinkSlug(e.target.value as PageSlug | "")} className={styles.input}>
-            <option value="">-- Seite wählen --</option>
-            {Object.entries(PageSlugs).map(([key, slug]) => (
-              <option key={key} value={slug}>
-                {slug ? `${slug}` : "Startseite"}
-              </option>
-            ))}
-          </select>
-        )}
-        {linkType === "external" && (
-          <input className={styles.input} type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://example.com" />
-        )}
-        <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
-          <button type="button" className={styles.button} onClick={applyLink}>
-            <FaLink /> Link setzen
-          </button>
-          <button type="button" className={styles.button} onClick={clearLinkInSelection}>
-            <FaTrash /> Link entfernen
-          </button>
-        </div>
-      </div>
+      {activeTool === "link" && (
+        <div className={styles.toolPanel}>
+          <div className={styles.linkTypeToggle}>
+            <button type="button" className={`${styles.button} ${linkType === "internal" ? styles.active : ""}`} onClick={() => setLinkType("internal")}>
+              Unterseite
+            </button>
+            <button type="button" className={`${styles.button} ${linkType === "external" ? styles.active : ""}`} onClick={() => setLinkType("external")}>
+              Externe Seite
+            </button>
+          </div>
+          {linkType === "internal" && (
+            <select value={linkSlug} onChange={(e) => setLinkSlug(e.target.value as PageSlug | "")} className={styles.input}>
+              <option value="">-- Seite wählen --</option>
+              {Object.entries(PageSlugs).map(([key, slug]) => (
+                <option key={key} value={slug}>
+                  {slug ? `${slug}` : "Startseite"}
+                </option>
+              ))}
+            </select>
+          )}
+          {linkType === "external" && (
+            <input className={styles.input} type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://example.com" />
+          )}
+          <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+            <button type="button" className={styles.button} onClick={applyLink}>
+              <FaLink /> Link setzen
+            </button>
+            <button type="button" className={styles.button} onClick={clearLinkInSelection}>
+              <FaTrash /> Link entfernen
+            </button>
+          </div>
 
-      <div className={styles.inlineFnBox} style={{ marginTop: 12 }}>
-        <select value={fnType} onChange={(e) => setFnType(e.target.value as InlineFunctionType | "")} className={styles.input}>
-          <option value="">Keine Inline Funktion</option>
-          <option value={InlineFunctions.Age}>Alter berechnen</option>
-          <option value={InlineFunctions.BouncyText}>Springender Text</option>
-        </select>
-
-        {fnType === InlineFunctions.Age && (
-          <ParameterInput type="date" label="Geburtsdatum" value={fnDate} onChange={(e) => setFnDate(e.target.value)} />
-        )}
-
-        {fnType === InlineFunctions.BouncyText && (
-          <>
-            <ParameterInput type="number" label="Amplitude" value={fnAmplitude} onChange={(e) => setFnAmplitude(e.target.value)} />
-            <ParameterInput type="number" label="Dauer" value={fnDuration} onChange={(e) => setFnDuration(e.target.value)} />
-            <ParameterInput type="number" label="Pause-Dauer" value={fnPauseDuration} onChange={(e) => setFnPauseDuration(e.target.value)} />
-            <ParameterInput type="number" label="Zeichen-Amplitude" value={fnCharDelay} onChange={(e) => setFnCharDelay(e.target.value)} />
-            <ParameterInput type="number" label="Frequenz" value={fnFrequency} onChange={(e) => setFnFrequency(e.target.value)} />
-          </>
-        )}
-
-        <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
-          <button type="button" className={styles.button} onClick={applyInlineFunction}>
-            <RiFunctionAddLine /> Funktion setzen
-          </button>
-          <button type="button" className={styles.button} onClick={clearInlineFunctionInSelection}>
-            <FaTrash /> Funktion entfernen
-          </button>
-        </div>
-      </div>
-
-      {(doc.links?.length ?? 0) > 0 && (
-        <div style={{ marginTop: 16 }}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Links</div>
-          {(doc.links || []).map((lnk, idx) => (
-            <div key={`link-${idx}`} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4, fontSize: "0.9em" }}>
-              <div style={{ flex: 1 }}>
-                {lnk.start}–{lnk.end} • {lnk.linkType === "internal" ? lnk.linkSlug || "(Slug fehlt)" : lnk.linkUrl || "(URL fehlt)"}
-              </div>
-              <button type="button" className={styles.button} onClick={() => setSelectionRange(lnk.start, lnk.end)}>
-                Markieren
-              </button>
-              <button type="button" className={styles.button} onClick={() => removeLinkRange(lnk)}>
-                <FaTrash />
-              </button>
+          {(doc.links?.length ?? 0) > 0 && (
+            <div style={{ marginTop: 16, borderTop: "1px solid #eee", paddingTop: 8 }}>
+              <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Links</div>
+              {(doc.links || []).map((lnk, idx) => (
+                <div key={`link-${idx}`} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4, fontSize: "0.9em" }}>
+                  <div style={{ flex: 1 }}>
+                    {lnk.start}–{lnk.end} • {lnk.linkType === "internal" ? lnk.linkSlug || "(Slug fehlt)" : lnk.linkUrl || "(URL fehlt)"}
+                  </div>
+                  <button type="button" className={styles.button} onClick={() => setSelectionRange(lnk.start, lnk.end)}>
+                    Markieren
+                  </button>
+                  <button type="button" className={styles.button} onClick={() => removeLinkRange(lnk)}>
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
 
-      {(doc.functions?.length ?? 0) > 0 && (
-        <div style={{ marginTop: 16 }}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Funktionen</div>
-          {(doc.functions || []).map((fn, idx) => (
-            <div key={`fn-${idx}`} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4, fontSize: "0.9em" }}>
-              <div style={{ flex: 1 }}>
-                {fn.inlineFunction.type} • {fn.start}–{fn.end}
-              </div>
-              <button type="button" className={styles.button} onClick={() => setSelectionRange(fn.start, fn.end || fn.start)}>
-                Markieren
-              </button>
-              <button type="button" className={styles.button} onClick={() => removeInlineFunctionRange(fn)}>
-                <FaTrash />
-              </button>
+      {activeTool === "function" && (
+        <div className={styles.toolPanel}>
+          <select value={fnType} onChange={(e) => setFnType(e.target.value as InlineFunctionType | "")} className={styles.input}>
+            <option value="">Keine Inline Funktion</option>
+            <option value={InlineFunctions.Age}>Alter berechnen</option>
+            <option value={InlineFunctions.BouncyText}>Springender Text</option>
+          </select>
+
+          {fnType === InlineFunctions.Age && (
+            <ParameterInput type="date" label="Geburtsdatum" value={fnDate} onChange={(e) => setFnDate(e.target.value)} />
+          )}
+
+          {fnType === InlineFunctions.BouncyText && (
+            <>
+              <ParameterInput type="number" label="Amplitude" value={fnAmplitude} onChange={(e) => setFnAmplitude(e.target.value)} />
+              <ParameterInput type="number" label="Dauer" value={fnDuration} onChange={(e) => setFnDuration(e.target.value)} />
+              <ParameterInput type="number" label="Pause-Dauer" value={fnPauseDuration} onChange={(e) => setFnPauseDuration(e.target.value)} />
+              <ParameterInput type="number" label="Zeichen-Amplitude" value={fnCharDelay} onChange={(e) => setFnCharDelay(e.target.value)} />
+              <ParameterInput type="number" label="Frequenz" value={fnFrequency} onChange={(e) => setFnFrequency(e.target.value)} />
+            </>
+          )}
+
+          <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+            <button type="button" className={styles.button} onClick={applyInlineFunction}>
+              <RiFunctionAddLine /> Funktion setzen
+            </button>
+            <button type="button" className={styles.button} onClick={clearInlineFunctionInSelection}>
+              <FaTrash /> Funktion entfernen
+            </button>
+          </div>
+
+          {(doc.functions?.length ?? 0) > 0 && (
+            <div style={{ marginTop: 16, borderTop: "1px solid #eee", paddingTop: 8 }}>
+              <div style={{ fontWeight: 600, marginBottom: 4 }}>Aktive Funktionen</div>
+              {(doc.functions || []).map((fn, idx) => (
+                <div key={`fn-${idx}`} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4, fontSize: "0.9em" }}>
+                  <div style={{ flex: 1 }}>
+                    {fn.inlineFunction.type} • {fn.start}–{fn.end}
+                  </div>
+                  <button type="button" className={styles.button} onClick={() => setSelectionRange(fn.start, fn.end || fn.start)}>
+                    Markieren
+                  </button>
+                  <button type="button" className={styles.button} onClick={() => removeInlineFunctionRange(fn)}>
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
 
