@@ -12,6 +12,7 @@ import { CgWebsite } from "react-icons/cg";
 import { TbLayoutNavbarCollapseFilled, TbLayoutBottombarCollapseFilled, TbDeselect } from "react-icons/tb";
 import { MdOutlinePermMedia, MdOutlineReviews } from "react-icons/md";
 import { Link } from "@/shared/components";
+import { FaDatabase } from "react-icons/fa";
 
 // Helper to render editor with proper type narrowing via switch
 // Inline editors are handled in PageBlockRenderer; keep sidebar minimal
@@ -138,6 +139,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <Link href={"/admin/footer"} isExternal={false} ariaLabel={"Verwaltung der Footerinhalte"} ariaDescription={"Link zur Verwaltung der Footerinhalte im Adminpanel"} ><TbLayoutBottombarCollapseFilled /> Footer bearbeiten</Link>
             <Link href={"/admin/media"} isExternal={false} ariaLabel={"Verwaltung der Medieninhalte"} ariaDescription={"Link zur Verwaltung der Medieninhalte im Adminpanel"} ><MdOutlinePermMedia /> Medienverwaltung</Link>
             <Link href={"/admin/reviews"} isExternal={false} ariaLabel={"Verwaltung der Rezensionen"} ariaDescription={"Link zur Verwaltung der Rezensionen im Adminpanel"} ><MdOutlineReviews /> Rezensionverwaltung</Link>
+            <Link href={"/admin/backup"} isExternal={false} ariaLabel={"Backup und Restore"} ariaDescription={"Link zur Backup Verwaltung"} ><FaDatabase /> Backup & Restore</Link>
           </div>
         </section>
       </div>

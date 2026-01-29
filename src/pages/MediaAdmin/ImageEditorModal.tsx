@@ -316,7 +316,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
             {!img && <div className={styles.emptyState}>Bild wird geladen…</div>}
             {img && (
               <>
-                <div className={styles.overlayNote}>Modus: {mode === "crop" ? "Zuschneiden" : "Bereich zum Verpixeln ziehen"}</div>
+                <div className={styles.overlayNote} style={{ pointerEvents: 'none' }}>Modus: {mode === "crop" ? "Zuschneiden" : "Bereich zum Verpixeln ziehen"}</div>
                 <canvas
                   ref={canvasRef}
                   className={styles.canvas}
@@ -341,18 +341,18 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
                 <FaCropSimple /> Zuschneiden
               </button>
               <button className={`${styles.toggleBtn} ${mode === "blur" ? styles.active : ""}`} onClick={() => setMode("blur")}>
-                <FaFillDrip /> Blur hinzufügen
+                <FaFillDrip /> Zensieren
               </button>
             </div>
             <p className={styles.hint}>Klicke und ziehe im Bild, um einen Bereich zu setzen.</p>
 
             <p className={styles.sectionLabel}>Aktionen</p>
             <div className={styles.buttonRow}>
-              <button className={styles.smallBtn} onClick={resetCrop}><FaRotateLeft /> Crop zurücksetzen</button>
-              <button className={styles.smallBtn} onClick={clearBlurs}><FaTrash /> Blurs leeren</button>
+              <button className={styles.smallBtn} onClick={resetCrop}><FaRotateLeft /> Zensierung zurücksetzen</button>
+              <button className={styles.smallBtn} onClick={clearBlurs}><FaTrash /> Zensierungen leeren</button>
             </div>
 
-            <p className={styles.sectionLabel}>Blur-Stärke</p>
+            <p className={styles.sectionLabel}>Zensierungs-Stärke</p>
             <div className={styles.sliderRow}>
               <input
                 type="range"
@@ -365,7 +365,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
               <span className={styles.sliderValue}>{blurStrength}px</span>
             </div>
 
-            <p className={styles.sectionLabel}>Blur-Bereiche</p>
+            <p className={styles.sectionLabel}>Zensierungs-Bereiche</p>
             <div className={styles.blurList}>
               {blurs.length === 0 && <span className={styles.hint}>Noch keine Bereiche.</span>}
               {blurs.map((b, idx) => (

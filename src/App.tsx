@@ -15,6 +15,7 @@ import FooterAdmin from "@/pages/FooterAdmin";
 import { RequireAdmin } from "@/features/auth/components/RequireAdmin";
 import { ReviewAdmin } from './pages/ReviewAdmin';
 import ReviewSubmit from './pages/ReviewSite/ReviewSubmit';
+import BackupAdmin from './pages/BackupAdmin/BackupAdmin';
 
 const App = () => {
 
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="admin/header" element={<Main><RequireAdmin><HeaderAdmin /></RequireAdmin></Main>} />
         <Route path="admin/footer" element={<Main><RequireAdmin><FooterAdmin /></RequireAdmin></Main>} />
         <Route path="admin/reviews" element={<Main><RequireAdmin><ReviewAdmin /></RequireAdmin></Main>} />
+        <Route path="admin/backup" element={<Main><RequireAdmin><BackupAdmin /></RequireAdmin></Main>} />
       </Routes>
 
       <Footer />
