@@ -1,0 +1,21 @@
+
+# Supabase lokale Daten (WICHTIG!)
+.supabase/
+
+# Docker Daten & Logs
+docker/
+*.log
+
+# Abhängigkeiten (falls du Edge Functions nutzt)
+node_modules/
+supabase/.temp/
+supabase/snippets/
+
+# Lokale Umgebungsvariablen (Geheimnisse!)
+.env
+.env.local
+supabase/.env.local
+
+# Betriebssystem-Dateien
+.DS_Store
+Thumbs.db

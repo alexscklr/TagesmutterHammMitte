@@ -1,6 +1,6 @@
 import styles from "./Footer.module.css";
 import { useEffect, useState } from "react";
-import { getFooterBlocks } from "../Footer/lib";
+import { getFooterBlocks } from "./lib";
 import { FooterBlocks, type FooterBlock } from "./types";
 import { renderFooterBlock } from "./components/FooterBlockRenderer";
 import redoxBg from "/redox-01.png";
