@@ -28,7 +28,7 @@ interface DiffItem {
   selected: boolean;
 }
 
-export const BackupAdmin = () => {
+const BackupAdmin = () => {
     const [status, setStatus] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
     const [diffs, setDiffs] = useState<DiffItem[]>([]);

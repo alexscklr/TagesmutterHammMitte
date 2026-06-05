@@ -7,7 +7,7 @@ export interface QuoteProps {
   author?: string;
 }
 
-export const Quote: React.FC<QuoteProps> = ({ text, author }) => {
+const Quote: React.FC<QuoteProps> = ({ text, author }) => {
   return (
     <blockquote>
       <div>{renderRichText(text)}</div>

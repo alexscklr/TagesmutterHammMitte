@@ -20,7 +20,7 @@ const getChildren = (block: PageBlock): PageBlock[] => {
     }
 };
 
-export const flattenPageBlocks = (blocks: PageBlock[]): FlatPageBlock[] => {
+const flattenPageBlocks = (blocks: PageBlock[]): FlatPageBlock[] => {
     const flat: FlatPageBlock[] = [];
 
     const walk = (nodes: PageBlock[]) => {

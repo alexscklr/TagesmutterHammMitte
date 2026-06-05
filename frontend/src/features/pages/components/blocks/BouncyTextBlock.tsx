@@ -5,7 +5,7 @@ interface BouncyTextBlockProps {
     block: BouncyTextBlock;
 }
 
-export function BouncyTextBlock({ block }: BouncyTextBlockProps) {
+function BouncyTextBlock({ block }: BouncyTextBlockProps) {
 
     return (
         <BouncyText

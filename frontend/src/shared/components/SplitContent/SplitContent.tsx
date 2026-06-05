@@ -6,7 +6,7 @@ export interface SplitContentProps {
   children: [ReactNode, ReactNode]; // Exactly 2 children
 }
 
-export const SplitContent: React.FC<SplitContentProps> = ({ 
+const SplitContent: React.FC<SplitContentProps> = ({ 
   firstItemWidth = 50, 
   children 
 }) => {

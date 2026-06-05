@@ -33,14 +33,6 @@ export const PageBlocks = {
   SplitContent: "splitcontent"
 } as const;
 
-export const ContainerBlocks = [
-  PageBlocks.Section,
-  PageBlocks.InfiniteSlider,
-  PageBlocks.Timeline,
-  PageBlocks.TimelineEntry,
-  PageBlocks.SplitContent
-]
-
 export type PageBlockType = typeof PageBlocks[keyof typeof PageBlocks];
 
 export type PageBlock =

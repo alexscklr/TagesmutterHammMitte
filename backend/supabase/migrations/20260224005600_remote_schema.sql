@@ -63,7 +63,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
 
-
+insert into storage.buckets (id, name, public)
+values ('public_images', 'public_images', true);
 
 
 CREATE OR REPLACE FUNCTION "public"."delete_page_block_and_reorder"("p_block_id" "uuid") RETURNS "void"

@@ -1,4 +1,5 @@
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { Link as RouterLink } from "react-router-dom";
 import styles from "./Link.module.css";
 
 
@@ -12,6 +13,20 @@ interface LinkProps {
 };
 
 const Link = ({ href, isExternal, anchorClass, ariaLabel, ariaDescription, children }: LinkProps) => {
+    const isInternalRoute = !isExternal && href.startsWith("/");
+
+    if (isInternalRoute) {
+        return (
+            <RouterLink
+                className={`${styles.link} ${anchorClass}`}
+                to={href}
+                aria-label={ariaLabel}
+                aria-description={ariaDescription}
+            >
+                {children}
+            </RouterLink>
+        );
+    }
 
     return (
         <a

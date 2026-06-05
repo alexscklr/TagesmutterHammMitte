@@ -41,7 +41,7 @@ const EditableBlockWrapper: React.FC<{ blockId: string; children: React.ReactNod
   </div>
 );
 
-export const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
+const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
   const { selectedBlock, setSelectedBlock } = useSelection();
   const { user } = React.useContext(AuthContext);
   const { isEditing } = useEditMode();
