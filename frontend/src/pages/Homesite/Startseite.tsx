@@ -114,7 +114,8 @@ const Startseite = () => {
             <List listStyle="none" ordered={false}>
               <li>Weißdornweg 14</li>
               <li>59063 Hamm</li>
-              <li>Tel.: 02381/31366</li>
+              <li>Festnetz: 02381/31366</li>
+              <li>Mobil: 0178/4608533</li>
               <li>E-Mail: <Link href="mailto:Maxikids-hamm@web.de" isExternal={true} ariaLabel={"E-Mail an Kerstin Sickler"} ariaDescription={"Link zum Versenden einer E-Mail an Kerstin Sickler"}>Maxikids-hamm@web.de</Link></li>
             </List>
             
