@@ -20,7 +20,7 @@ const Startseite = () => {
 
   useEffect(() => {
     const fetchImageUrl = async () => {
-      const url = await getImageUrl("Portrait.png", "public_images", 300);
+      const url = await getImageUrl("Portrait.webp", "public_images", 300);
       setPortraitURL(url);
     };
 
@@ -138,10 +138,9 @@ const Startseite = () => {
                   <div className={styles.liveCircleOuter1}></div>
                   <div className={styles.liveCircleOuter2}></div>
                 </div>
-                <h2>Jetzt in unserem Tag</h2>
+                <h2>In unserem Alltag</h2>
               </div>
               <div className={styles.currentTimelineEntry}>
-                <h3>{currentEntry.title}</h3>
                 {currentEntryChildren.map(block => (
                   <div key={block.id}>{renderPageBlock(block)}</div>
                 ))}

@@ -28,7 +28,10 @@
   grid-column: 1;
   grid-row: 1 / span 2; /* desktop: image spans heading + text */
   width: clamp(10rem, 22vw, 18rem);
+  aspect-ratio: 1 / 1.4;
+  height: auto;
   object-fit: cover;
+  object-position: center 35%;
   border-radius: 50%;
   display: block;
   margin-inline: auto;

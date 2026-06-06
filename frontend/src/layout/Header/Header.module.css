@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5rem;
-  padding: 1rem 2rem;
+  gap: 2rem;
+  padding: 0.75rem 2rem;
   background-color: #fff;
   box-sizing: border-box;
   border-bottom: 1px solid #eee;
@@ -24,7 +24,7 @@
 }
 
 .logo {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
 }
@@ -34,9 +34,11 @@
 }
 
 .logo a img {
-  width: 100%;
-  max-width: clamp(120px, 32vw, 220px);
+  width: auto;
+  max-width: clamp(150px, 32vw, 280px);
+  max-height: clamp(3rem, 7vw, 4.5rem);
   height: auto;
+  object-fit: contain;
 }
 
 .hamburgerBtn {
@@ -180,7 +182,7 @@
   .siteHeader { overflow-x: clip; }
 
   .siteHeader .logo {
-    --logo-target-width: clamp(120px, 32vw, 220px);
+    --logo-target-width: clamp(130px, 32vw, 260px);
     flex: 0 0 auto;
     max-width: var(--logo-target-width);
     min-width: 0;
@@ -192,6 +194,10 @@
     overflow: hidden;
     transition: max-width 260ms cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 240ms ease;
+  }
+
+  .siteHeader .logo a img {
+    max-height: clamp(2.5rem, 8vw, 4rem);
   }
 
   .siteHeader:has(.hamburgerBtn.active) .logo {
