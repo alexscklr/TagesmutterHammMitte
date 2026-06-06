@@ -1,3 +1,19 @@
+.availabilityHint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  width: 61%;
+  max-width: 100%;
+  margin: 0.75rem auto 1.5rem;
+  padding: 0.65rem 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+
 /* Portrait-Bereich */
 .portraitSection {
   display: grid;
@@ -149,6 +165,11 @@
 }
 
 @media (max-width: 800px) {
+  .availabilityHint {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.35rem;
+  }
   /* Optional: slightly smaller portrait on very small screens */
   .portraitImg {
     width: clamp(9rem, 40vw, 16rem);

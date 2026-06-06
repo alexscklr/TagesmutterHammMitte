@@ -1,6 +1,7 @@
 export * from "./RichText/RichTextEditor"
 export { default as QuoteEditor } from "./Quote/QuoteEditor"
 export { default as EditableParagraph } from "./Editable/EditableParagraph"
+export { default as EditableTitle } from "./Editable/EditableTitle"
 export { default as EditableHeading } from "./Editable/EditableHeading"
 export { default as EditableQuote } from "./Editable/EditableQuote"
 export { default as EditableTimelineEntry } from "./Editable/EditableTimelineEntry"

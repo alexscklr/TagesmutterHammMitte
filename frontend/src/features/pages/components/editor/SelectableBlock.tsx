@@ -8,6 +8,7 @@ import { useEditing } from "@/features/admin/context/hooks/useEditing";
 import { DeleteBlockButton } from "./DeleteBlockButton";
 import { BlockEditorModal } from "./BlockEditorModal";
 import {
+  EditableTitle,
   EditableParagraph,
   EditableHeading,
   EditableQuote,
@@ -22,6 +23,7 @@ import {
 } from "@/features/Editors";
 
 import {
+  type TitleBlock as TitleBlockType,
   type ImageryBlock as ImageryBlockType,
   type HeadingBlock as HeadingBlockType,
   type ListBlock as ListBlockType,
@@ -72,6 +74,15 @@ const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
     const blockId = activeBlock.id;
 
     switch (blockType) {
+      case PageBlocks.Title:
+        return (
+          <EditableBlockWrapper blockId={blockId}>
+            <EditableTitle
+              value={blockContent as TitleBlockType["content"]}
+              onChange={(content) => { setChangedBlock({ ...activeBlock, content } as PageBlock); }}
+            />
+          </EditableBlockWrapper>
+        );
       case PageBlocks.Paragraph:
         return (
           <EditableBlockWrapper blockId={blockId}>

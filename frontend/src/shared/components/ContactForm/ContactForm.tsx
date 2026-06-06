@@ -4,7 +4,7 @@ import styles from "./ContactForm.module.css";
 function ContactForm() {
   const [state, handleSubmit] = useForm(import.meta.env.VITE_FORMSPREE_CODE);
   if (state.succeeded) {
-    return <p>Danke für deine Nachricht!</p>;
+    return <p>Ich freue mich über Ihre Nachricht!</p>;
   }
   return (
     <form onSubmit={handleSubmit} className={styles.contactForm}>

@@ -7,6 +7,7 @@ import { List } from "@/shared/components/List/List";
 import type { PageBlock, TimelineEntry } from "@/features/pages/types";
 import { getCurrentTimelineEntry } from "@/shared/lib/getCurrentTimelineEntry";
 import { renderPageBlock } from "@/features/pages/components";
+import { PageSlugs } from "@/constants/slugs";
 import Portrait from "/Portrait.webp";
 
 
@@ -40,7 +41,7 @@ const Startseite = () => {
 
   return (
     <section className="page">
-      <h1>Maxi – Kids</h1>
+      <h1>MaxiKids</h1>
       <p style={{ color: "var(--color-accent2)", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Motto" aria-description="Das Motto der Tagesmutter">
         <span style={{ color: "var(--color-neutral-400)" }}>♫♪</span>
         <span style={{ color: "var(--color-accent2)", margin: "0 8px" }}>
@@ -54,6 +55,12 @@ const Startseite = () => {
           />
         </span>
         <span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span>
+      </p>
+      <p className={styles.availabilityHint} aria-label="Hinweis zu freien Plätzen">
+        <span>Ab August ist ein Platz frei</span>
+        <div className={styles.pageSectionLinks}>
+          <Link href="/freie-plaetze" isExternal={false} ariaLabel={"Freie Plätze"} ariaDescription={"Link zur Unterseite mit Informationen zu freien Betreuungsplätzen"}>Mehr erfahren</Link>
+        </div>
       </p>
 
       <section className="page-section" aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
@@ -72,9 +79,9 @@ const Startseite = () => {
             <h2 className={styles.portraitHeading}>Kerstin Sickler</h2>
             <div className={styles.portraitText}>
               <List listStyle="none" ordered={false} margin="left" width="full">
-                <li>Tagesmutter seit 2009</li>
-                <li>Gesundheitsmanagerin in der Kindertagespflege seit 2020,</li>
-                <li>Mutter von drei Söhnen</li>
+                <li>Tagesmutter seit 2009,</li>
+                <li>Gesundheitsmanagerin seit 2020,</li>
+                <li>Mutter von drei Kindern</li>
               </List>
             </div>
           </div>
@@ -109,7 +116,7 @@ const Startseite = () => {
               <li>Weißdornweg 14</li>
               <li>59063 Hamm</li>
               <li>Tel.: 02381/31366</li>
-              <li>E-Mail: <Link href="mailto:maxi-kids.hamm@web.de" isExternal={true} ariaLabel={"E-Mail an Kerstin Sickler"} ariaDescription={"Link zum Versenden einer E-Mail an Kerstin Sickler"}>maxi-kids.hamm@web.de</Link></li>
+              <li>E-Mail: <Link href="mailto:Maxikids-hamm@web.de" isExternal={true} ariaLabel={"E-Mail an Kerstin Sickler"} ariaDescription={"Link zum Versenden einer E-Mail an Kerstin Sickler"}>Maxikids-hamm@web.de</Link></li>
             </List>
             
             <GoogleLocation

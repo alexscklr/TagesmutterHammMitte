@@ -20,7 +20,7 @@ export const BLOCK_TYPE_LABELS: Record<PageBlockType, string> = {
 export function getDefaultContent(blockType: PageBlockType): unknown {
   switch (blockType) {
     case PageBlocks.Title:
-      return { title: [{ text: "Neuer Titel" }] };
+      return { title: "Neuer Titel" };
     case PageBlocks.Heading:
       return { heading: [{ text: "Neue Überschrift" }] };
     case PageBlocks.Paragraph:
