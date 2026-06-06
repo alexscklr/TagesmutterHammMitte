@@ -7,7 +7,6 @@ import { List } from "@/shared/components/List/List";
 import type { PageBlock, TimelineEntry } from "@/features/pages/types";
 import { getCurrentTimelineEntry } from "@/shared/lib/getCurrentTimelineEntry";
 import { renderPageBlock } from "@/features/pages/components";
-import { PageSlugs } from "@/constants/slugs";
 import Portrait from "/Portrait.webp";
 
 
@@ -56,12 +55,12 @@ const Startseite = () => {
         </span>
         <span style={{ color: "var(--color-neutral-400)" }}>♪♫♪</span>
       </p>
-      <p className={styles.availabilityHint} aria-label="Hinweis zu freien Plätzen">
+      <div className={styles.availabilityHint} aria-label="Hinweis zu freien Plätzen">
         <span>Ab August ist ein Platz frei</span>
         <div className={styles.pageSectionLinks}>
           <Link href="/freie-plaetze" isExternal={false} ariaLabel={"Freie Plätze"} ariaDescription={"Link zur Unterseite mit Informationen zu freien Betreuungsplätzen"}>Mehr erfahren</Link>
         </div>
-      </p>
+      </div>
 
       <section className="page-section" aria-label={"Personenvorstellung"} aria-description="Vorstellung der Tagesmutter Kerstin Sickler">
         <div className="page-sectionContent">
@@ -110,7 +109,7 @@ const Startseite = () => {
 
       <section className="page-section" aria-label={"Standort und Kontakt"} aria-description="Adresse und Kontaktinformationen der Tagesmutter">
         <div className="page-sectionContent">
-          <h2>Kontakt & Standort</h2>
+          <h2>Kontakt</h2>
           <div className={styles.location}>
             <List listStyle="none" ordered={false}>
               <li>Weißdornweg 14</li>

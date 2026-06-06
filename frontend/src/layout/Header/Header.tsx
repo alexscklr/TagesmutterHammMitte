@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useScrollDirection } from '@/shared/hooks/scrollHooks';
+import { useLocation } from 'react-router-dom';
 import styles from './Header.module.css';
 import { getHeaderBlocks } from './lib/getHeaderBlocks';
 import { LogoBlock } from './components/blocks/LogoBlock';
@@ -11,7 +12,8 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const Header = () => {
   const scrollDir = useScrollDirection();
-  const [active, setActive] = useState<boolean>(true);
+  const location = useLocation();
+  const [active, setActive] = useState<boolean>(typeof window !== 'undefined' && window.innerWidth > 768);
   const [headerBlocks, setHeaderBlocks] = useState<HeaderBlock[]>([]);
   const { user, logout } = useAuth();
   const loginPopoverId = "login-popover";
@@ -36,6 +38,13 @@ const Header = () => {
       window.removeEventListener("resize", onResize);
     };
   }, []);
+
+  // Close mobile header on route change
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setActive(false);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (scrollDir === 'down') {
