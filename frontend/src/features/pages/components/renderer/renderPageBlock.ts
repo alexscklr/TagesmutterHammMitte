@@ -11,6 +11,5 @@ export function renderPageBlock(block: PageBlock, isEditing: boolean = false): R
   const component = getBlockComponent(block);
   if (!component) return null;
 
-  // Clone component to attach key without adding an extra wrapper div
   return React.cloneElement(component, { key: block.id });
 }

@@ -4,9 +4,9 @@ import type { FooterBlock, FooterBlocks } from "..";
 
 
 export interface Link {
-    target_site_id?: string; // FK auf Seite
-    url?: string;            // Für externe Links
-    label?: RichTextContent;  // Optional, falls abweichender Text
+    target_site_id?: string;
+    url?: string;            
+    label?: RichTextContent;  
 }
 
-export type LinkBlock = Extract<FooterBlock, { type: typeof FooterBlocks.Link }>;
+export type LinkBlock = Extract<FooterBlock, { type: typeof FooterBlocks.Link }>

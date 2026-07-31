@@ -5,9 +5,7 @@ export interface UserProfile {
   role: string;
 }
 
-/**
- * Lädt die Rolle eines Users aus der profiles Tabelle
- */
+
 export async function fetchUserRole(userId: string): Promise<string | null> {
   const { data, error } = await supabase
     .from('profiles')

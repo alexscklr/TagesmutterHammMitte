@@ -348,7 +348,7 @@
   word-break: break-word;
 }
 
-/* Mobile Responsive */
+ 
 @media (max-width: 768px) {
   .container {
     padding: 1rem;

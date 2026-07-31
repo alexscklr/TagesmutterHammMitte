@@ -1,7 +1,6 @@
 import { type PageBlock, PageBlocks } from "../index";
 import { type Heading } from "./index"
 
-// Appearance options for Section blocks rendered at runtime
 export const SectionAppearance = {
   Card: "card",
   Flat: "flat",
@@ -12,7 +11,7 @@ export type SectionAppearance = typeof SectionAppearance[keyof typeof SectionApp
 export interface Section {
   heading: Heading;
   content: PageBlock[];
-  appearance?: SectionAppearance; // default = card
+  appearance?: SectionAppearance;
 }
 
 export type SectionBlock = Extract<PageBlock, {type: typeof PageBlocks.Section }>;

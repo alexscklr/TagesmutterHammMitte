@@ -1,13 +1,8 @@
 import { supabase } from '@/supabaseClient';
 
 export async function getImageUrl(path: string, bucketName: string, validity_s: number = 3600, isPublic: boolean = true): Promise<string> {
-  if (isPublic) {
-    // Öffentliche URLs sind synchron und benötigen keinen API-Aufruf
-    return getPublicImageUrl(path, bucketName);
-  }
-
-  // Für private Dateien erstellen wir einen signierten Link (async)
-  return getSignedImageUrl(path, bucketName, validity_s);
+  if (isPublic) {     return getPublicImageUrl(path, bucketName);
+  }   return getSignedImageUrl(path, bucketName, validity_s);
 }
 
 

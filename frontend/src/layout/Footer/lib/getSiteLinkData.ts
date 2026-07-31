@@ -6,10 +6,6 @@ export interface SiteLinkData {
   title: string;
 }
 
-/**
- * Holt Slug und Titel einer Seite anhand der target_site_id.
- * @param siteId Die ID der Zielseite
- */
 export async function getSiteLinkData(siteId: string): Promise<SiteLinkData | null> {
   const { data, error } = await supabase
     .from('pages')

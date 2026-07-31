@@ -123,24 +123,24 @@ textarea {
   transition: color 0.15s ease;
 }
 
-/* 1. Anzeige der bestehenden Auswahl */
+ 
 .starInput:checked ~ .starLabel {
   color: #f9c74f;
 }
 
-/* 2. Wenn die Gruppe gehovert wird: Alles auf grau setzen */
+ 
 .stars:hover .starLabel {
   color: #94a3b8;
 }
 
-/* 3. Den gehoverten Stern UND alle danach (im Code) gelb färben */
-/* Wir fügen .stars:hover davor hinzu, um die Priorität zu erhöhen */
+ 
+ 
 .stars:hover .starLabel:hover,
 .stars:hover .starLabel:hover ~ .starLabel {
   color: #f9c74f;
 }
 
-/* Responsive Tweaks */
+ 
 @media (max-width: 640px) {
     .page {
         padding: 1.25rem 0.75rem;

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { renderPageBlock } from "./renderPageBlock";
 import { usePageBlocks } from "../../hooks";
 import { useContext, useEffect, useCallback } from "react";
@@ -87,7 +87,6 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
 }) => {
   const { isEditing } = useEditMode();
 
-  // Select newly created blocks when notified
   useEffect(() => {
     const onSelect = (ev: Event) => {
       const ce = ev as CustomEvent<{ id: string; block?: PageBlock }>;
@@ -96,7 +95,6 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
       if (detail.block) {
         setSelectedBlock(detail.block);
       } else {
-        // Fallback: find by id when blocks updated
         const match = blocks.find(b => b.id === detail.id);
         if (match) setSelectedBlock(match);
       }
@@ -122,7 +120,6 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
         if (error) {
           console.error("Insert error", error);
         }
-        // trigger refetch
         window.dispatchEvent(new Event("pageblocks:updated"));
       } catch (err) {
         console.error("Insert handler crashed", err);
@@ -133,7 +130,6 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
   }, [pageId]);
 
   const handleBlockAdded = () => {
-    // Trigger refetch durch das pageblocks:updated Event ohne Payload
     window.dispatchEvent(new Event("pageblocks:updated"));
   };
 
@@ -150,19 +146,15 @@ const PageRendererContent: React.FC<PageRendererContentProps> = ({
     );
   };
 
-  // Berechne die neue Reihenfolge (mit Zwischenräumen für neue Blöcke)
   const content = [];
 
-  // Vor dem ersten Block
   if (pageId && isEditing) {
     content.push(renderAddButton(0, null));
   }
 
-  // Blöcke mit AddBlockButton dazwischen
   blocks.forEach((block) => {
     content.push(renderPageBlock(block, isEditing));
 
-    // AddBlockButton nach jedem Block
     if (pageId && isEditing) {
       content.push(renderAddButton(block.order + 1, null));
     }

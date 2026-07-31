@@ -50,10 +50,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
   const [saving, setSaving] = useState(false);
   const [blurStrength, setBlurStrength] = useState(14);
   const [isWebP, setIsWebP] = useState(false);
-  const [isSVG, setIsSVG] = useState(false);
-
-  // Load image when url changes
-  useEffect(() => {
+  const [isSVG, setIsSVG] = useState(false);   useEffect(() => {
     if (!open || !imageUrl) {
       setImg(null);
       setCrop(null);
@@ -61,18 +58,13 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
       setIsWebP(false);
       setIsSVG(false);
       return;
-    }
-    
-    // Check if image is WebP or SVG based on Content-Type header
-    const checkImageFormat = async () => {
+    }     const checkImageFormat = async () => {
       try {
         const response = await fetch(imageUrl, { method: "HEAD" });
         const contentType = response.headers.get("content-type")?.toLowerCase() || "";
         setIsWebP(contentType.includes("webp"));
         setIsSVG(contentType.includes("svg"));
-      } catch {
-        // Fallback: check filename if fetch fails
-        const isWebPFallback = imageName?.toLowerCase().endsWith(".webp") || imageUrl.toLowerCase().includes(".webp");
+      } catch {         const isWebPFallback = imageName?.toLowerCase().endsWith(".webp") || imageUrl.toLowerCase().includes(".webp");
         const isSVGFallback = imageName?.toLowerCase().endsWith(".svg") || imageUrl.toLowerCase().includes(".svg");
         setIsWebP(isWebPFallback);
         setIsSVG(isSVGFallback);
@@ -99,23 +91,13 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
   const bounds = useMemo<Rect | null>(() => {
     if (!img) return null;
     return { x: 0, y: 0, width: img.naturalWidth, height: img.naturalHeight };
-  }, [img]);
-
-  // Draw preview
-  useEffect(() => {
+  }, [img]);   useEffect(() => {
     if (!img || !canvasRef.current || !crop || !bounds) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
     canvasRef.current.width = displaySize.w;
     canvasRef.current.height = displaySize.h;
-    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-    // Draw image scaled
-    ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, displaySize.w, displaySize.h);
-
-    // Overlays
-    // Crop outline
-    const toDisplay = (r: Rect) => ({
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);     ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, displaySize.w, displaySize.h);      const toDisplay = (r: Rect) => ({
       x: r.x * scale,
       y: r.y * scale,
       width: r.width * scale,
@@ -126,15 +108,10 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     ctx.lineWidth = 2;
     const cropD = toDisplay(crop);
     ctx.strokeRect(cropD.x, cropD.y, cropD.width, cropD.height);
-    ctx.fillStyle = "rgba(0,0,0,0.35)";
-    // darken outside crop
-    ctx.beginPath();
+    ctx.fillStyle = "rgba(0,0,0,0.35)";     ctx.beginPath();
     ctx.rect(0, 0, displaySize.w, displaySize.h);
     ctx.rect(cropD.x, cropD.y, cropD.width, cropD.height);
-    ctx.fill("evenodd");
-
-    // Blurs (preview) by redrawing region with blur filter
-    blurs.forEach(b => {
+    ctx.fill("evenodd");     blurs.forEach(b => {
       const bd = toDisplay(b);
       ctx.save();
       ctx.filter = `blur(${blurStrength}px)`;
@@ -144,10 +121,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
       ctx.lineWidth = 2;
       ctx.strokeRect(bd.x, bd.y, bd.width, bd.height);
       ctx.restore();
-    });
-
-    // Draft rectangle while dragging
-    if (draft) {
+    });     if (draft) {
       const dd = toDisplay(draft);
       ctx.strokeStyle = mode === "crop" ? "#00e676" : "#e65100";
       ctx.lineWidth = 2;
@@ -160,29 +134,16 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
   ): { x: number; y: number } | null => {
     const canvas = e.currentTarget;
-    const rect = canvas.getBoundingClientRect();
-    
-    // Get coordinates from mouse or touch event
-    let clientX: number;
+    const rect = canvas.getBoundingClientRect();     let clientX: number;
     let clientY: number;
     
-    if ('touches' in e) {
-      // Touch event
-      if (e.touches.length === 0) return null;
+    if ('touches' in e) {       if (e.touches.length === 0) return null;
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
-    } else {
-      // Mouse event
-      clientX = e.clientX;
+    } else {       clientX = e.clientX;
       clientY = e.clientY;
-    }
-    
-    // Calculate position relative to canvas display size
-    const mouseX = clientX - rect.left;
-    const mouseY = clientY - rect.top;
-    
-    // Convert to image natural coordinates using display size ratio
-    const scaleX = canvas.width / rect.width;
+    }     const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
     const px = mouseX * scaleX / scale;
@@ -252,13 +213,7 @@ export const ImageEditorModal: React.FC<Props> = ({ open, imageUrl, imageName, o
     out.width = outW;
     out.height = outH;
     const ctx = out.getContext("2d");
-    if (!ctx) return null;
-
-    // draw base crop
-    ctx.drawImage(img, crop.x, crop.y, crop.width, crop.height, 0, 0, outW, outH);
-
-    // apply blurs
-    for (const b of blurs) {
+    if (!ctx) return null;     ctx.drawImage(img, crop.x, crop.y, crop.width, crop.height, 0, 0, outW, outH);     for (const b of blurs) {
       const overlapX = Math.max(0, Math.min(crop.x + crop.width, b.x + b.width) - Math.max(crop.x, b.x));
       const overlapY = Math.max(0, Math.min(crop.y + crop.height, b.y + b.height) - Math.max(crop.y, b.y));
       if (overlapX <= 0 || overlapY <= 0) continue;

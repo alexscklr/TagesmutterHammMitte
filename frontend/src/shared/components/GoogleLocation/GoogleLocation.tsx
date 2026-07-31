@@ -24,12 +24,8 @@ export const GoogleLocation: React.FC<GoogleLocationProps> = ({
 }) => {
     let src: string;
 
-    if (embedUrl) {
-        // Direkte Embed-URL (wie deine)
-        src = embedUrl;
-    } else if (address && apiKey) {
-        // API-basierte URL
-        const encodedAddress = encodeURIComponent(address);
+    if (embedUrl) {         src = embedUrl;
+    } else if (address && apiKey) {         const encodedAddress = encodeURIComponent(address);
         src = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodedAddress}`;
     } else {
         console.error("GoogleLocation: Entweder embedUrl oder (address + apiKey) sind erforderlich");

@@ -25,37 +25,19 @@ export const ReviewImageGenerator: React.FC<ReviewImageGeneratorProps> = ({
         if (!canvas) return;
 
         const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        // Canvas Dimensionen
-        const width = 800;
+        if (!ctx) return;         const width = 800;
         const height = 1000;
         canvas.width = width;
-        canvas.height = height;
-
-        // Hintergrund
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, width, height);
-
-        // Rahmen
-        ctx.strokeStyle = "#1aa374";
+        canvas.height = height;         ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, width, height);         ctx.strokeStyle = "#1aa374";
         ctx.lineWidth = 4;
-        ctx.strokeRect(10, 10, width - 20, height - 20);
-
-        // Logo/Text oben
-        ctx.fillStyle = "#1aa374";
+        ctx.strokeRect(10, 10, width - 20, height - 20);         ctx.fillStyle = "#1aa374";
         ctx.font = "bold 36px Nunito";
         ctx.textAlign = "center";
         ctx.fillText("Kindertagespflege", width / 2, 100);
-        ctx.fillText("Maxi-Kids", width / 2, 150);
-
-        // Aufforderungstext
-        ctx.fillStyle = "#1aa374";
+        ctx.fillText("Maxi-Kids", width / 2, 150);         ctx.fillStyle = "#1aa374";
         ctx.font = "28px Nunito";
-        ctx.fillText("Bewerten Sie mich gerne!", width / 2, 250);
-
-        // QR Code generieren
-        try {
+        ctx.fillText("Bewerten Sie mich gerne!", width / 2, 250);         try {
             const qrCodeDataUrl = await QRCode.toDataURL(reviewLink, {
                 width: 300,
                 margin: 2,
@@ -66,19 +48,11 @@ export const ReviewImageGenerator: React.FC<ReviewImageGeneratorProps> = ({
             });
 
             const qrImage = new Image();
-            qrImage.onload = () => {
-                // QR Code zentriert zeichnen
-                const qrX = (width - 300) / 2;
+            qrImage.onload = () => {                 const qrX = (width - 300) / 2;
                 const qrY = 320;
-                ctx.drawImage(qrImage, qrX, qrY, 300, 300);
-
-                // Link unterhalb des QR Codes
-                ctx.fillStyle = "#475569";
+                ctx.drawImage(qrImage, qrX, qrY, 300, 300);                 ctx.fillStyle = "#475569";
                 ctx.font = "16px monospace";
-                ctx.textAlign = "center";
-                
-                // Link in mehrere Zeilen aufteilen, wenn zu lang
-                const maxWidth = width - 100;
+                ctx.textAlign = "center";                 const maxWidth = width - 100;
                 const words = reviewLink.split("/");
                 let line = "";
                 let y = 670;
@@ -95,10 +69,7 @@ export const ReviewImageGenerator: React.FC<ReviewImageGeneratorProps> = ({
                         line = testLine;
                     }
                 }
-                ctx.fillText(line, width / 2, y);
-
-                // Anleitung am unteren Rand
-                ctx.fillStyle = "#64748b";
+                ctx.fillText(line, width / 2, y);                 ctx.fillStyle = "#64748b";
                 ctx.font = "18px Arial";
                 ctx.fillText("Scannen Sie den QR-Code oder besuchen Sie den Link", width / 2, 850);
                 ctx.fillText("um Ihre Bewertung abzugeben", width / 2, 880);

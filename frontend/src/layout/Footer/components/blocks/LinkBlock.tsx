@@ -16,7 +16,6 @@ export function LinkBlock({ block }: LinkBlockProps) {
         }
     }, [block.target_site_id]);
 
-    // Interner Link über target_site_id
     if (block.target_site_id && siteData) {
         return (
             
@@ -24,7 +23,6 @@ export function LinkBlock({ block }: LinkBlockProps) {
         );
     }
 
-    // Externer Link oder individueller Label
     if (block.content.url) {
         return (
             <Link href={block.content.url} isExternal={true}> {block.content.label ? renderRichText(block.content.label) : block.content.url}</Link>

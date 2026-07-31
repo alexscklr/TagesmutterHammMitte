@@ -1,4 +1,3 @@
-// render/renderPageBlock.tsx
 import type { JSX, ReactNode } from "react";
 import { FooterBlocks, type FooterBlock } from "../types/index";
 import {

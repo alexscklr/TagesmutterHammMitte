@@ -22,7 +22,6 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({popoverTarget}) => {
 
   const { user } = useContext(AuthContext);
 
-  // Wenn User da ist, Rolle aus profiles abrufen
   useEffect(() => {
     const fetchRole = async () => {
       if (!user) {

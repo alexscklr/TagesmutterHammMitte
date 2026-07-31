@@ -29,7 +29,6 @@ export const DeleteBlockButton: React.FC<DeleteBlockButtonProps> = ({ blockId, o
       } else {
         console.log('Block gelöscht und Reihenfolge angepasst.');
         onBlockDeleted?.();
-        // Deselect any selected block to avoid referencing a deleted one
         setSelectedBlock(null);
         window.dispatchEvent(new Event("pageblocks:updated"));
       }

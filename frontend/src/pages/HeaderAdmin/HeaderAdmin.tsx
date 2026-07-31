@@ -54,8 +54,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const startCreate = (blockType: HeaderBlockType, parentBlockId?: string) => {
-    if (readOnly) return; // auditors: no create
-    const defaults: Record<string, any> = {
+    if (readOnly) return;     const defaults: Record<string, any> = {
       [HeaderBlocks.Logo]: { logo: { url: "", alt: "" } },
       [HeaderBlocks.Link]: { target_site_id: "", url: "", label: [] },
       [HeaderBlocks.Dropdown]: { title: [] },
@@ -81,8 +80,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const saveBlock = async () => {
-    if (readOnly) return; // auditors: no save
-    const isNew = editingId?.startsWith("new-");
+    if (readOnly) return;     const isNew = editingId?.startsWith("new-");
     try {
       const payload = {
         type: formData.type,
@@ -102,8 +100,7 @@ const HeaderAdmin: React.FC = () => {
   };
 
   const deleteBlock = async (id: string) => {
-    if (readOnly) return; // auditors: no delete
-    if (!confirm("Möchten Sie diesen Block wirklich löschen?")) return;
+    if (readOnly) return;     if (!confirm("Möchten Sie diesen Block wirklich löschen?")) return;
 
     try {
       await deleteHeaderBlock(id);
@@ -211,7 +208,7 @@ const HeaderAdmin: React.FC = () => {
         />
       ) : (
         <>
-          {/* Logo Section */}
+          { }
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>Logo</h2>
@@ -233,7 +230,7 @@ const HeaderAdmin: React.FC = () => {
             )}
           </section>
 
-          {/* Navigation Section */}
+          { }
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>Navigation</h2>

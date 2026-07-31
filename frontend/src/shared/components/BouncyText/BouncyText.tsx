@@ -25,17 +25,12 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
 
   const animate = (time: number) => {
     if (!startTimeRef.current) startTimeRef.current = time;
-    const totalElapsed = time - startTimeRef.current;
-    
-    // Calculate global cycle time
-    const cycleTime = totalElapsed % cycleDuration;
+    const totalElapsed = time - startTimeRef.current;     const cycleTime = totalElapsed % cycleDuration;
     
     if (containerRef.current) {
         const spans = containerRef.current.children;
         for(let i=0; i < spans.length; i++) {
-            const span = spans[i] as HTMLElement;
-            // Calculate y for this specific character
-            const charTime = cycleTime - i * characterDelay;
+            const span = spans[i] as HTMLElement;             const charTime = cycleTime - i * characterDelay;
             let y = 0;
             
             if (charTime >= 0 && charTime <= duration) {
@@ -66,9 +61,7 @@ export const BouncyText: React.FC<BouncyTextProps> = ({
             key={index}
             style={{
               display: "inline-block",
-              transform: "translateY(0px)", // Initialize
-              willChange: "transform" // Hint to browser
-            }}
+              transform: "translateY(0px)",               willChange: "transform"             }}
           >
             {char === " " ? "\u00A0" : char}
           </span>

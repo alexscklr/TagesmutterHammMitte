@@ -13,7 +13,6 @@ export function SplitContentBlock({ block }: SplitContentBlockProps) {
   const children = block.content.content ?? [];
   const firstItemWidth = block.content.firstItemWidth ?? 50;
 
-  // In edit mode, we show the structure with add buttons
   if (isEditing) {
     const firstChild = (
       <div>
@@ -44,7 +43,6 @@ export function SplitContentBlock({ block }: SplitContentBlockProps) {
     );
   }
 
-  // In view mode, use the shared SplitContent component
   const firstChild = children[0] ? renderPageBlock(children[0]) : <div />;
   const secondChild = children[1] ? renderPageBlock(children[1]) : <div />;
   

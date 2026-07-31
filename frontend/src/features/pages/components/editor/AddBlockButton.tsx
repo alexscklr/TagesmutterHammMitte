@@ -36,7 +36,6 @@ export const AddBlockButton: React.FC<AddBlockButtonProps> = ({ pageId, order, p
           onBlockAdded?.();
         }
       } else {
-        // Fall-back: Event-basiert, PageRenderer führt Insert mit pageId aus
         window.dispatchEvent(
           new CustomEvent("pageblocks:insert", {
             detail: { type: blockType, order, parent_block_id: parentBlockId ?? null },

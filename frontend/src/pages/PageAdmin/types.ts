@@ -13,8 +13,7 @@ export interface ColorSpot {
   y: number;
   color: string;
   opacity: number;
-  size: number; // percentage of viewport
-}
+  size: number; }
 
 export interface PageData {
   id: string;

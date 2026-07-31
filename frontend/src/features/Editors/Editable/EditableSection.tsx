@@ -29,7 +29,6 @@ const EditableSection: React.FC<EditableSectionProps> = ({ value, onChange }) =>
           <option value={SectionAppearance.Flat}>Flach</option>
         </select>
       </div>
-      {/* Managing child content blocks is handled by the existing block editor UI */}
       <div style={{ marginTop: 8 }}>
         <SaveBlockButton />
       </div>

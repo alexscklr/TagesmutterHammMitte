@@ -13,9 +13,7 @@ const CustomDropdown = ({ title, options, direction = 'right' }: DropdownProps) 
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const switchSelect = () => {
-        setIsOpen(prev => !prev);
-        // Blur button after click to prevent focus from jumping to first link
-        if (buttonRef.current) {
+        setIsOpen(prev => !prev);         if (buttonRef.current) {
             buttonRef.current.blur();
         }
     };
@@ -34,16 +32,12 @@ const CustomDropdown = ({ title, options, direction = 'right' }: DropdownProps) 
     };
 
     useEffect(() => {
-        const handleClick = (e: MouseEvent) => {
-            // Schließe Dropdown, wenn außerhalb dieses spezifischen Dropdowns geklickt wird
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        const handleClick = (e: MouseEvent) => {             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
                 setIsOpen(false);
             }
         };
 
-        const handleGlobalKeyDown = (e: KeyboardEvent) => {
-            // Schließe Dropdown bei Escape
-            if (e.key === 'Escape' && isOpen) {
+        const handleGlobalKeyDown = (e: KeyboardEvent) => {             if (e.key === 'Escape' && isOpen) {
                 setIsOpen(false);
                 if (buttonRef.current) {
                     buttonRef.current.focus();

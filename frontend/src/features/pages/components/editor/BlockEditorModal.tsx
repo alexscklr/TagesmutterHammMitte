@@ -11,9 +11,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-// Lightweight modal used to edit blocks without shrinking the inline layout.
 export const BlockEditorModal: React.FC<Props> = ({ open, title, onClose, actions, children }) => {
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {

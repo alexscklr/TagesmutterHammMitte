@@ -58,24 +58,18 @@ export const Timeline = ({ data, children }: TimelineProps) => {
     if (!containerRef.current) return;
     
     const options = {
-      root: null, // viewport
-      rootMargin: '-45% 0px -45% 0px', // Trigger when element is near the middle (45-55% range)
-      threshold: 0
+      root: null,       rootMargin: '-45% 0px -45% 0px',       threshold: 0
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const index = Number((entry.target as HTMLElement).dataset.index);
-          // Only update if changed to avoid unnecessary re-renders
-          setActiveIndex((prev) => (prev !== index ? index : prev));
+          const index = Number((entry.target as HTMLElement).dataset.index);           setActiveIndex((prev) => (prev !== index ? index : prev));
         }
       });
     }, options);
 
-    const childElements = Array.from(containerRef.current.children);
-    // Observe all timelineItems (excluding the line div at the end if it's a child)
-    childElements.forEach((child, index) => {
+    const childElements = Array.from(containerRef.current.children);     childElements.forEach((child, index) => {
         if (child.classList.contains(styles.timelineItem)) {
             (child as HTMLElement).dataset.index = index.toString();
             observer.observe(child);
@@ -107,7 +101,7 @@ export const Timeline = ({ data, children }: TimelineProps) => {
 
   return (
     <div className={styles.timelineContainer} ref={containerRef}>
-      {/* Render Data if provided */}
+      { }
       {data && data.map((item, index) => (
         <div
           key={index}
@@ -136,7 +130,7 @@ export const Timeline = ({ data, children }: TimelineProps) => {
         </div>
       ))}
       
-      {/* Render Children if provided (Edit Mode usually) */}
+      { }
       {!data && children && React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
              const isActive = index === activeIndex;

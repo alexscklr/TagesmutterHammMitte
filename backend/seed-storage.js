@@ -1,8 +1,4 @@
-/* eslint-disable no-undef */
-// backend/seed-storage.js
-// Usage: node seed-storage.js <bucket-name>
-// Ensure .env has SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
-// Also npm install @supabase/supabase-js dotenv
+
 
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
@@ -11,7 +7,6 @@ require('dotenv').config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-// Get bucket name from command line args or environment variable, default to 'images'
 const bucketName = process.argv[2] || process.env.BUCKET_NAME || 'images'; 
 const seedDir = path.join(__dirname, 'supabase', 'storage-seed');
 
@@ -26,7 +21,6 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function seedStorage() {
   console.log(`Starting storage seed for bucket: '${bucketName}'...`);
   
-  // check if bucket exists, create if not
   const { data: buckets, error: listError } = await supabase.storage.listBuckets();
   if (listError) {
     console.error('Error listing buckets:', listError.message);
@@ -37,7 +31,7 @@ async function seedStorage() {
   if (!bucketExists) {
     console.log(`Bucket '${bucketName}' does not exist. Creating...`);
     const { data, error: createError } = await supabase.storage.createBucket(bucketName, {
-        public: true // Assuming public bucket for images
+        public: true
     });
     if (createError) {
         console.error(`Error creating bucket '${bucketName}':`, createError.message);
@@ -55,9 +49,7 @@ async function seedStorage() {
 
   const files = fs.readdirSync(seedDir);
   
-  for (const file of files) {
-    // skip hidden files/directories
-    if (file.startsWith('.')) continue;
+  for (const file of files) {     if (file.startsWith('.')) continue;
 
     const filePath = path.join(seedDir, file);
     const stat = fs.statSync(filePath);

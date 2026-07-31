@@ -22,7 +22,6 @@ const Footer = () => {
         {topBlocks.map(renderFooterBlock)}
       </div>
 
-      {/* Copyright muss direktes Kind von .footer sein */}
       {copyright && renderFooterBlock(copyright)}
     </footer>
   );

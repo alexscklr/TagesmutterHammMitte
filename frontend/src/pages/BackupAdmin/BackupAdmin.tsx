@@ -2,10 +2,7 @@ import React, { useState, useRef } from 'react';
 import { renderPageBlock } from '@/features/pages/components/renderer/renderPageBlock';
 import styles from './BackupAdmin.module.css';
 import { supabase } from '@/supabaseClient';
-import { FaDownload, FaUpload, FaSpinner, FaCheck } from 'react-icons/fa';
-
-// Constants
-const TABLES = [
+import { FaDownload, FaUpload, FaSpinner, FaCheck } from 'react-icons/fa'; const TABLES = [
   'pages', 
   'page_blocks',
   'header_blocks', 
@@ -13,16 +10,11 @@ const TABLES = [
   'reviews', 
   'review_tokens'
 ];
-const STORAGE_BUCKETS = ['public_images'];
-
-// Types
-type ChangeType = 'NEW' | 'DELETED' | 'MODIFIED' | 'UNCHANGED';
+const STORAGE_BUCKETS = ['public_images']; type ChangeType = 'NEW' | 'DELETED' | 'MODIFIED' | 'UNCHANGED';
 
 interface DiffItem {
-  id: string; // ID for DB rows, path for Storage
-  type: ChangeType;
-  collection: string; // Table name or Bucket name
-  isStorage: boolean;
+  id: string;   type: ChangeType;
+  collection: string;   isStorage: boolean;
   oldData: any;
   newData: any;
   selected: boolean;
@@ -33,10 +25,7 @@ const BackupAdmin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [diffs, setDiffs] = useState<DiffItem[]>([]);
     const [previewMode, setPreviewMode] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    // --- HELPER FUNCTIONS ---
-
+    const fileInputRef = useRef<HTMLInputElement>(null); 
     const blobToBase64 = (blob: Blob): Promise<string> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -80,10 +69,7 @@ const BackupAdmin = () => {
         else offset += LIMIT;
       }
       return results;
-    };
-
-    // --- ACTIONS ---
-
+    }; 
     const handleBackup = async () => {
         try {
             setIsLoading(true);
@@ -161,10 +147,7 @@ const BackupAdmin = () => {
                 throw new Error('Invalid backup file format');
             }
 
-            const calculatedDiffs: DiffItem[] = [];
-
-            // 1. Compare Tables (ignore system fields)
-            const clean = (obj: any) => {
+            const calculatedDiffs: DiffItem[] = [];             const clean = (obj: any) => {
                 if (!obj) return obj;
                 const { created_at, updated_at, inserted_at, modified_at, deleted_at, ...rest } = obj;
                 return rest;
@@ -175,9 +158,7 @@ const BackupAdmin = () => {
                 if (error) throw error;
                 const backupRows = backupData.tables[table] || [];
                 const currentMap = new Map((currentRows || []).map((r: any) => [r.id, r]));
-                const backupMap = new Map(backupRows.map((r: any) => [r.id, r]));
-                // NEW & MODIFIED
-                for (const backupRow of backupRows) {
+                const backupMap = new Map(backupRows.map((r: any) => [r.id, r]));                 for (const backupRow of backupRows) {
                     const currentRow = currentMap.get(backupRow.id);
                     if (!currentRow) {
                         calculatedDiffs.push({
@@ -202,9 +183,7 @@ const BackupAdmin = () => {
                             });
                         }
                     }
-                }
-                // DELETED
-                for (const currentRow of (currentRows || [])) {
+                }                 for (const currentRow of (currentRows || [])) {
                     if (!backupMap.has((currentRow as any).id)) {
                         calculatedDiffs.push({
                             id: (currentRow as any).id,
@@ -217,11 +196,7 @@ const BackupAdmin = () => {
                         });
                     }
                 }
-            }
-
-
-            // 2. Compare Storage (optimiert)
-            const getOriginalSize = (base64: string) => {
+            }             const getOriginalSize = (base64: string) => {
                 const base64String = base64.split(',')[1] || base64;
                 return Math.floor((base64String.length * 3) / 4) - (base64String.endsWith('==') ? 2 : base64String.endsWith('=') ? 1 : 0);
             };
@@ -244,19 +219,11 @@ const BackupAdmin = () => {
                             newData: backupFile,
                             selected: true
                         });
-                    } else {
-                        // 1. ETag/Hash
-                        const backupEtag = backupFile.etag || backupFile.hash || backupFile.md5Hash;
+                    } else {                         const backupEtag = backupFile.etag || backupFile.hash || backupFile.md5Hash;
                         const currentEtag = currentFile.metadata?.etag || currentFile.metadata?.hash || currentFile.metadata?.md5Hash;
-                        if (backupEtag && currentEtag && backupEtag === currentEtag) continue;
-                        // 2. updated_at
-                        if (backupFile.updated_at && currentFile.updated_at && backupFile.updated_at === currentFile.updated_at) continue;
-                        // 3. Größe
-                        const backupSize = getOriginalSize(backupFile.data);
+                        if (backupEtag && currentEtag && backupEtag === currentEtag) continue;                         if (backupFile.updated_at && currentFile.updated_at && backupFile.updated_at === currentFile.updated_at) continue;                         const backupSize = getOriginalSize(backupFile.data);
                         const currentSize = currentFile.metadata?.size;
-                        if (backupSize === currentSize) {
-                            // 4. Optional: Base64-Vergleich (nur wenn Größe gleich, aber ETag/updated_at unterschiedlich)
-                            setStatus(`Vergleiche Bildinhalt: ${bucket}/${backupFile.name}`);
+                        if (backupSize === currentSize) {                             setStatus(`Vergleiche Bildinhalt: ${bucket}/${backupFile.name}`);
                             const { data: blob, error } = await supabase.storage.from(bucket).download(backupFile.name);
                             if (error || !blob) {
                                 calculatedDiffs.push({
@@ -281,9 +248,7 @@ const BackupAdmin = () => {
                                     newData: { ...backupFile, size: backupSize },
                                     selected: true
                                 });
-                            }
-                            // else: identical
-                        } else {
+                            }                         } else {
                             calculatedDiffs.push({
                                 id: backupFile.name,
                                 type: 'MODIFIED',
@@ -295,9 +260,7 @@ const BackupAdmin = () => {
                             });
                         }
                     }
-                }
-                // DELETED
-                for (const currentFile of currentFiles || []) {
+                }                 for (const currentFile of currentFiles || []) {
                     if (!backupMap.has(currentFile.name)) {
                         calculatedDiffs.push({
                             id: currentFile.name,
@@ -339,26 +302,8 @@ const BackupAdmin = () => {
         setStatus("Applying changes...");
         
         try {
-            const selectedDiffs = diffs.filter(d => d.selected);
-
-            // Group by operation
-            // Deletes must happen first (for FK constraints? actually maybe reverse order for deletes)
-            // Inserts last.
-            // Updates middle.
-            
-            // To be safe and respect constraints, we probably should disable constraints or be very smart.
-            // But we are working table by table in order or reverse order.
-            
-            // Strategy:
-            // 1. DELETEs (Reverse Table Order)
-            // 2. UPSERTs (Normal Table Order) (Covers NEW and MODIFIED)
-
-            // Let's organize diffs by collection and type
-            const deletes = selectedDiffs.filter(d => d.type === 'DELETED');
-            const upserts = selectedDiffs.filter(d => d.type === 'NEW' || d.type === 'MODIFIED');
-
-            // 1. Deletes - Storage
-            const storageDeletes = deletes.filter(d => d.isStorage);
+            const selectedDiffs = diffs.filter(d => d.selected);                      const deletes = selectedDiffs.filter(d => d.type === 'DELETED');
+            const upserts = selectedDiffs.filter(d => d.type === 'NEW' || d.type === 'MODIFIED');             const storageDeletes = deletes.filter(d => d.isStorage);
             const buckets = [...new Set(storageDeletes.map(d => d.collection))];
             for (const bucket of buckets) {
                 const files = storageDeletes.filter(d => d.collection === bucket).map(d => d.id);
@@ -367,39 +312,26 @@ const BackupAdmin = () => {
                      const { error } = await supabase.storage.from(bucket).remove(files);
                      if (error) console.error("Error removing files", error);
                 }
-            }
-
-            // 2. Deletes - Tables (Reverse Order)
-            const reverseTables = [...TABLES].reverse();
+            }             const reverseTables = [...TABLES].reverse();
             for (const table of reverseTables) {
                 const tableDeletes = deletes.filter(d => d.collection === table && !d.isStorage);
                 if (tableDeletes.length) {
                     setStatus(`Deleting rows from ${table}...`);
-                    const ids = tableDeletes.map(d => d.id);
-                    // Batch delete
-                    const chunkSize = 100;
+                    const ids = tableDeletes.map(d => d.id);                     const chunkSize = 100;
                     for (let i = 0; i < ids.length; i += chunkSize) {
                         const batch = ids.slice(i, i + chunkSize);
                         const { error } = await supabase.from(table).delete().in('id', batch);
                         if (error) throw error;
                     }
                 }
-            }
-
-            // 3. Upserts - Tables (Normal Order)
-            for (const table of TABLES) {
+            }             for (const table of TABLES) {
                 const tableUpserts = upserts.filter(d => d.collection === table && !d.isStorage);
                 if (tableUpserts.length) {
                      setStatus(`Updating/Inserting rows in ${table}...`);
-                     const rows = tableUpserts.map(d => d.newData);
-                     // Batch upsert
-                     const { error } = await supabase.from(table).upsert(rows);
+                     const rows = tableUpserts.map(d => d.newData);                      const { error } = await supabase.from(table).upsert(rows);
                      if (error) throw error;
                 }
-            }
-
-            // 4. Upserts - Storage
-            const storageUpserts = upserts.filter(d => d.isStorage);
+            }             const storageUpserts = upserts.filter(d => d.isStorage);
             for (const update of storageUpserts) {
                 setStatus(`Uploading ${update.collection}/${update.id}...`);
                 const blob = await base64ToBlob(update.newData.data);
@@ -420,20 +352,12 @@ const BackupAdmin = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    // --- RENDER ---
-
-    const renderDiffList = () => {
-        // Group by collection for display
-        const grouped = diffs.reduce((acc, curr) => {
+    }; 
+    const renderDiffList = () => {         const grouped = diffs.reduce((acc, curr) => {
             if (!acc[curr.collection]) acc[curr.collection] = [];
             acc[curr.collection].push(curr);
             return acc;
-        }, {} as Record<string, DiffItem[]>);
-
-        // Übersetzungen für Status
-        const statusLabel = (type: ChangeType) => {
+        }, {} as Record<string, DiffItem[]>);         const statusLabel = (type: ChangeType) => {
             switch (type) {
                 case 'NEW': return 'Neu aus Backup';
                 case 'DELETED': return 'Entfernt (im Backup nicht vorhanden)';

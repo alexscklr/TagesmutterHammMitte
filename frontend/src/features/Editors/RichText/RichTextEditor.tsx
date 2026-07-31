@@ -82,7 +82,6 @@ const adjustRangesForTextChange = <T extends RichTextRange>(ranges: T[] | undefi
   if (!ranges || ranges.length === 0) return ranges;
   const delta = changeEndNew - changeEndOld;
   const adjusted = ranges.map((r) => {
-    // Preserve zero-length markers (e.g., inline Age insertions)
     if (r.start === r.end) {
       if (r.start >= changeEndOld) return { ...r, start: r.start + delta, end: r.end + delta } as T;
       if (r.start > changeStart && r.start < changeEndOld) return { ...r, start: changeStart, end: changeStart } as T;
@@ -122,7 +121,6 @@ const renderHighlights = (doc: RichTextDocument) => {
 
     const style: React.CSSProperties = {};
     
-    // Base Check for overlapping styles
     if (doc.bold?.some((r) => r.start <= start && r.end >= end)) style.fontWeight = "bold";
     if (doc.italic?.some((r) => r.start <= start && r.end >= end)) style.fontStyle = "italic";
     if (doc.underline?.some((r) => r.start <= start && r.end >= end)) style.textDecoration = (style.textDecoration ? style.textDecoration + " " : "") + "underline";
@@ -145,7 +143,6 @@ const renderHighlights = (doc: RichTextDocument) => {
     );
   }
 
-  // Handle trailing newline for visual consistency
   if (text.endsWith("\n")) {
     elements.push(<br key="trailing-br" />);
   }
@@ -178,7 +175,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
   const [fnFrequency, setFnFrequency] = useState("");
 
   useEffect(() => {
-    skipNotifyRef.current = true; // avoid firing onChange when we sync from props
+    skipNotifyRef.current = true;
     setDoc(normalizeContent(value));
   }, [value]);
 

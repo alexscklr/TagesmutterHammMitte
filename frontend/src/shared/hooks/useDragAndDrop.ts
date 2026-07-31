@@ -51,9 +51,7 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
             },
             onDragEnd: () => setDraggingId(null),
             onPointerDown: (e: React.PointerEvent) => {
-                if (disabled) return;
-                // Only handle touch/pen; mouse stays native drag/drop
-                if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
+                if (disabled) return;                 if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
                 if (e.button !== 0) return;
                 e.preventDefault();
                 e.stopPropagation();
@@ -62,11 +60,8 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
                 pointerParentId.current = parentId;
                 setDraggingId(id);
 
-                const handleEl = e.currentTarget as HTMLElement | null;
-
-                // Capture to keep getting events if the pointer leaves the handle
-                if (handleEl?.setPointerCapture) {
-                    try { handleEl.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+                const handleEl = e.currentTarget as HTMLElement | null;                 if (handleEl?.setPointerCapture) {
+                    try { handleEl.setPointerCapture(e.pointerId); } catch (err) {   }
                 }
 
                 const handleMove = (ev: PointerEvent) => {
@@ -89,7 +84,7 @@ export const useDragAndDrop = ({ onReorder, disabled = false }: UseDragAndDropOp
 
                 const release = () => {
                     if (handleEl?.releasePointerCapture) {
-                        try { handleEl.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+                        try { handleEl.releasePointerCapture(e.pointerId); } catch (err) {   }
                     }
                     endPointerDrag();
                     window.removeEventListener("pointerup", release);

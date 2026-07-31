@@ -21,6 +21,5 @@ export function ImageryBlock({ block }: ImageryBlockProps) {
     return null;
   }
 
-  // Use only the first image
   return <Imagery id={block.id} image={block.content.images[0]} />;
 }

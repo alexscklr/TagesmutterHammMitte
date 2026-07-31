@@ -1,15 +1,11 @@
-/*
-
-Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-*/
+ 
 .hljs {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
   background: #F0F0F0;
 }
-/* Base color: saturation 0; */
+ 
 .hljs,
 .hljs-subst {
   color: #444;
@@ -25,7 +21,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-name {
   font-weight: bold;
 }
-/* User color: hue: 0 */
+ 
 .hljs-type,
 .hljs-string,
 .hljs-number,
@@ -50,7 +46,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-selector-pseudo {
   color: #BC6060;
 }
-/* Language color: hue: 90; */
+ 
 .hljs-literal {
   color: #78A960;
 }
@@ -60,14 +56,14 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-addition {
   color: #397300;
 }
-/* Meta color: hue: 200 */
+ 
 .hljs-meta {
   color: #1f7199;
 }
 .hljs-meta-string {
   color: #4d99bf;
 }
-/* Misc effects */
+ 
 .hljs-emphasis {
   font-style: italic;
 }
@@ -159,14 +155,12 @@ a:visited {
 }
 #tree .nodename {
   text-indent: 12px;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAg0lEQVQYlWNIS0tbAcSK////Z8CHGTIzM7+mp6d/ASouwqswKyvrO1DRfyg+CcRaxCgE4Z9A3AjEbIQUgjHQOQvwKgS6+ffChQt3AiUDcCqsra29d/v27R6ghCVWN2ZnZ/9YuXLlRqBAPBALYvVMR0fHmQcPHrQBOUZ4gwfqFj5CAQ4Al6wLIYDwo9QAAAAASUVORK5CYII=");
-  background-repeat: no-repeat;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAg0lEQVQYlWNIS0tbAcSK   background-repeat: no-repeat;
   background-position: left center;
   cursor: pointer;
 }
 #tree .open > .nodename {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAlElEQVQYlWNIS0tbCsT/8eCN////Z2B49OhRfHZ29jdsioDiP27evJkNVggkONeuXbscm8Jly5atA8rzwRSCsG5DQ8MtZEU1NTUPgOLGUHm4QgaQFVlZWT9BijIzM39fuHChDCaHohBkBdCq9SCF8+bN2wHkC+FSCMLGkyZNOvb9+3dbNHEMhSDsDsRMxCjEiolWCADeUBHgU/IGQQAAAABJRU5ErkJggg==");
-  background-position: left 7px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAlElEQVQYlWNIS0tbCsT/8eCN   background-position: left 7px;
 }
 #tree .dir,
 #tree .file {

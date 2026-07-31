@@ -1,5 +1,4 @@
-// hooks/useScrollDirection.ts
-import { useEffect, useRef, useState } from 'react';
+ import { useEffect, useRef, useState } from 'react';
 
 export function useScrollDirection() {
   const [direction, setDirection] = useState<'up' | 'down'>('up');

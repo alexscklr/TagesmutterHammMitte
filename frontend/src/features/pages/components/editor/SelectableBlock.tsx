@@ -62,7 +62,6 @@ const SelectableBlock: React.FC<{ block: PageBlock }> = ({ block }) => {
 
   const handleCloseModal = React.useCallback(() => {
     setIsModalOpen(false);
-    // Deselect after a brief delay to allow modal close animation
     setTimeout(() => setSelectedBlock(null), 0);
   }, [setSelectedBlock]);
 

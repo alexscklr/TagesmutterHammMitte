@@ -25,7 +25,7 @@ export const EditForm: React.FC<EditFormProps> = ({ styles, editingId, formData,
     <div className={styles.editForm}>
       <h2>{isNew ? "Neuen Footer-Block erstellen" : "Footer-Block bearbeiten"}</h2>
 
-      {/* Type specific */}
+      { }
       {formData.type === FooterBlocks.Portrait && (
         <>
           <div className={styles.formGroup}>

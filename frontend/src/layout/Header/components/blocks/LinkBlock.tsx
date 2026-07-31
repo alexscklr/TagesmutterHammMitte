@@ -1,6 +1,6 @@
 import type { LinkBlock } from "../../types/index";
 import { renderRichText } from "@/shared/components";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { getSiteLinkData, type SiteLinkData } from "../../lib/index";
 import styles from "./LinkBlock.module.css";
@@ -19,7 +19,6 @@ export function LinkBlock({ block }: LinkBlockProps) {
         }
     }, [block.target_site_id]);
 
-    // Interner Link über target_site_id
     if (block.target_site_id && siteData) {
         const isActive = location.pathname === `/${siteData.slug}`;
         return (
@@ -29,7 +28,6 @@ export function LinkBlock({ block }: LinkBlockProps) {
         );
     }
 
-    // Externer Link oder individueller Label
     if (block.content.url) {
         return (
             <a href={block.content.url} target="_blank" rel="noopener noreferrer" className={styles.link}>

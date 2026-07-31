@@ -36,7 +36,7 @@
 .contentContainer {
   position: relative;
   width: 100%;
-  min-width: 100%; /* Mindestbreite erzwingen */
+  min-width: 100%;  
   display: block;
   box-sizing: border-box;
 }

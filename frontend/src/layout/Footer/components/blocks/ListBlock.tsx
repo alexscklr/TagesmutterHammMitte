@@ -1,4 +1,3 @@
-// ...existing code...
 import { List } from "@/shared/components/List/List";
 import type { FooterBlock, ListBlock as TListBlock } from "../../types";
 import { renderFooterBlock } from "../FooterBlockRenderer";

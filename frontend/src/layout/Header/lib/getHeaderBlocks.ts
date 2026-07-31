@@ -1,6 +1,6 @@
 import type { HeaderBlock } from "../types";
 import { buildNestedHeaderBlocks } from "./index";
-import { supabase } from "@/supabaseClient"; // zentralen Client verwenden
+import { supabase } from "@/supabaseClient";
 
 export async function getHeaderBlocks(): Promise<HeaderBlock[]> {
   const { data, error } = await supabase

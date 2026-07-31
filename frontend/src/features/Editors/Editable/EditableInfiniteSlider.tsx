@@ -36,7 +36,6 @@ const EditableInfiniteSlider: React.FC<EditableInfiniteSliderProps> = ({ value, 
         <p className={styles.subtitle}>{itemCount} Elemente</p>
       </div>
 
-      {/* Speed Control */}
       <div className={styles.section}>
         <label htmlFor="slider-speed" className={styles.label}>
           Scroll-Geschwindigkeit:
@@ -57,7 +56,6 @@ const EditableInfiniteSlider: React.FC<EditableInfiniteSliderProps> = ({ value, 
         <p className={styles.hint}>Langsamer ← Schneller →</p>
       </div>
 
-      {/* Content Info */}
       <div className={styles.section}>
         <div className={styles.contentInfo}>
           <div className={styles.infoBox}>
@@ -72,7 +70,6 @@ const EditableInfiniteSlider: React.FC<EditableInfiniteSliderProps> = ({ value, 
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className={styles.section}>
         <div className={styles.buttonGroup}>
           <button 
@@ -85,7 +82,6 @@ const EditableInfiniteSlider: React.FC<EditableInfiniteSliderProps> = ({ value, 
         </div>
       </div>
 
-      {/* Save Button */}
       <div className={styles.section}>
         <SaveBlockButton />
       </div>

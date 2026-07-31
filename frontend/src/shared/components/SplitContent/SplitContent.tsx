@@ -2,9 +2,7 @@ import React, { type ReactNode } from "react";
 import styles from "./SplitContent.module.css";
 
 export interface SplitContentProps {
-  firstItemWidth?: number; // Percentage width for first item (default: 50)
-  children: [ReactNode, ReactNode]; // Exactly 2 children
-}
+  firstItemWidth?: number;   children: [ReactNode, ReactNode]; }
 
 const SplitContent: React.FC<SplitContentProps> = ({ 
   firstItemWidth = 50, 

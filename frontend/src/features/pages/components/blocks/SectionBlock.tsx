@@ -44,7 +44,6 @@ export function SectionBlock({ block }: SectionBlockProps) {
                     block.content.heading.text
                 )}
 
-            {/* Insert button before first child */}
             <AddBlockButton order={0} parentBlockId={block.id} />
 
             {children.map((child) => (

@@ -1,14 +1,11 @@
-/* Quicksand - Regular */
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  /* Prüfe genau, ob der Dateiname exakt so geschrieben wird (Groß-/Kleinschreibung!) */
   src: url('/font/Quicksand/static/Quicksand-Regular.ttf') format('truetype');
 }
 
-/* Quicksand - Bold (für Gewicht 600 oder 700) */
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
@@ -17,7 +14,6 @@
   src: url('/font/Quicksand/static/Quicksand-Bold.ttf') format('truetype');
 }
 
-/* Nunito entsprechend anpassen */
 @font-face {
   font-family: 'Nunito';
   font-style: normal;
@@ -53,7 +49,6 @@
   --color-error: #f44336;
   --color-danger: #da190b;
 
-  /* New design tokens */
   --radius-s: 8px;
   --radius-m: 12px;
   --radius-l: 16px;
@@ -150,7 +145,6 @@ button:focus::before {
   transform: translateX(0);
 }
 
-/* Button utility variants */
 .btn-primary { background: var(--gradient-primary); box-shadow: 0 8px 20px rgba(69, 160, 73, 0.25); }
 .btn-info { background: var(--gradient-info); box-shadow: 0 8px 20px rgba(33, 150, 243, 0.28); }
 .btn-accent { background: var(--gradient-accent); box-shadow: 0 8px 20px rgba(92, 102, 230, 0.28); }
@@ -164,7 +158,6 @@ button:focus::before {
 .btn-ghost::before { display: none; }
 .btn-ghost:hover { color: var(--color-accent); transform: translateY(-1px); }
 
-/* Glassy surfaces for modals/dialogs/navbars */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
@@ -182,7 +175,6 @@ button:focus::before {
   border-bottom: var(--glass-border);
 }
 
-/* Sticky nav / toolbar helper */
 .sticky-toolbar {
   position: sticky;
   top: 0;
@@ -195,7 +187,6 @@ button:focus::before {
   border-radius: 0 0 var(--radius-l) var(--radius-l);
 }
 
-/* ---- Surfaces: Cards & Sections (D) ---- */
 .surface-card {
   background: var(--gradient-surface);
   border-radius: var(--radius-l);
@@ -285,7 +276,6 @@ button:focus::before {
   color: var(--color-accent);
 }
 
-/* Responsive */
 @media (max-width: 800px) {
   .page {
     width: stretch;

@@ -38,7 +38,6 @@ const EditableSplitContent: React.FC<EditableSplitContentProps> = ({ value, onCh
       <div style={{ marginTop: 8, color: "var(--color-text)", fontSize: "0.9rem" }}>
         Die Child-Blöcke werden in den beiden Spalten angezeigt.
       </div>
-      {/* Managing child content blocks is handled by the existing block editor UI */}
       <div style={{ marginTop: 8 }}>
         <SaveBlockButton />
       </div>

@@ -14,7 +14,7 @@
 }
 
 
-/* Portrait-Bereich */
+ 
 .portraitSection {
   display: grid;
   grid-template-columns: minmax(12rem, 1fr) 2fr;
@@ -26,7 +26,7 @@
 
 .portraitImg {
   grid-column: 1;
-  grid-row: 1 / span 2; /* desktop: image spans heading + text */
+  grid-row: 1 / span 2;  
   width: clamp(10rem, 22vw, 18rem);
   aspect-ratio: 1 / 1.4;
   height: auto;
@@ -55,7 +55,7 @@
   padding: 0;
 }
 
-/* Live-Indicator */
+ 
 .liveCircle {
   position: relative;
   width: 1.5rem;
@@ -74,7 +74,7 @@
   pointer-events: none;
 }
 
-/* Ring 1 */
+ 
 .liveCircleOuter1 {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -84,7 +84,7 @@
   z-index: 0;
 }
 
-/* Ring 2 (versetzt) */
+ 
 .liveCircleOuter2 {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -95,7 +95,7 @@
   z-index: 0;
 }
 
-/* Innerer Punkt */
+ 
 .liveCircleInner {
   width: 0.6rem;
   height: 0.6rem;
@@ -117,7 +117,7 @@
   100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
-/* Timeline */
+ 
 .currentTimelineEntry p {
   margin: 0;
 }
@@ -137,7 +137,7 @@
   margin: 0;
 }
 
-/* Standort-Bereich: flexible Kacheln, die umbrechen */
+ 
 .locationSection {
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@
 }
 
 .locationSection .location > * {
-  flex: 1 1 18rem; /* bricht automatisch um, wenn es schmal wird */
+  flex: 1 1 18rem;  
   min-width: 0;
 }
 
@@ -173,30 +173,30 @@
     text-align: center;
     gap: 0.35rem;
   }
-  /* Optional: slightly smaller portrait on very small screens */
+   
   .portraitImg {
     width: clamp(9rem, 40vw, 16rem);
   }
-  /* Portrait: enforce single column and linear order */
+   
   .portraitSection {
-    grid-template-columns: 1fr; /* single column */
-    grid-template-rows: auto auto auto; /* h2, img, text */
+    grid-template-columns: 1fr;  
+    grid-template-rows: auto auto auto;  
     row-gap: clamp(0.75rem, 2vw, 1.25rem);
   }
   .portraitHeading {
     grid-column: 1;
-    grid-row: 1; /* h2 first */
+    grid-row: 1;  
     text-align: center;
   }
   .portraitImg {
     grid-column: 1;
-    grid-row: 2; /* image second */
+    grid-row: 2;  
     width: clamp(9rem, 40vw, 16rem);
     margin-inline: auto;
   }
   .portraitText {
     grid-column: 1;
-    grid-row: 3; /* text third */
+    grid-row: 3;  
   }
   .pageSectionLinks {
     flex-direction: column;

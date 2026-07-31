@@ -14,9 +14,7 @@ export async function fetchPageMeta(slug: string): Promise<PageMeta | null> {
         return null;
     }
 
-    if (!data) {
-        // No page found for this slug - this is okay, we'll use defaults
-        return null;
+    if (!data) {         return null;
     }
     
     return {

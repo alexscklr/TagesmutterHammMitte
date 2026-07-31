@@ -8,7 +8,6 @@ export function usePageBlocks(slug: string) {
   const [loading, setLoading] = useState(true);
   const [pageId, setPageId] = useState<string | null>(null);
 
-  // Update a nested block by id without refetching everything
   const updateBlockContent = (tree: PageBlock[], id: string, content: unknown): PageBlock[] => {
     return tree.map(block => {
       if (block.id === id) {
@@ -39,7 +38,6 @@ export function usePageBlocks(slug: string) {
     });
   };
 
-  // Initialize: fetch pageId and initial blocks
   useEffect(() => {
     let cancelled = false;
 
@@ -47,7 +45,6 @@ export function usePageBlocks(slug: string) {
       setLoading(true);
       setBlocks([]);
       
-      // Fetch Page ID and visibility
       const { data: pageData, error } = await supabase
         .from("pages")
         .select("id, is_public")
@@ -61,12 +58,9 @@ export function usePageBlocks(slug: string) {
         return;
       }
 
-      // Check visibility
       if (pageData.is_public === false) {
-        // Check if user is authenticated
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          // Private page and not logged in -> treat as not found
           setLoading(false);
           return;
         }
@@ -95,7 +89,6 @@ export function usePageBlocks(slug: string) {
     };
   }, [slug]);
 
-  // Event-based updates (window events) - depends on pageId
   useEffect(() => {
     if (!pageId) return;
 
@@ -120,7 +113,6 @@ export function usePageBlocks(slug: string) {
     };
   }, [pageId]);
 
-  // Realtime Updates via Supabase (insert/update/delete) scoped to page
   useEffect(() => {
     if (!pageId) return;
 
@@ -140,7 +132,6 @@ export function usePageBlocks(slug: string) {
           if (payload.eventType === "UPDATE" && payload.new && "id" in payload.new) {
             setBlocks(prev => updateBlockContent(prev, (payload.new as any).id, (payload.new as any).content));
           } else if (payload.eventType === "INSERT" && payload.new && "id" in payload.new) {
-            // Select the newly inserted block (consumer listens to this event)
             try {
               window.dispatchEvent(new CustomEvent("pageblocks:select", { detail: { id: (payload.new as any).id, block: payload.new } }));
             } catch {}

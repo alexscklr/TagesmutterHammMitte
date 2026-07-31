@@ -1,6 +1,6 @@
 import type { FooterBlock } from "../types";
 import { buildNestedFooterBlocks } from "./index";
-import { supabase } from "@/supabaseClient"; // zentralen Client verwenden
+import { supabase } from "@/supabaseClient";
 
 export async function getFooterBlocks(): Promise<FooterBlock[]> {
   const { data, error } = await supabase

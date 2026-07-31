@@ -55,10 +55,7 @@ const FooterAdmin: React.FC = () => {
       [FooterBlocks.List]: { content: [] },
       [FooterBlocks.Text]: { text: "" },
       [FooterBlocks.CopyrightNotice]: { notice: "© " }
-    };
-
-    // Only one copyright block at root
-    if (blockType === FooterBlocks.CopyrightNotice && blocks.some(b => b.type === FooterBlocks.CopyrightNotice && b.parent_block_id === null)) {
+    };     if (blockType === FooterBlocks.CopyrightNotice && blocks.some(b => b.type === FooterBlocks.CopyrightNotice && b.parent_block_id === null)) {
       alert("Es gibt bereits einen Copyright-Hinweis.");
       return;
     }
@@ -198,7 +195,7 @@ const FooterAdmin: React.FC = () => {
         />
       ) : (
         <>
-          {/* Top Section */}
+          { }
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2>Inhalt</h2>

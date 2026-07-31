@@ -15,7 +15,6 @@ const EditableList: React.FC<EditableListProps> = ({ value, onChange }) => {
 
   const handleContentChange = (index: number, newBlockContent: any) => {
     const newContent = [...(value.content || [])];
-    // Preserve the block structure, only update the inner content
     if (newContent[index].type === PageBlocks.Paragraph) {
        newContent[index] = {
          ...newContent[index],
@@ -29,7 +28,6 @@ const EditableList: React.FC<EditableListProps> = ({ value, onChange }) => {
   };
 
   const handleAddStringItem = () => {
-      // Default to adding a Paragraph block
       const newBlock: PageBlock = {
           id: crypto.randomUUID(),
           parent_block_id: null,

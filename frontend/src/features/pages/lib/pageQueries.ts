@@ -11,9 +11,7 @@ export interface PageMeta {
   background: any;
 }
 
-/**
- * Hole alle Seiten für Sitemap
- */
+
 export async function fetchAllPages(): Promise<PageMeta[]> {
   const { data, error } = await supabase
     .from("pages")
@@ -28,9 +26,7 @@ export async function fetchAllPages(): Promise<PageMeta[]> {
   return data as PageMeta[];
 }
 
-/**
- * Hole Page ID per Slug
- */
+
 export async function getPageIdBySlug(slug: string): Promise<string | null> {
   const { data, error } = await supabase
     .from("pages")
@@ -46,9 +42,6 @@ export async function getPageIdBySlug(slug: string): Promise<string | null> {
   return data?.id ?? null;
 }
 
-/**
- * Hole PageBlocks einer Seite
- */
 export async function getPageBlocks(pageId: string): Promise<PageBlock[]> {
   const { data, error } = await supabase
     .from("page_blocks")
@@ -63,9 +56,6 @@ export async function getPageBlocks(pageId: string): Promise<PageBlock[]> {
   return blocks;
 }
 
-/**
- * Build nested sections recursively
- */
 export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null = null): PageBlock[] {
   return (
     blocks
@@ -86,7 +76,7 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
             cb => cb.parent_block_id === b.id && cb.type === PageBlocks.TimelineEntry
           ) as Extract<PageBlock, { type: typeof PageBlocks.TimelineEntry }>[];
 
-          // Build nested structure for each entry block
+          
           const processedEntryBlocks = entryBlocks.map(entryBlock => ({
             ...entryBlock,
             content: {
@@ -95,7 +85,7 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
             },
           }));
 
-          // Also create entries array for Timeline component
+          
           const entries = processedEntryBlocks.map(entryBlock => entryBlock.content);
 
           return {
@@ -103,7 +93,7 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
             content: {
               ...b.content,
               entries,
-              content: processedEntryBlocks, // Store entry blocks as children
+              content: processedEntryBlocks, 
             },
           } as PageBlock;
         }
@@ -119,13 +109,13 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
         }
 
         if (b.type === PageBlocks.List) {
-          // typisiertes Narrowing auf den List-Block
+          
           const listBlock = b as Extract<PageBlock, { type: typeof PageBlocks.List }>;
           return {
             ...listBlock,
             content: {
               ...listBlock.content,
-              content: buildNestedBlocks(blocks, listBlock.id), // Kinder des List-Blocks
+              content: buildNestedBlocks(blocks, listBlock.id), 
             },
           };
         }
@@ -135,9 +125,6 @@ export function buildNestedBlocks(blocks: PageBlock[], parentId: string | null =
   ) as PageBlock[];
 }
 
-/**
- * Sanitize block content for persistence: strip nested children for container-like blocks.
- */
 function sanitizeContentForSave(block: PageBlock): unknown {
   switch (block.type) {
     case PageBlocks.Section: {
@@ -157,7 +144,7 @@ function sanitizeContentForSave(block: PageBlock): unknown {
       return { firstItemWidth: firstItemWidth ?? 50, content: content ?? [] };
     }
     case PageBlocks.Timeline: {
-      // Entries are represented by child rows; parent holds no inline entries
+      
       return {};
     }
     case PageBlocks.TimelineEntry: {
@@ -169,9 +156,6 @@ function sanitizeContentForSave(block: PageBlock): unknown {
   }
 }
 
-/**
- * Update a single page_block row's content by id.
- */
 type UpdatedPageBlockRow = { id: string; content: unknown };
 export async function updatePageBlock(block: PageBlock): Promise<UpdatedPageBlockRow | null> {
   const t0 = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();

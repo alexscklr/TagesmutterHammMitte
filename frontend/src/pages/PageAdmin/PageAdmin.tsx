@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import styles from "./PageAdmin.module.css";
 import { PageList } from "./components/PageList";
 import { ImagePickerModal } from "./components/ImagePickerModal";
@@ -21,23 +21,12 @@ const PageAdmin: React.FC = () => {
   const imagePicker = useImagePicker();
   const [searchParams, setSearchParams] = useSearchParams();
   const [previewStyle] = React.useState<string>("");
-  const { setPreviewBackground } = useBackgroundPreview();
-
-  // Live update of the main page background
-  useEffect(() => {
-    // Only update if we are editing or creating
-    if (pageManagement.isCreating || pageManagement.editingId) {
+  const { setPreviewBackground } = useBackgroundPreview();   useEffect(() => {     if (pageManagement.isCreating || pageManagement.editingId) {
        setPreviewBackground(pageManagement.formData.background as any);
     } else {
        setPreviewBackground(null);
-    }
-
-    // Cleanup when component unmounts or we leave edit mode
-    return () => setPreviewBackground(null); 
-  }, [pageManagement.formData.background, pageManagement.isCreating, pageManagement.editingId, setPreviewBackground]);
-
-  // Sync URL with State
-  useEffect(() => {
+    }     return () => setPreviewBackground(null); 
+  }, [pageManagement.formData.background, pageManagement.isCreating, pageManagement.editingId, setPreviewBackground]);   useEffect(() => {
     if (pageManagement.loading) return;
 
     const editId = searchParams.get("edit");
@@ -52,9 +41,7 @@ const PageAdmin: React.FC = () => {
           pageManagement.setIsCreating(false);
           pageManagement.setError(null);
         }
-      } else {
-        // Page not found (e.g. deleted or invalid ID), return to list
-        setSearchParams({});
+      } else {         setSearchParams({});
       }
     } else if (createMode) {
       if (!pageManagement.isCreating) {
@@ -71,9 +58,7 @@ const PageAdmin: React.FC = () => {
         });
         pageManagement.setError(null);
       }
-    } else {
-      // List Mode
-      if (pageManagement.editingId || pageManagement.isCreating) {
+    } else {       if (pageManagement.editingId || pageManagement.isCreating) {
         pageManagement.setEditingId(null);
         pageManagement.setIsCreating(false);
         pageManagement.setFormData({});
@@ -85,10 +70,7 @@ const PageAdmin: React.FC = () => {
     pageManagement.loading,
     pageManagement.pages,
     pageManagement.editingId,
-    pageManagement.isCreating,
-    // Note: We deliberately exclude pageManagement methods and gradientEditor.DEFAULT_GRADIENT 
-    // to avoid unnecessary re-runs, assuming they are stable or don't change meaningfully.
-  ]);
+    pageManagement.isCreating,    ]);
 
   useEffect(() => {
     const load = async () => {
@@ -269,8 +251,7 @@ const PageAdmin: React.FC = () => {
             <label className={styles.checkboxLabel}>
               <input
                 type="checkbox"
-                checked={pageManagement.formData.is_public ?? true} // Default true
-                onChange={e => pageManagement.updateFormField("is_public", e.target.checked)}
+                checked={pageManagement.formData.is_public ?? true}                 onChange={e => pageManagement.updateFormField("is_public", e.target.checked)}
               />
               Öffentlich sichtbar
             </label>

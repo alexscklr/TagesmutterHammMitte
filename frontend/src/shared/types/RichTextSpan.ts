@@ -3,9 +3,7 @@ import type { PageSlug } from "@/constants/slugs";
 
 export type LinkType = "internal" | "external";
 
-/**
- * Range utilities (start inclusive, end exclusive)
- */
+ 
 export interface RichTextRange {
     start: number;
     end: number;
@@ -21,9 +19,7 @@ export interface InlineFunctionRange extends RichTextRange {
     inlineFunction: InlineFunction;
 }
 
-/**
- * New compact representation: text + ranges for styles, links, and inline functions
- */
+ 
 export interface RichTextDocument {
     text: string;
     bold?: RichTextRange[];

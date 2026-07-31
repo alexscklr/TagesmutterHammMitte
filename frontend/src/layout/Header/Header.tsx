@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useScrollDirection } from '@/shared/hooks/scrollHooks';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import styles from './Header.module.css';
 import { getHeaderBlocks } from './lib/getHeaderBlocks';
 import { LogoBlock } from './components/blocks/LogoBlock';
@@ -39,7 +39,6 @@ const Header = () => {
     };
   }, []);
 
-  // Close mobile header on route change
   useEffect(() => {
     if (window.innerWidth <= 768) {
       setActive(false);

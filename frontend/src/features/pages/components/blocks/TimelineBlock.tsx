@@ -15,7 +15,6 @@ export function TimelineBlock({ block }: TimelineBlockProps) {
   const entries = block.content.entries || [];
 
   if (isEditing) {
-    // In edit mode, wrap in Timeline container to keep the look
     return (
       <Timeline>
         <AddBlockButton order={0} parentBlockId={block.id} />
@@ -35,7 +34,6 @@ export function TimelineBlock({ block }: TimelineBlockProps) {
     );
   }
 
-  // In normal mode, use the Timeline presentation component
   return (
     <div style={{ width: "100%" }}>
       <Timeline key={block.id} data={entries} />
@@ -54,13 +52,11 @@ export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
   const children = block.content.content || [];
 
   if (isEditing) {
-    // In edit mode (whether selected or not), use TimelineItem layout
     return (
       <TimelineItem
         label={block.content.label}
         title={block.content.title}
-        isActive={true} // In edit mode, maybe force active or let Timeline handle it? 
-        // For now force active so it's fully visible
+        isActive={true}
       >
         <div style={{ marginTop: "0.5rem" }}>
           <AddBlockButton order={0} parentBlockId={block.id} />
@@ -77,9 +73,6 @@ export function TimelineEntryBlock({ block }: TimelineEntryBlockProps) {
     );
   }
 
-  // Normal rendering should theoretically happen via Timeline data prop, 
-  // but if this component is rendered directly (e.g. by direct renderPageBlock call),
-  // we use TimelineItem.
   return (
     <TimelineItem
         label={block.content.label}

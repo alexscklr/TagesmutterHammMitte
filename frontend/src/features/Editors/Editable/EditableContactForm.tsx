@@ -26,7 +26,6 @@ const EditableContactForm: React.FC<EditableContactFormProps> = ({ value, onChan
         <option value={3}>H3</option>
         <option value={4}>H4</option>
       </select>
-      {/* Extend to edit fields configuration when available */}
       <div style={{ marginTop: 8 }}>
         <SaveBlockButton />
       </div>

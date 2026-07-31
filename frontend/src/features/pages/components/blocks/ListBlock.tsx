@@ -1,10 +1,8 @@
-// ...existing code...
 import { List } from "@/shared/components/List/List";
 import { type PageBlock } from "../../types";
 import type { ListBlock as TListBlock } from "../../types";
 import { renderPageBlock } from "..";
 import { useEditMode } from "@/features/admin/hooks/useEditMode";
-// ...existing code...
 
 interface ListBlockProps {
   block: TListBlock;

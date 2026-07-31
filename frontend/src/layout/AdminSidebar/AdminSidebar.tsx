@@ -14,21 +14,16 @@ import { MdOutlinePermMedia, MdOutlineReviews } from "react-icons/md";
 import { Link } from "@/shared/components";
 import { FaDatabase } from "react-icons/fa";
 
-// Helper to render editor with proper type narrowing via switch
-// Inline editors are handled in PageBlockRenderer; keep sidebar minimal
 
 export interface AdminSidebarProps {
-  open?: boolean; // optional override, defaults to context
+  open?: boolean;
   selectedBlock?: PageBlock | null;
   onChangeBlock?: (next: PageBlock) => void;
-  // Save/Cancel moved to inline editors
-  // Removed header toggle; edit mode controlled by body button
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
   open,
   selectedBlock,
-  // onChangeBlock,
 }) => {
   const { isEditing, setEditing } = useEditMode();
   const { canEdit } = useAuth();
@@ -38,14 +33,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const [width, setWidth] = React.useState<number>(Math.min(300,window.screen.width * 0.8));
   const [scrollRatio, setScrollRatio] = React.useState<number | null>(null);
 
-  // Restore scroll position after edit mode toggle
   React.useLayoutEffect(() => {
     if (scrollRatio !== null) {
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       if (scrollHeight > 0) {
         window.scrollTo({ top: scrollRatio * scrollHeight, behavior: "instant" });
       }
-      // Reset after restoring
       setScrollRatio(null);
     }
   }, [isEditing, scrollRatio]);
@@ -56,15 +49,14 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const startResize = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    // Only react to primary pointer (finger/left mouse)
     if (e.button !== 0 && e.pointerType === "mouse") return;
 
-    // Keep events flowing even if pointer leaves the handle
+    
     const resizerEl = e.currentTarget;
     const pointerId = e.pointerId;
 
     if (resizerEl?.setPointerCapture) {
-      try { resizerEl.setPointerCapture(pointerId); } catch (_) { /* ignore */ }
+      try { resizerEl.setPointerCapture(pointerId); } catch (_) { }
     }
 
     const startX = e.clientX;
@@ -82,7 +74,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       window.removeEventListener("pointercancel", handleUp);
 
       if (resizerEl?.releasePointerCapture) {
-        try { resizerEl.releasePointerCapture(pointerId); } catch (_) { /* ignore */ }
+        try { resizerEl.releasePointerCapture(pointerId); } catch (_) { }
       }
     };
 
@@ -104,7 +96,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               className={styles.button}
               onClick={() => {
                 if (canEdit) {
-                  // Save current scroll percentage
+                  
                   const scrollTop = window.scrollY;
                   const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                   if (docHeight > 0) {

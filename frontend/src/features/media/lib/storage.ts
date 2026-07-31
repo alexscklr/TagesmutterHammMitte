@@ -2,13 +2,14 @@ import { supabase } from "@/supabaseClient";
 
 export type BucketFile = {
   name: string;
-  id?: string;
+  id?: string | null;
   updated_at?: string;
   created_at?: string;
   last_accessed_at?: string;
   metadata?: Record<string, unknown> | null;
   size?: number;
 };
+
 
 const BUCKET = "public_images";
 
@@ -18,10 +19,9 @@ export async function listImages(path: string = ""): Promise<BucketFile[]> {
     console.error("listImages error", error);
     return [];
   }
-  return data ?? [];
+  return (data as BucketFile[]) ?? [];
 }
 
-// For private buckets, use signed URLs for display
 export async function getImageSignedUrl(path: string, expiresInSeconds: number = 60 * 10): Promise<string | null> {
   const { data, error } = await supabase.storage.from(BUCKET).createSignedUrl(path, expiresInSeconds);
   if (error) {

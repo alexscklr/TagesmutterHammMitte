@@ -1,7 +1,7 @@
 
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { fetchAllPages, type PageMeta } from "@/features/pages/lib/pageQueries";
 
 const Sitemap = () => {

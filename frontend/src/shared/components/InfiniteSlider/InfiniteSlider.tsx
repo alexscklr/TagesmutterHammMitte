@@ -11,19 +11,11 @@ type InfiniteSliderProps<T> = {
 function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteSliderProps<T>) {
   const duplicatedItems = [...items, ...items];
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  
-  // Cache layout values specifically to avoid thrashing
-  const layoutCache = useRef({ halfScrollWidth: 0 });
+  const [isFocused, setIsFocused] = useState(false);   const layoutCache = useRef({ halfScrollWidth: 0 });
 
   useEffect(() => {
     const container = containerRef.current;
-    if (container) {
-        // Initial positioning
-        container.scrollLeft = container.scrollWidth / 2 - container.offsetWidth / 2;
-        
-        // Setup cache
-        const updateCache = () => {
+    if (container) {         container.scrollLeft = container.scrollWidth / 2 - container.offsetWidth / 2;         const updateCache = () => {
              layoutCache.current.halfScrollWidth = container.scrollWidth / 2;
         };
         updateCache();
@@ -35,15 +27,10 @@ function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteS
         
         return () => resizeObserver.disconnect();
     }
-  }, [items]); // Re-calculate when items change
-
+  }, [items]); 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
-    
-    // Ensure cache is populated if the previous effect hasn't run yet or if something is out of sync,
-    // though the dependency overlap usually handles it.
-    if (layoutCache.current.halfScrollWidth === 0) {
+    if (!container) return;      if (layoutCache.current.halfScrollWidth === 0) {
         layoutCache.current.halfScrollWidth = container.scrollWidth / 2;
     }
 
@@ -60,9 +47,7 @@ function InfiniteSlider<T>({ items, renderItem, speed, keyExtractor }: InfiniteS
       const delta = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
-      if (!isFocused) {
-        // Use cached value instead of reading layout property
-        const halfScrollWidth = layoutCache.current.halfScrollWidth || container.scrollWidth / 2;
+      if (!isFocused) {         const halfScrollWidth = layoutCache.current.halfScrollWidth || container.scrollWidth / 2;
         const nextScrollLeft = container.scrollLeft + speed * delta;
 
         if (nextScrollLeft >= halfScrollWidth) {

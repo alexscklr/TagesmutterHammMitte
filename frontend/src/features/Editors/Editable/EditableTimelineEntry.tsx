@@ -58,7 +58,6 @@ const EditableTimelineEntry: React.FC<EditableTimelineEntryProps> = ({ value, on
           onChange={(e) => updateField("yearSpan", [value.yearSpan?.[0] ?? 0, Number(e.target.value || 0)]) }
         />
       </div>
-      {/* Editing of child content blocks would be handled by an editor list UI elsewhere */}
       <div style={{ marginTop: 8 }}>
         <SaveBlockButton />
       </div>

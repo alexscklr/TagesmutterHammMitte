@@ -107,7 +107,7 @@
 }
 
 .select {
-  appearance: none;/* Standard-Dropdown-Pfeil verstecken */
+  appearance: none;
   background-color: white;
   color: #333;
   font-family: var(--font-primary);
@@ -165,7 +165,6 @@
   box-shadow: 0 10px 22px rgba(0,0,0,0.12);
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .siteHeader {
     max-height: 100svh;

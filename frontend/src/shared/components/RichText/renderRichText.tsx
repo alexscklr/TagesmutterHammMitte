@@ -97,9 +97,7 @@ const renderDoc = (doc: RichTextDocument) => {
   return elements;
 };
 
-/**
- * Render RichText content (document or legacy spans) in JSX
- */
+ 
 export function renderRichText(content: RichTextContent) {
   if (content === null || content === undefined) return null;
 
@@ -111,9 +109,7 @@ export function renderRichText(content: RichTextContent) {
       if (isDocument(parsed)) {
         doc = parsed;
       }
-    } catch {
-      // It's just a plain string, render as is.
-      return <>{content}</>;
+    } catch {       return <>{content}</>;
     }
   } else if (isDocument(content)) {
     doc = content;

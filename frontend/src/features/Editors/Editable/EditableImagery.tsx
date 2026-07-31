@@ -11,7 +11,6 @@ export interface EditableImageryProps {
 }
 
 const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) => {
-  // Ensure we always have exactly one image
   const img = value.images[0] || { url: "", alt: "" };
 
   const updateImage = (field: "alt"|"source"|"sourceUrl"|"license", val: string) => {
@@ -31,7 +30,6 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
   const openPicker = async () => {
     setPickerOpen(true);
     const items = await listImages("");
-    // Get public URLs for all images
     const filesWithUrls = items.map(i => {
       const { data } = supabase.storage.from("public_images").getPublicUrl(i.name);
       return { name: i.name, url: data.publicUrl };
@@ -59,7 +57,6 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
         padding: "1rem", 
         backgroundColor: "#f9f9f9"
       }}>
-        {/* Image Preview and Selection */}
         <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
           {img.url && (
             <img 
@@ -99,7 +96,6 @@ const EditableImagery: React.FC<EditableImageryProps> = ({ value, onChange }) =>
           </div>
         </div>
 
-        {/* Image Metadata */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.5rem" }}>
           <input 
             type="text" 

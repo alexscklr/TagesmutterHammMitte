@@ -6,10 +6,10 @@
   margin: auto;
 }
 
-/* lists with markers: bullets inside + indentation */
+ 
 .withMarkers {
   list-style-position: inside;
-  padding-left: 1rem; /* indent when markers are shown */
+  padding-left: 1rem;  
 }
 
 li  p {

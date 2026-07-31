@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { supabase } from "@/supabaseClient";
 import { FaStar } from "react-icons/fa";
 import { GrSend } from "react-icons/gr";
@@ -94,8 +94,7 @@ const ReviewSubmit: React.FC = () => {
                                     <label
                                         className={styles.starLabel}
                                         htmlFor={`rating-${value}`}
-                                        style={{ order: 5 - value }} // Kehrt die Anzeige visuell um
-                                    >
+                                        style={{ order: 5 - value }}                                     >
                                         <FaStar />
                                     </label>
                                 </React.Fragment>

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router";
 import type { PageMeta } from "./types/types";
 import { fetchPageMeta } from "./lib/queries";
 import { backgroundStyleToCSS } from "./utils/translations";
@@ -9,19 +9,12 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { SelectionProvider } from "@/features/admin/context/SelectionContext";
 import { EditingProvider } from "@/features/admin/context/EditingContext";
 import { useSelection } from "@/features/admin/context/hooks/useSelection";
-import { useEditMode } from "@/features/admin/hooks/useEditMode";
-// save logic is now provided by EditingContext
-
+import { useEditMode } from "@/features/admin/hooks/useEditMode"; 
 import { BackgroundContext } from "./context/BackgroundContext";
-import { type BackgroundStyle } from "./types/types";
-
-// Map routes to page slugs for static pages
-const getSlugFromPath = (pathname: string): string | null => {
+import { type BackgroundStyle } from "./types/types"; const getSlugFromPath = (pathname: string): string | null => {
   if (pathname === "/" || pathname === "") return "";
   if (pathname === "/rezensionen") return "rezensionen";
-  if (pathname === "/sitemap") return "sitemap";
-  // For dynamic pages, return null to use the slug from params
-  return null;
+  if (pathname === "/sitemap") return "sitemap";   return null;
 };
 
 const Main = ({ children }: { children: ReactNode }) => {
@@ -39,23 +32,12 @@ const Main = ({ children }: { children: ReactNode }) => {
     "radial-gradient(at 40% 75%, rgba(255, 235, 205, 0.50) 0%, rgba(255, 235, 205, 0) 38%)," +
     "linear-gradient(135deg, #f5f1e8 0%, #f0f5f3 35%, #e8f4f0 100%)," +
     "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'><g fill='none' stroke='rgba(100,100,100,0.08)' stroke-width='1'><circle cx='20' cy='18' r='1'/><circle cx='120' cy='90' r='1'/><circle cx='180' cy='40' r='1'/><circle cx='60' cy='150' r='1'/><circle cx='200' cy='180' r='1'/><circle cx='30' cy='200' r='1'/><circle cx='140' cy='200' r='1'/></g></svg>\")," +
-    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'><g fill='none' stroke='rgba(100,100,100,0.12)' stroke-width='4' stroke-linecap='round'><path d='M20 40c16 18 32 18 48 0'/><path d='M92 30c18 22 36 22 54 0'/><path d='M24 86c14 14 28 14 42 0'/></g></svg>\")";
-
-  // Determine which slug to use: static page mapping or dynamic param
-  const effectiveSlug = getSlugFromPath(location.pathname) ?? paramSlug;
-
-  // Initialize background with default on mount
-  useEffect(() => {
+    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'><g fill='none' stroke='rgba(100,100,100,0.12)' stroke-width='4' stroke-linecap='round'><path d='M20 40c16 18 32 18 48 0'/><path d='M92 30c18 22 36 22 54 0'/><path d='M24 86c14 14 28 14 42 0'/></g></svg>\")";   const effectiveSlug = getSlugFromPath(location.pathname) ?? paramSlug;   useEffect(() => {
     setBackgroundStyle(defaultBg);
     setUseDefaultBackground(true);
   }, []);
 
-  useEffect(() => {
-    // Reset meta immediately when route changes
-    setMeta(null);
-    
-    // Fetch page meta (effectiveSlug can be empty string for homepage)
-    if (effectiveSlug !== undefined && effectiveSlug !== null) {
+  useEffect(() => {     setMeta(null);     if (effectiveSlug !== undefined && effectiveSlug !== null) {
       fetchPageMeta(effectiveSlug)
         .then(setMeta)
         .catch(() => setMeta(null));
@@ -71,19 +53,10 @@ const Main = ({ children }: { children: ReactNode }) => {
     } else {
       document.title = "Kerstin Sickler – Kindertagespflege in Hamm Mitte";
     }
-  }, [meta]);
-
-  // Initialize edit mode only on mount, not on every auth change
+  }, [meta]);   useEffect(() => {
+    setEditing(!!user && canEdit);   }, []); 
   useEffect(() => {
-    setEditing(!!user && canEdit);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only once on mount
-
-  useEffect(() => {
-    let active = true;
-    
-    // Use preview if available (explicitly check for null, unrelated undefined means default)
-    const activeBgData = previewBackground !== null ? previewBackground : (meta ? meta.background : undefined);
+    let active = true;     const activeBgData = previewBackground !== null ? previewBackground : (meta ? meta.background : undefined);
 
     if (activeBgData) {
       backgroundStyleToCSS(activeBgData).then(style => {
@@ -97,21 +70,17 @@ const Main = ({ children }: { children: ReactNode }) => {
       setUseDefaultBackground(true);
     }
     return () => { active = false; };
-  }, [meta, defaultBg, previewBackground]); // Add previewBackground dependency
-
-  // Specific styles for custom backgrounds to ensure they cover the area
-  const customBackgroundStyles = !useDefaultBackground ? {
+  }, [meta, defaultBg, previewBackground]);    const customBackgroundStyles = !useDefaultBackground ? {
       backgroundSize: "auto",
       backgroundPosition: "top left",
       backgroundRepeat: "repeat",
-      backgroundAttachment: "fixed", // Keeps background stable on scroll
-  } : {};
+      backgroundAttachment: "fixed",   } : {};
 
   return (
     <SelectionProvider>
       <EditingProvider>
         <BackgroundContext.Provider value={{ setPreviewBackground }}>
-          {/* Sidebar für Benutzer mit Bearbeitungsrechten */}
+          { }
           {user && canEdit && <SidebarWithSave />}
           <main
             className={`${styles.main} ${user && canEdit ? styles.withSidebar : ""}`}

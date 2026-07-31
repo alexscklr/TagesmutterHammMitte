@@ -143,7 +143,6 @@
     height: 1.1rem;
 }
 
-/* Resize handle on the right edge */
 .resizer {
     position: absolute;
     top: 0;
